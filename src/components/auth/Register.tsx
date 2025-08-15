@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useRegisterNewUser } from "../../api/usersQuery";
-import { Input, Header, type HeaderProps, type FooterProps, Footer, SubmitBtn } from "./AuthComponents";
+import { Input, Header, type HeaderProps, type FooterProps, Footer, SubmitBtn, type SubmitBtnProps } from "./AuthComponents";
 
 const headerText: HeaderProps = {
     textH2: 'Create Account',
@@ -13,8 +13,9 @@ const footerContent: FooterProps = {
     buttonText: `Login`
 }
 
-const submitBtnContent = {
-    buttonText: `Register`,
+const submitBtnContent: SubmitBtnProps = {
+    buttonText: 'Login',
+    isPending: false,
 }
 
 type FormData = {

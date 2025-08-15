@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { Footer, Header, Input, SubmitBtn, type FooterProps, type HeaderProps, type SubmitBtnProps } from "./AuthComponents";
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useLoginUser } from "../../api/usersQuery";
 
 const headerText: HeaderProps = {
     textH2: `Welcome Back!`,
@@ -13,16 +14,18 @@ const footerContent: FooterProps = {
     buttonText: `Register`
 }
 
-/* const submitBtnContent: SubmitBtnProps = {
-    buttonText: 'Login'
+const submitBtnContent: SubmitBtnProps = {
+    buttonText: 'Login',
+    isPending: false,
 }
- */
+
 
 type FormData = {
     email: string,
     password: string,
 }
 export default function Login(){
+    const {isPending, isSuccess, mutate, isError, error} = useLoginUser()
     const [formData, setFormData] = useState<FormData>({
         email: '', password: ''
     })
@@ -38,6 +41,7 @@ export default function Login(){
     function handleSubmit(e: FormEvent):void{
         e.preventDefault();
         console.log(`Email: ${formData.email} - Password: ${formData.password}`)
+        mutate(formData)
     }
 
     return(
@@ -76,8 +80,9 @@ export default function Login(){
                                 </button>
                             </Link>
                         </div>
-                        <button type="submit" className="bg-orange text-white font-bold  rounded-md p-3 hover:cursor-pointer hover:bg-orange-strong">Login</button>
-                        {/* <SubmitBtn {...submitBtnContent} isPending={isPending}></SubmitBtn> */}
+                        <SubmitBtn {...submitBtnContent} isPending={isPending}></SubmitBtn>
+                        {isError && <p>{error.message}</p>}
+                        {isSuccess && <p>User logged in!</p>}
                 </form>
                 <Footer {...footerContent}></Footer>
             </section>

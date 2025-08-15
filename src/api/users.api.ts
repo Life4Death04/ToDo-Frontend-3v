@@ -9,14 +9,16 @@ type NewUser = {
     password: string
 }
 
-type RegisterResponse = {
-    message: string, 
+type Response = {
+    message: string | null, 
+    token?: string | null,
     user: {
-        email: string
+        email: string | null
+        password?: string | null
     }
 }
 
-export const registerUser = async(newUser: NewUser): Promise<RegisterResponse> =>{
+export const registerUser = async(newUser: NewUser): Promise<Response> =>{
     try{
         const res = await axios.post(registerUrl, newUser);
         return res.data
@@ -25,5 +27,23 @@ export const registerUser = async(newUser: NewUser): Promise<RegisterResponse> =
             throw new Error(error.response?.data?.message || `Error registering user`)
         }
         throw new Error(`Unexpected error registering user`);
+    }
+}
+
+type Credentials = {
+    email: string,
+    password: string
+}
+
+export const loginUser = async(credentials: Credentials): Promise<Response> => {
+    try{
+        const res = await axios.post('http://localhost:3000/user/login', credentials)
+        return res.data
+
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error registering user`)
+        }
+        throw new Error(`Unexpected error registering user`)
     }
 }
