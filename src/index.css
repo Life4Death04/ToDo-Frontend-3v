@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+
+@theme {
+    --background: #fff;
+    --color-text: #24343e;
+    --light-color-text: #6f7785;
+    --color-action-buttons: #000;
+    --color-orange: #fb933d;
+    --color-orange-strong: #f88120;
+
+    --container-max-auth: 600px
+}
+
+@layer base {
+    * {
+        font-size: 1rem;
+    }
+}
