@@ -1,23 +1,27 @@
+import type { ChangeEvent } from "react";
 import { Link } from "react-router";
 
 type InputCompTypes = {
     type: string,
+    value: string,
     name: string,
+    label: string,
     required?: false | true,
-    placeholder: string
+    placeholder: string,
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void
 };
 
-export function Input({type, name, required, placeholder}:InputCompTypes){
+export function Input({type, value, name, label, required, placeholder, onChange}:InputCompTypes){
     return(
         <div className="text-left flex-grow">
             <label className="block font-bold mb-2 capitalize">
-                {name}
+                {label}
             </label>
             <input 
                 className="px-4 py-3 border-2 border-black/20 rounded-2xl w-full"
                 type={type} 
-                /* value={formData.email} 
-                onChange={handleChange}  */
+                value={value} 
+                onChange={onChange} 
                 required={required} 
                 name={name} 
                 placeholder={`Enter your ${placeholder}`}
@@ -56,5 +60,16 @@ export function Footer({label, buttonUrl, buttonText}: FooterProps){
                 <button className="text-orange font-bold hover:cursor-pointer">{buttonText}</button>
             </Link>
         </footer>
+    );
+}
+
+export type SubmitBtnProps = {
+    buttonText: string,
+    isPending: false | true
+}
+
+export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
+    return(
+        <button type="submit" className="bg-orange text-white font-bold rounded-md p-3 hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
     );
 }
