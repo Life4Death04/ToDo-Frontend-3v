@@ -22,8 +22,6 @@ export const useRegisterNewUser = () =>{
 }
 
 //Login Mutation
-
-
 export const useLoginUser = () =>{
     const navigate = useNavigate();
 
@@ -31,9 +29,8 @@ export const useLoginUser = () =>{
         mutationFn: loginUser,
         onSuccess: (data:any) => {
             
-            console.log(messages.success)
             localStorage.setItem("token", data.token)
-            navigate(`/accounts/18`)
+            navigate(`/accounts/${data.user.id}`)
         }
     })
 }

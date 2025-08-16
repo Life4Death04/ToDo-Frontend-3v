@@ -11,8 +11,9 @@ import { useParams } from 'react-router';
 
 type TaskItemProps = {
     id: number;
-    description: string;
-    done: boolean;
+    content: string;
+    check: boolean;
+    authorId: number;
     onCheck: () => void; //Function to check the task
     onDelete: () => void; //Function to delete the task
 }
@@ -25,11 +26,11 @@ type TaskItemProps = {
  * @param onCheck{function} - Function to handle the task check action
  * @param onDelete{function} - Function to handle the task delete action
  */
-function TaskItem({id, description, done, onCheck, onDelete}: TaskItemProps){ //Change Task for TaskItem
+function TaskItem({id, content, check, onCheck, onDelete}: TaskItemProps){ //Change Task for TaskItem
     return(
         <li key={id} className='relative flex justify-between bg-input-background py-3 px-4 mb-4 rounded-xl'>
-            <span className={done ? 'checkTask-btn-active hover:cursor-pointer' : 'checkTask-btn-false hover:cursor-pointer'} onClick={onCheck}></span>
-            <p className={done ? 'text-xl pl-12 line-through text-gray-checked-tasks' : 'text-text-task text-xl pl-12'}>{description}</p>
+            <span className={check ? 'checkTask-btn-active hover:cursor-pointer' : 'checkTask-btn-false hover:cursor-pointer'} onClick={onCheck}></span>
+            <p className={check ? 'text-xl pl-12 line-through text-gray-checked-tasks' : 'text-text-task text-xl pl-12'}>{content}</p>
             <button onClick={onDelete} className="ml-auto bg-transparent text-action-buttons hover:cursor-pointer hover:text-orange-buttons">
                 <FaRegTrashAlt size={20}/>
             </button>
@@ -101,50 +102,54 @@ function FilterButtons({
  * @description ToDo component is the main component that manages the state of the to-do list, including adding, checking, deleting tasks, and filtering them.
  */
 interface InitialTaskType {
-    todos: Todo[];
+    todos: Todo[] | null;
     nextId: number;
     filterValue: string;
 }
 
 interface Todo {
     id: number,
-    description: string,
-    done: boolean
-}
-
-const initialTask: InitialTaskType = {
-    todos: [
-        {id: -1, description: 'Implementar TypeScript', done: true},
-        {id: -2, description: 'Implementar JSDoc (manera de documentar)', done: true},
-        {id: -3, description: 'Crear funcion para abstraer el setFilter (manejar filtrado)', done: true}
-    ],
-    nextId: 0,
-    filterValue: 'all',
+    content: string,
+    check: boolean,
+    authorId: number,
 }
 
 export default function ToDo(){
     //State for the list of tasks
+    const {userId} = useParams<{userId: string}>();
+    const {data, isLoading, isError, error} = useFetchUserTodos(userId!);
     /* const [taskState, setTaskState] = useState<InitialTaskType[]>(initialTask); //Initial tasks for the to-do list */
-    /* const {userId} = useParams<{userId: string}>()
-    const {data} = useFetchUserTodos(userId!); */
+
+    const initialTask: InitialTaskType = {
+    todos: Array.isArray(data?.todos) ? data.todos : [],
+    nextId: Array.isArray(data?.todos) && data.todos.length > 0 ? Math.max(...data.todos.map(t => t.id)) + 1 : 0,
+    filterValue: 'all',
+}
 
     const [taskReducerState, dispatch] = useReducer(todoReducer, initialTask); //Using useReducer to manage tasks
-
     const [inputTaskValue, setInputTaskValue] = useState<string>(''); //State for the input value of the ToDo
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false); //Code for the modal operations
-
     const [darkMode, setDarkMode] = useState<boolean>(false) //State for dark mode toggle
     
-    let pendingTasks:number = taskReducerState.todos.filter((t:Todo) => !t.done).length; // Count how many tasks are not done
-
+    let pendingTasks:number = (taskReducerState.todos ?? []).filter((t:Todo) => !t.check).length; // Count how many tasks are not done
     useEffect(() => {
-        document.body.className = darkMode ? 'dark' : ''; //Change the body class to dark or light mode
+        document.body.className = darkMode ? 'dark' : ''; //Change the body class to dark or light mode[
     }, [darkMode]); //This effect will run whenever darkMode changes
 
+    useEffect(() => {
+        if(Array.isArray(data?.todos)){
+            dispatch({
+                type: 'set_todos',
+                todos: data.todos,
+                nextId: data.todos.length > 0 ? Math.max(...data.todos.map(t => t.id)) + 1 : 0
+            })
+        }
+    }, [data])
+
     //State for filterable buttons
-    let filterList = taskReducerState.todos.filter((t: Todo) => {
-        if(taskReducerState.filterValue === 'active') return !t.done;
-        if(taskReducerState.filterValue === 'completed') return t.done;
+    let filterList = (taskReducerState.todos ?? []).filter((t: Todo) => {
+        if(taskReducerState.filterValue === 'active') return !t.check;
+        if(taskReducerState.filterValue === 'completed') return t.check;
         return true;
     })
 
@@ -201,9 +206,11 @@ export default function ToDo(){
                     <button className="absolute right-0 bottom-4 bg-orange-buttons text-white text-xl py-4 px-6 rounded-xl hover:cursor-pointer" onClick={addTask}>Add</button>
                 </div>
                 <ul className="w-full min-h-52 overflow-y-auto rounded-xl mb-2">
+                    {isLoading && <p>Loading...</p>}
+                    {isError && <p>Error: {error.message}</p>}
                     {filterList.map((t:Todo) => {
                         return(
-                            <TaskItem {...t} onCheck={() => {checkTask(t.id)}} onDelete={() => {deleteTask(t.id)}}></TaskItem> //Using key prop to avoid React warning  
+                            <TaskItem {...t} key={t.id} onCheck={() => {checkTask(t.id)}} onDelete={() => {deleteTask(t.id)}}></TaskItem> //Using key prop to avoid React warning  
                         )
                     })}
                 </ul>
@@ -223,29 +230,36 @@ export default function ToDo(){
 //-----------------------------USE REDUCER-----------------------------
 
 //I know this shouldn't be here, but I want to keep the reducer in the because I got some problems
-function todoReducer(tasks, action){
+function todoReducer(tasks: InitialTaskType, action: any){
     switch(action.type) {
+        case 'set_todos':
+            return {
+                ...tasks,
+                todos: action.todos,
+                nextId: action.nextId
+            }
         case 'add_task':
-            const newTask = {
+            const newTask: Todo = {
                 id: tasks.nextId,
-                description: action.description,
-                done: false
+                content: action.description,
+                check: false,
+                authorId: 0 // or set appropriately
             };
             return {
                 ...tasks,
-                todos: [...tasks.todos, newTask],
+                todos: [...(tasks.todos ?? []), newTask],
                 nextId: tasks.nextId + 1
             };
         case 'delete_task':
             return {
                 ...tasks,
-                todos: tasks.todos.filter(task => task.id !== action.taskId)
+                todos: (tasks.todos ?? []).filter(task => task.id !== action.taskId)
             }
         case 'check_task':
             return {
                 ...tasks,
-                todos: tasks.todos.map(task => 
-                    task.id === action.taskId ? {...task, done: !task.done} : task
+                todos: (tasks.todos ?? []).map(task => 
+                    task.id === action.taskId ? {...task, check: !task.check} : task
                 )
             }
         case 'set_filter':
@@ -256,7 +270,7 @@ function todoReducer(tasks, action){
         case 'clear_completed':
             return {
                 ...tasks,
-                todos: tasks.todos.filter(task => !task.done),
+                todos: (tasks.todos ?? []).filter(task => !task.check),
             }
         default:
             return tasks;

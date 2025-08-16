@@ -1,5 +1,5 @@
 import axios from 'axios'
-/* import api from './axios'; */
+import api from './axios';
 
 let registerUrl:string = 'http://localhost:3000/user/register';
 
@@ -38,7 +38,7 @@ type Credentials = {
 
 export const loginUser = async(credentials: Credentials): Promise<Response> => {
     try{
-        const res = await axios.post('http://localhost:3000/user/login', credentials)
+        const res = await api.post('http://localhost:3000/user/login', credentials)
         return res.data
 
     }catch(error){
