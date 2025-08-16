@@ -1,14 +1,50 @@
 @import 'tailwindcss';
 
 @theme {
-    --background: #fff;
     --color-text: #24343e;
-    --light-color-text: #6f7785;
+    --color-light-text: #6f7785;
     --color-action-buttons: #000;
     --color-orange: #fb933d;
     --color-orange-strong: #f88120;
 
-    --container-max-auth: 600px
+    --container-max-auth: 600px;
+    --container-max: 650px;
+
+    /*ToDo Styles*/
+    --color-background: #fff;
+    --color-text: #000;
+    --color-text-icon: #2c3a68;
+    --color-text-filter-buttons: rgba(0, 0, 0, .5);
+    --color-text-filter-button-active: #000;
+    --color-text-task: #000;
+    --color-action-buttons: #000;
+    --color-input-background: #ebecef;
+    --color-orange-buttons: #f3573f;
+    --color-gray-checked-tasks: #908e8e;
+}
+
+.checkTask-btn-false::before{
+    content: '';
+    position: absolute;
+    height: 28px;
+    width: 28px;
+    border: 50%;
+    background-image: url('../../assets/icons/unchecked.png');
+    background-size: cover;
+    background-position: center;
+    left: 8px;
+}
+
+.checkTask-btn-active::before{
+    content: '';
+    position: absolute;
+    height: 28px;
+    width: 28px;
+    border: 50%;
+    background-image: url('../../assets/icons/checked.png');
+    background-size: cover;
+    background-position: center;
+    left: 8px;
 }
 
 @layer base {

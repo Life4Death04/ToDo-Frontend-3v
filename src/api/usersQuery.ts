@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { loginUser, registerUser } from "./users.api";
-/* import { redirect } from "react-router"; */
+import { useNavigate } from "react-router";
 
 type Messages = {
     success: string,
@@ -23,13 +23,17 @@ export const useRegisterNewUser = () =>{
 
 //Login Mutation
 
+
 export const useLoginUser = () =>{
+    const navigate = useNavigate();
+
     return useMutation({
         mutationFn: loginUser,
         onSuccess: (data:any) => {
+            
             console.log(messages.success)
             localStorage.setItem("token", data.token)
-            /* redirect() */
+            navigate(`/accounts/18`)
         }
     })
 }

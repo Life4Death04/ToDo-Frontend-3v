@@ -1,4 +1,5 @@
 import axios from 'axios'
+/* import api from './axios'; */
 
 let registerUrl:string = 'http://localhost:3000/user/register';
 
@@ -10,10 +11,10 @@ type NewUser = {
 }
 
 type Response = {
-    message: string | null, 
+    message?: string | null, 
     token?: string | null,
-    user: {
-        email: string | null
+    user?: {
+        email?: string | null
         password?: string | null
     }
 }
@@ -47,3 +48,8 @@ export const loginUser = async(credentials: Credentials): Promise<Response> => {
         throw new Error(`Unexpected error registering user`)
     }
 }
+
+//Protected Routes
+/*
+    After logged in and having our token, we should create protected routes where we use the token as a security element to keep in sync our actions with the token
+*/

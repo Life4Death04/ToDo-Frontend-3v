@@ -4,6 +4,7 @@ import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import NotFound from './components/404NotFound/404NotFound'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import ToDo from './components/todo/ToDo'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +20,8 @@ const router = createBrowserRouter([
     path: '/', element: <Login></Login>
   },{
     path: '/accounts/register', element: <Register></Register>
+  },{
+    path: '/accounts/:userId', element: <ToDo></ToDo>
   },{
     path: '*', element: <NotFound></NotFound>
   }
