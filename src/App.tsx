@@ -5,6 +5,7 @@ import Register from './components/auth/Register'
 import NotFound from './components/404NotFound/404NotFound'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import ToDo from './components/todo/ToDo'
+import {Sidebar} from './components/Layout/Sidebar'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,7 +18,7 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    path: '/', element: <Login></Login>
+    path: '/', element: <Sidebar></Sidebar>
   },{
     path: '/accounts/register', element: <Register></Register>
   },{
