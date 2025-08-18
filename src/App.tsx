@@ -6,6 +6,7 @@ import NotFound from './components/404NotFound/404NotFound'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import ToDo from './components/todo/ToDo'
 import {Sidebar} from './components/Layout/Sidebar'
+import { TasksTable } from './components/Layout/TasksTable'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +19,7 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    path: '/', element: <Sidebar></Sidebar>
+    path: '/', element: <TasksTable></TasksTable>
   },{
     path: '/accounts/register', element: <Register></Register>
   },{
