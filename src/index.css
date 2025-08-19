@@ -21,6 +21,8 @@
     --color-input-background: #ebecef;
     --color-orange-buttons: #f3573f;
     --color-gray-checked-tasks: #908e8e;
+
+    --font-sans: 'Inter', sans-serif;
 }
 
 .checkTask-btn-false::before{
