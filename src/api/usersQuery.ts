@@ -34,3 +34,15 @@ export const useLoginUser = () =>{
         }
     })
 }
+
+//Logout (just remove the token from the local storage and redirect it to the login)
+export const useLogoutUser = () =>{
+    const navigate = useNavigate();
+
+    function logout(){
+        localStorage.removeItem("token");
+        navigate('/');
+    }
+
+    return logout;
+}
