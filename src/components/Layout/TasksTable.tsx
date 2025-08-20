@@ -1,6 +1,8 @@
+import { type JSX } from "react";
+
 export function TasksTable(){
     return(
-        <main className="px-2 pt-4 xsm:ml-12 lg:ml-64">
+        <main className="px-2 pt-4">
             <h1 className="font-bold mb-4 xsm:text-xl md:text-2xl lg:text-3xl">My Tasks</h1>
             <header className="items-center bg-gray-100 px-4 py-2 text-gray-400 border-gray-400 border-b-1 font-bold xsm:hidden lg:flex">
                 <span className="flex-[2]">Task Name</span>
@@ -27,26 +29,36 @@ export function TasksTable(){
     );
 }
 
+type CurrentStatusTask = 'Not Started' | 'In Progress' | 'Completed';
+
 type TaskItemProps = {
     content: string,
     dueDate: string,
     priority: string,
-    status: string,
+    status: CurrentStatusTask,
+}
+
+interface CheckStatusIcons {
+    check: JSX.Element,
+    uncheck: JSX.Element
+}
+
+const checkStatusIcons: CheckStatusIcons = {
+    check: <i className="fa-solid fa-square-check text-orange xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer"></i>,
+    uncheck: <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer"></i>
 }
 
 function TaskItem({content, dueDate, priority, status}: TaskItemProps){
     return(
         <li className="lg:flex lg:gap-3 bg-white lg:border-b-1 lg:border-gray-400 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none">
             <div className="flex gap-2 items-center flex-[2]">
-                {/* <i className="fa-solid fa-square-check text-orange text-xl"></i> */}
-                {/* <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer"></i> */}
-                {status === 'Completed' ? <i className="fa-solid fa-square-check text-orange text-xl"></i> : <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer"></i>}
+                <button>
+                    {status === 'Completed' ? checkStatusIcons.check : checkStatusIcons.uncheck}
+                </button>
                 <span className="xsm:text-sm md:text-base lg:text-lg overflow text-wrap">
                     {content}
                 </span>
-                <button className="text-gray-400 hover:text-orange ">
-                    <i className="fa-solid fa-pen xsm:text-base lg:text-lg"></i>
-                </button>
+                <Button iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></Button>
                 <div className="ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
                     <i className="fa-regular fa-trash-can xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer"></i>
                 </div>
@@ -65,8 +77,23 @@ function TaskItem({content, dueDate, priority, status}: TaskItemProps){
                 </div>
             </div>
             <div className="ml-auto mt-auto text-center w-20 lg:block lg:self-center xsm:hidden">
-                <i className="fa-regular fa-trash-can xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer"></i>
+                {/* <i className="fa-regular fa-trash-can xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer"></i> */}
+                <Button iconStyle="fa-regular fa-trash-can"></Button>
             </div>
         </li>
+    );
+}
+
+type ButtonProps = {
+    onClick?: () => void,
+    iconStyle: string,
+    buttonStyle?: string,
+}
+
+function Button({ onClick, iconStyle, buttonStyle }: ButtonProps){
+    return(
+        <button className={`hover:cursor-pointer hover:text-orange px-4 py-2 ${buttonStyle}`} onClick={onClick}>
+            <i className={`${iconStyle} xsm:text-base lg:text-lg`}></i>
+        </button>
     );
 }

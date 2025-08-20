@@ -1,12 +1,10 @@
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router'
-/* import Login from './components/auth/Login' */
 import Register from './components/auth/Register'
 import NotFound from './components/404NotFound/404NotFound'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import ToDo from './components/todo/ToDo'
-/* import {Sidebar} from './components/Layout/Sidebar' */
-import { TasksTable } from './components/Layout/TasksTable'
+import MainLayout from './components/Layout/MainLayout'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +17,7 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    path: '/', element: <TasksTable></TasksTable>
+    path: '/', element: <MainLayout></MainLayout>
   },{
     path: '/accounts/register', element: <Register></Register>
   },{
