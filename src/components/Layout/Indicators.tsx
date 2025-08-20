@@ -1,19 +1,19 @@
 import type React from "react";
 
-export function IndicatorsPanel(){
+export function IndicatorPanels(){
     return (
-        <section className="flex items-center flex-wrap justify-center p-6 gap-8 rounded-lg w-fit mx-auto mt-8">
+        <section className="flex items-center flex-wrap justify-center p-6 gap-8 rounded-lg w-full mx-auto">
           <RadialIndicator textIndicator="Tasks Completed" totalTasks={20} completedTasks={15}/>
           <TextIndicator textIndicator="Reminder" totalItems={3} iconIndicator="fa-solid fa-clock"/>
           <TextIndicator textIndicator="Archived Tasks" totalItems={3} iconIndicator="fa-solid fa-archive"/>
         </section>
     );
 }
-
+//flex flex-col items-center justify-center bg-amber-200/50 rounded-2xl shadow-md p-6 w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64
 function IndicatorCard({children}: {children: React.ReactNode}){
   return(
-    <div className="flex flex-col items-center justify-center bg-amber-200/50 rounded-2xl shadow-md 
-    p-6 w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64">
+    <div className="flex flex-col flex-1 items-center justify-center bg-amber-100 rounded-2xl shadow-md 
+    w-44 h-44 xsm:p-8 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60">
       {children}
     </div>
   )
@@ -32,7 +32,7 @@ function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicator
           <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl`} aria-hidden:true></i>
         </div>
 
-        <h2 className="mt-4 mb-2 text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800">
+        <h2 className="mt-4 mb-2 text-center text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800">
           {textIndicator}
         </h2>
 
@@ -98,7 +98,7 @@ export function RadialIndicator({textIndicator, totalTasks, completedTasks}:Radi
       </div>
 
       {/* Labels */}
-      <h2 className="mt-4 text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800">
+      <h2 className="m-2 text-sm text-center sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800">
         {textIndicator}
       </h2>
       <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600">

@@ -1,10 +1,12 @@
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router'
+import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import NotFound from './components/404NotFound/404NotFound'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import ToDo from './components/todo/ToDo'
+/* import ToDo from './components/todo/ToDo' */
 import MainLayout from './components/Layout/MainLayout'
+import Home from './components/Home/Home'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,11 +19,15 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    path: '/', element: <MainLayout></MainLayout>
+    path: '/', element: <Login></Login>
   },{
     path: '/accounts/register', element: <Register></Register>
   },{
-    path: '/accounts/:userId', element: <ToDo></ToDo>
+    path: '/accounts/:userId', 
+    element: <MainLayout></MainLayout>,
+    children: [
+      { path: '', element: <Home /> }
+    ]
   },{
     path: '*', element: <NotFound></NotFound>
   }
