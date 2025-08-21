@@ -19,6 +19,11 @@ type Response = {
     }
 }
 
+type Credentials = {
+    email: string,
+    password: string
+}
+
 export const registerUser = async(newUser: NewUser): Promise<Response> =>{
     try{
         const res = await axios.post(registerUrl, newUser);
@@ -29,11 +34,6 @@ export const registerUser = async(newUser: NewUser): Promise<Response> =>{
         }
         throw new Error(`Unexpected error registering user`);
     }
-}
-
-type Credentials = {
-    email: string,
-    password: string
 }
 
 export const loginUser = async(credentials: Credentials): Promise<Response> => {

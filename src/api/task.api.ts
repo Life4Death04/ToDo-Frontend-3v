@@ -2,20 +2,11 @@ import axios from 'axios';
 import api from './axios';
 
 type Todo = {
-        id: number,
-        content: string,
-        status: true | false,
-        authorId: number
-    }
-
-/* type Response = {
-    message?: string | null, 
-    token?: string | null,
-    user?: {
-        email?: string | null
-        password?: string | null
-    }
-} */
+    id: number,
+    content: string,
+    status: true | false,
+    authorId: number
+}
 
 type FetchTodosResponse = {
     todos?: Todo[];

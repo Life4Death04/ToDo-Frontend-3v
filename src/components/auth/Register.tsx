@@ -1,7 +1,16 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useRegisterNewUser } from "../../api/usersQuery";
-import { Input, Header, type HeaderProps, type FooterProps, Footer, SubmitBtn, type SubmitBtnProps } from "./AuthComponents";
+import { 
+    Input, 
+    Header, 
+    Footer, 
+    SubmitBtn, 
+    type HeaderProps, 
+    type FooterProps, 
+    type SubmitBtnProps 
+} from "./AuthComponents";
 
+// -------------------- Static Content --------------------
 const headerText: HeaderProps = {
     textH2: 'Create Account',
     label: `Let's get you started!`
@@ -18,6 +27,7 @@ const submitBtnContent: SubmitBtnProps = {
     isPending: false,
 }
 
+// -------------------- Types --------------------
 type FormData = {
     firstName: string,
     lastName: string,
@@ -26,6 +36,7 @@ type FormData = {
     confirmPassword: string,
 }
 
+// -------------------- Main Register Component --------------------
 export default function Register(){
     const {mutate, isPending, isError, error, isSuccess} = useRegisterNewUser();
     const [errorMsg, setErrorMsg] = useState(false);

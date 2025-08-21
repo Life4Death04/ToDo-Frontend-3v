@@ -2,14 +2,14 @@ import { useMutation } from "@tanstack/react-query";
 import { loginUser, registerUser } from "./users.api";
 import { useNavigate } from "react-router";
 
-type Messages = {
-    success: string,
-    error: string
-}
-
 let messages: Messages = {
     success: `Action completed Successfully`,
     error: `Something went wrong`
+}
+
+type Messages = {
+    success: string,
+    error: string
 }
 
 export const useRegisterNewUser = () =>{
