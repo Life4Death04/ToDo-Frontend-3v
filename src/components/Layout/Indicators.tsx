@@ -1,15 +1,33 @@
 import type React from "react";
 
-export function IndicatorPanels(){
+// -------------------- Types --------------------
+type IndicatorPanelProps = {
+  totalTasks: number;
+}
+
+type TextIndicatorProps = {
+    textIndicator: string,
+    totalItems: number,
+    iconIndicator: string,
+}
+
+type RadialIndicatorProps = {
+    textIndicator: string,
+    totalTasks: number,
+    completedTasks: number,
+}
+// -------------------- Main Panel Component --------------------
+export function IndicatorPanels({totalTasks}: IndicatorPanelProps){
     return (
         <section className="flex items-center flex-wrap justify-center p-6 gap-8 rounded-lg w-full mx-auto">
-          <RadialIndicator textIndicator="Tasks Completed" totalTasks={20} completedTasks={15}/>
+          <RadialIndicator textIndicator="Tasks Completed" totalTasks={totalTasks} completedTasks={totalTasks}/>
           <TextIndicator textIndicator="Reminder" totalItems={3} iconIndicator="fa-solid fa-clock"/>
           <TextIndicator textIndicator="Archived Tasks" totalItems={3} iconIndicator="fa-solid fa-archive"/>
         </section>
     );
 }
-//flex flex-col items-center justify-center bg-amber-200/50 rounded-2xl shadow-md p-6 w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64
+
+// -------------------- Card Wrapper Component --------------------
 function IndicatorCard({children}: {children: React.ReactNode}){
   return(
     <div className="flex flex-col flex-1 items-center justify-center bg-amber-100 rounded-2xl shadow-md 
@@ -19,12 +37,7 @@ function IndicatorCard({children}: {children: React.ReactNode}){
   )
 }
 
-type TextIndicatorProps = {
-    textIndicator: string,
-    totalItems: number,
-    iconIndicator: string,
-}
-
+// -------------------- Text Indicator Component --------------------
 function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicatorProps){
     return(
       <IndicatorCard>
@@ -43,12 +56,7 @@ function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicator
     );
 }
 
-type RadialIndicatorProps = {
-    textIndicator: string,
-    totalTasks: number,
-    completedTasks: number,
-}
-
+// -------------------- Radial Indicator Component --------------------
 export function RadialIndicator({textIndicator, totalTasks, completedTasks}:RadialIndicatorProps) {
   const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0; //Safeguard in case totaltask equals 0
 

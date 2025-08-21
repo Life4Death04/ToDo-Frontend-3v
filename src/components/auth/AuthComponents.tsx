@@ -1,6 +1,7 @@
 import type { ChangeEvent } from "react";
 import { Link } from "react-router";
 
+// -------------------- Types --------------------
 type InputCompTypes = {
     type: string,
     value: string,
@@ -11,7 +12,24 @@ type InputCompTypes = {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
 };
 
-export function Input({type, value, name, label, required, placeholder, onChange}:InputCompTypes){
+export type HeaderProps = {
+    textH2: string,
+    label: string,
+}
+
+export type FooterProps = {
+    label: string,
+    buttonUrl: string,
+    buttonText: string
+}
+
+export type SubmitBtnProps = {
+    buttonText: string,
+    isPending: false | true
+}
+
+// -------------------- Input Component --------------------
+export function Input({ type, value, name, label, required, placeholder, onChange }:InputCompTypes){
     return(
         <div className="text-left flex-grow">
             <label className="block font-bold mb-2 capitalize">
@@ -30,11 +48,7 @@ export function Input({type, value, name, label, required, placeholder, onChange
     );
 }
 
-export type HeaderProps = {
-    textH2: string,
-    label: string,
-}
-
+// -------------------- Header Component --------------------
 export function Header({textH2, label}: HeaderProps){
     return(
         <header className="mb-6">
@@ -46,12 +60,7 @@ export function Header({textH2, label}: HeaderProps){
     );
 }
 
-export type FooterProps = {
-    label: string,
-    buttonUrl: string,
-    buttonText: string
-}
-
+// -------------------- Footer Component --------------------
 export function Footer({label, buttonUrl, buttonText}: FooterProps){
     return(
         <footer>
@@ -63,11 +72,7 @@ export function Footer({label, buttonUrl, buttonText}: FooterProps){
     );
 }
 
-export type SubmitBtnProps = {
-    buttonText: string,
-    isPending: false | true
-}
-
+// -------------------- Submit Button Component --------------------
 export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
     return(
         <button type="submit" className="bg-orange text-white font-bold rounded-md p-3 hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>

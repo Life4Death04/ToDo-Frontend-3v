@@ -1,8 +1,17 @@
 import { Link } from "react-router";
-import { Footer, Header, Input, SubmitBtn, type FooterProps, type HeaderProps, type SubmitBtnProps } from "./AuthComponents";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useLoginUser } from "../../api/usersQuery";
+import { 
+    Footer, 
+    Header, 
+    Input, 
+    SubmitBtn, 
+    type FooterProps, 
+    type HeaderProps, 
+    type SubmitBtnProps 
+} from "./AuthComponents";
 
+// -------------------- Static Content --------------------
 const headerText: HeaderProps = {
     textH2: `Welcome Back!`,
     label: `Let's get you signed in.`
@@ -19,11 +28,13 @@ const submitBtnContent: SubmitBtnProps = {
     isPending: false,
 }
 
-
+// -------------------- Types --------------------
 type FormData = {
     email: string,
     password: string,
 }
+
+// -------------------- Main Login Component --------------------
 export default function Login(){
     const {isPending, isSuccess, mutate, isError, error} = useLoginUser()
     const [formData, setFormData] = useState<FormData>({

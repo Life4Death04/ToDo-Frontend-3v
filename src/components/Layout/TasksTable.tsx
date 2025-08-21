@@ -1,15 +1,36 @@
-import { useFetchUserTodos, useDeleteUserTodo } from "../../api/tasksQuery";
-import { useParams } from "react-router";
+type Todo = {
+    id: number;
+    content: string;
+    status: true | false;
+    authorId: number;
+}
 
-export function TasksTable(){
-    const { userId } = useParams<{ userId: string }>();
-    const {data, isError, error, isLoading} = useFetchUserTodos(userId!);
-    const deleteUserTodo = useDeleteUserTodo(userId!)
-    const userTodos = data?.todos;
+type CurrentStatusTask = 'Not Started' | 'In Progress' | 'Completed';
 
-    const handleDelete = (taskId: number) => {
-        deleteUserTodo.mutate(taskId); //Passing the param, to the mutationFn.
-    }
+type TasksTableProps = {
+    userTodos?: Todo[];
+    deleteUserTodo: (taskId: number) => void;
+    isLoading: boolean;
+    isError: boolean;
+    error: Error | null;
+}
+
+type TaskItemProps = {
+    content: string,
+    dueDate?: string,
+    priority?: string,
+    status?: CurrentStatusTask,
+    onDelete: () => void,
+}
+
+type ButtonProps = {
+    onClick?: () => void,
+    iconStyle: string,
+    buttonStyle?: string,
+}
+
+// -------------------- Main Table Component --------------------
+export function TasksTable({ userTodos, deleteUserTodo, isLoading, isError, error }: TasksTableProps){
 
     return(
         <section className="px-2 pl-4 pt-4">
@@ -23,7 +44,7 @@ export function TasksTable(){
             </header>
             <ul className="flex flex-col gap-3 lg:gap-0 lg:divide-y lg:divide-gray-200">
                 {isLoading && <li>Loading...</li>}
-                {isError && <li>Error: {error.message}</li>}
+                {isError && <li>Error: {error?.message}</li>}
                 {!userTodos?.length && (
                     <NoTaskMessage />
                 )}
@@ -31,7 +52,7 @@ export function TasksTable(){
                     <TaskItem 
                         key={todo.id}
                         content={todo.content}
-                        onDelete={() => handleDelete(todo.id)}
+                        onDelete={() => deleteUserTodo(todo.id)}
                     />
                 ))}
                 
@@ -40,24 +61,7 @@ export function TasksTable(){
     );
 }
 
-type CurrentStatusTask = 'Not Started' | 'In Progress' | 'Completed';
-
-type TaskItemProps = {
-    content: string,
-    dueDate?: string,
-    priority?: string,
-    status?: CurrentStatusTask,
-    onDelete: () => void,
-}
-
-function getCheckIcon(isChecked: boolean){
-    return isChecked ? (
-        <i className="fa-solid fa-square-check text-orange xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden:true></i>
-    ) : (
-        <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden:true></i>
-    )
-}
-
+// -------------------- Task Item Component --------------------
 function TaskItem({content, dueDate, priority, status, onDelete}: TaskItemProps){
     return(
         <li className="lg:flex lg:gap-3 bg-white lg:border-b-1 lg:border-gray-400 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none">
@@ -93,24 +97,29 @@ function TaskItem({content, dueDate, priority, status, onDelete}: TaskItemProps)
     );
 }
 
+// -------------------- Helper: Check Icon --------------------
+function getCheckIcon(isChecked: boolean){
+    return isChecked ? (
+        <i className="fa-solid fa-square-check text-orange xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden:true></i>
+    ) : (
+        <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden:true></i>
+    )
+}
+
+// -------------------- No Task Message Component --------------------
 function NoTaskMessage(){
     return(
         <li className="mx-auto w-full text-center py-12 border-b border-gray-300">
-            <span className="text-2xl text-black/60">No tasks yet</span>
-            <p className="pt-3 pb-5 text-gray-400">Looks like you're all caught up!</p>
-            <button className="bg-orange text-white text-xl px-3 py-2 rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons">
+            <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl">No tasks yet</span>
+            <p className="pt-3 pb-5 text-gray-400 xsm:text-xs md:text-sm lg:text-base">Looks like you're all caught up!</p>
+            <button className="bg-orange text-white text-xl px-3 py-2 rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-base sm:text-lg lg:text-xl">
                 + Create Task
             </button>
         </li>
     );
 }
 
-type ButtonProps = {
-    onClick?: () => void,
-    iconStyle: string,
-    buttonStyle?: string,
-}
-
+// -------------------- Reusable Button Component --------------------
 function Button({ onClick, iconStyle, buttonStyle }: ButtonProps){
     return(
         <button className={`hover:cursor-pointer hover:text-orange px-4 py-2 ${buttonStyle}`} onClick={onClick}>
