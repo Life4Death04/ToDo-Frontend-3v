@@ -28,21 +28,29 @@ export type SubmitBtnProps = {
     isPending: false | true
 }
 
+type ButtonProps = {
+    onClick?: () => void,
+    iconStyle?: string,
+    textButton?: string,
+    buttonStyle?: string,
+}
+
+
 // -------------------- Input Component --------------------
 export function Input({ type, value, name, label, required, placeholder, onChange }:InputCompTypes){
     return(
-        <div className="text-left flex-grow">
+        <div className="text-left flex-grow mb-5">
             <label className="block font-bold mb-2 capitalize">
                 {label}
             </label>
             <input 
-                className="px-4 py-3 border-2 border-black/20 rounded-2xl w-full"
+                className="lg:px-4 lg:py-3 border-2 border-black/20 rounded-2xl w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
                 type={type} 
                 value={value} 
                 onChange={onChange} 
                 required={required} 
                 name={name} 
-                placeholder={`Enter your ${placeholder}`}
+                placeholder={placeholder}
             />
         </div>
     );
@@ -63,7 +71,7 @@ export function Header({textH2, label}: HeaderProps){
 // -------------------- Footer Component --------------------
 export function Footer({label, buttonUrl, buttonText}: FooterProps){
     return(
-        <footer>
+        <footer className="mt-4">
             <label>{label}</label>
             <Link to={`${buttonUrl}`}>
                 <button className="text-orange font-bold hover:cursor-pointer">{buttonText}</button>
@@ -75,6 +83,15 @@ export function Footer({label, buttonUrl, buttonText}: FooterProps){
 // -------------------- Submit Button Component --------------------
 export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
     return(
-        <button type="submit" className="bg-orange text-white font-bold rounded-md p-3 hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
+        <button type="submit" className="bg-orange text-white rounded-md xsm:p-2 xsm:text-sm xsm:text-semibold lg:p-3 lg:font-bold lg:text-lg  hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
+    );
+}
+
+// -------------------- Reusable Button Component --------------------
+export function Button({ onClick, iconStyle, textButton, buttonStyle }: ButtonProps){
+    return(
+        <button className={`hover:cursor-pointer hover:text-orange px-4 py-2 ${buttonStyle}`} onClick={onClick}>
+            <i className={`${iconStyle} xsm:text-base lg:text-lg`} aria-hidden:true>{textButton}</i>
+        </button>
     );
 }

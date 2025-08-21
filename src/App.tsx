@@ -4,6 +4,7 @@ import Register from './components/auth/Register'
 import NotFound from './components/404NotFound/404NotFound'
 import MainLayout from './components/Layout/MainLayout'
 import Home from './components/Home/Home'
+import PopupForm from './components/Layout/PopupForm'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
@@ -18,7 +19,7 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    path: '/', element: <Login></Login>
+    path: '/', element: <Login />
   },{
     path: '/accounts/register', element: <Register></Register>
   },{

@@ -8,7 +8,7 @@ import {
     type HeaderProps, 
     type FooterProps, 
     type SubmitBtnProps 
-} from "./AuthComponents";
+} from "../Common/CommonComponents";
 
 // -------------------- Static Content --------------------
 const headerText: HeaderProps = {
@@ -23,7 +23,7 @@ const footerContent: FooterProps = {
 }
 
 const submitBtnContent: SubmitBtnProps = {
-    buttonText: 'Login',
+    buttonText: 'Register',
     isPending: false,
 }
 
@@ -64,16 +64,16 @@ export default function Register(){
     }
 
     return(
-        <main className="h-screen flex items-center justify-center">
+        <main className="flex items-center justify-center">
             <section className="text-center mx-auto w-max-auth shadow-2xl rounded-xl p-8 pt-4">
                 <Header {...headerText}></Header>
-                <form className="flex flex-col content-around gap-2" onSubmit={handleOnSubmit}>
+                <form className="flex flex-col content-around" onSubmit={handleOnSubmit}>
                         <div className="flex justify-between gap-8">
                             <Input 
                                 type="text" 
                                 name="firstName"
                                 label="first name" 
-                                placeholder="first name" 
+                                placeholder="Enter your first name" 
                                 value={formData.firstName} 
                                 onChange={handleChange}>
                             </Input>
@@ -81,7 +81,7 @@ export default function Register(){
                                 type="text" 
                                 name="lastName"
                                 label="last name" 
-                                placeholder="last name"
+                                placeholder="Enter your last name"
                                 value={formData.lastName}
                                 onChange={handleChange}>
                             </Input>
@@ -90,7 +90,7 @@ export default function Register(){
                             type="email" 
                             name="email"
                             label="email" 
-                            placeholder="email address" 
+                            placeholder="Enter your email address" 
                             required={true}
                             value={formData.email}
                             onChange={handleChange}>
@@ -99,7 +99,7 @@ export default function Register(){
                             type="password" 
                             name="password"
                             label="password" 
-                            placeholder="password" 
+                            placeholder="Enter your password" 
                             required={true}
                             value={formData.password}
                             onChange={handleChange}>
@@ -109,7 +109,7 @@ export default function Register(){
                             type="password" 
                             name="confirmPassword"
                             label="confirm password" 
-                            placeholder="confirm your password" 
+                            placeholder="Confirm your password" 
                             required={true}
                             value={formData.confirmPassword}
                             onChange={handleChange}>

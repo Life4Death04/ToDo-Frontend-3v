@@ -4,12 +4,17 @@ import api from './axios';
 type Todo = {
     id: number,
     content: string,
-    status: true | false,
+    check: true | false,
     authorId: number
 }
 
 type FetchTodosResponse = {
     todos?: Todo[];
+}
+
+type CreateTodoResponse = {
+    message: string;
+    todo: Todo;
 }
 
 export const fetchUserTodos = async(userId: string):Promise<FetchTodosResponse> =>{
@@ -21,6 +26,19 @@ export const fetchUserTodos = async(userId: string):Promise<FetchTodosResponse> 
             throw new Error(error.response?.data?.message || `Error fetching User's todos`)
         }else{
             throw new Error(`Unexpected error fetching User's todos`)
+        }
+    }
+}
+
+export const addUserTodo = async(todo: Omit<Todo, 'id' | 'check'>):Promise<CreateTodoResponse> =>{
+    try{
+        const res = await api.post(`http://localhost:3000/task/create`, todo);
+        return res.data
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error creating User's todo`)
+        }else{
+            throw new Error(`Unexpected error creating User's todo`)
         }
     }
 }
