@@ -9,7 +9,7 @@ import {
     type FooterProps, 
     type HeaderProps, 
     type SubmitBtnProps 
-} from "./AuthComponents";
+} from "../Common/CommonComponents";
 
 // -------------------- Static Content --------------------
 const headerText: HeaderProps = {
@@ -59,14 +59,14 @@ export default function Login(){
         <main className="h-screen flex items-center justify-center">
             <section className="mx-auto text-center w-max-auth shadow-2xl rounded-xl p-8">
                 <Header {...headerText}></Header>
-                <form onSubmit={handleSubmit} className="flex flex-col content-around gap-6 mt-6 mb-4">
+                <form onSubmit={handleSubmit} className="flex flex-col content-around mt-6 mb-4">
                         <Input 
                             type="email" 
                             name="email" 
                             label="email"
                             value={formData.email}
                             required={true} 
-                            placeholder="email address"
+                            placeholder="Enter your email address"
                             onChange={handleChange}>
                         </Input>
                         <Input 
@@ -75,10 +75,10 @@ export default function Login(){
                             label="password"
                             value={formData.password}
                             required={true} 
-                            placeholder="password"
+                            placeholder="Enter your password"
                             onChange={handleChange}>
                         </Input>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between mb-4">
                             <div className="">
                                 <input type="checkbox" className="mr-2 size-3.5"/>
                                 <label>

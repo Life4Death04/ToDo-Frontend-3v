@@ -1,7 +1,9 @@
+import { Button } from "../Common/CommonComponents";
+
 type Todo = {
     id: number;
     content: string;
-    status: true | false;
+    check: true | false;
     authorId: number;
 }
 
@@ -10,6 +12,7 @@ type CurrentStatusTask = 'Not Started' | 'In Progress' | 'Completed';
 type TasksTableProps = {
     userTodos?: Todo[];
     deleteUserTodo: (taskId: number) => void;
+    handleAddUserTask: () => void,
     isLoading: boolean;
     isError: boolean;
     error: Error | null;
@@ -23,18 +26,19 @@ type TaskItemProps = {
     onDelete: () => void,
 }
 
-type ButtonProps = {
-    onClick?: () => void,
-    iconStyle: string,
-    buttonStyle?: string,
+type AddTaskProps = {
+    onClick: () => void;
 }
 
-// -------------------- Main Table Component --------------------
-export function TasksTable({ userTodos, deleteUserTodo, isLoading, isError, error }: TasksTableProps){
 
+// -------------------- Main Table Component --------------------
+export function TasksTable({ userTodos, deleteUserTodo, isLoading, isError, error, handleAddUserTask }: TasksTableProps){
     return(
-        <section className="px-2 pl-4 pt-4">
-            <h1 className="font-bold mb-4 xsm:text-xl md:text-2xl lg:text-3xl">My Tasks</h1>
+        <section className="px-4 pl-4 pt-4">
+            <header className="flex justify-between items-center mb-4">
+                <h1 className="font-bold xsm:text-xl md:text-2xl lg:text-3xl">My Tasks</h1>
+                <AddTaskButton onClick={handleAddUserTask} />
+            </header>
             <header className="items-center bg-gray-100 px-4 py-2 text-gray-400 border-gray-400 border-b font-bold xsm:hidden lg:flex">
                 <span className="flex-2">Task Name</span> {/* //flex-[2] */}
                 <span className="flex-1">Due Date</span>
@@ -55,7 +59,6 @@ export function TasksTable({ userTodos, deleteUserTodo, isLoading, isError, erro
                         onDelete={() => deleteUserTodo(todo.id)}
                     />
                 ))}
-                
             </ul>
         </section>
     );
@@ -119,11 +122,11 @@ function NoTaskMessage(){
     );
 }
 
-// -------------------- Reusable Button Component --------------------
-function Button({ onClick, iconStyle, buttonStyle }: ButtonProps){
+// -------------------- Add Task Button Component --------------------
+function AddTaskButton({onClick}: AddTaskProps){
     return(
-        <button className={`hover:cursor-pointer hover:text-orange px-4 py-2 ${buttonStyle}`} onClick={onClick}>
-            <i className={`${iconStyle} xsm:text-base lg:text-lg`} aria-hidden:true></i>
+        <button onClick={onClick} className="bg-orange ml-auto  text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl">
+            + Add Task
         </button>
     );
 }
