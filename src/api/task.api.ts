@@ -17,7 +17,7 @@ type CreateTodoResponse = {
     todo: Todo;
 }
 
-export const fetchUserTodos = async(userId: string):Promise<FetchTodosResponse> =>{
+export const fetchUserTodos = async(userId: number):Promise<FetchTodosResponse> =>{
     try{
         const res = await api.get(`http://localhost:3000/task/${userId}`)
         return res.data
@@ -30,7 +30,7 @@ export const fetchUserTodos = async(userId: string):Promise<FetchTodosResponse> 
     }
 }
 
-export const addUserTodo = async(todo: Omit<Todo, 'id' | 'check'>):Promise<CreateTodoResponse> =>{
+export const createTodo = async(todo: Omit<Todo, 'id' | 'check'>):Promise<CreateTodoResponse> =>{
     try{
         const res = await api.post(`http://localhost:3000/task/create`, todo);
         return res.data
@@ -43,7 +43,7 @@ export const addUserTodo = async(todo: Omit<Todo, 'id' | 'check'>):Promise<Creat
     }
 }
 
-export const deleteUserTodo = async(authorId: string, taskId: number): Promise<void> =>{
+export const deleteUserTodo = async(authorId: number, taskId: number): Promise<void> =>{
     try{
         await api.delete(`http://localhost:3000/task/deleteTask/${authorId}/${taskId}`)
     }catch(error){

@@ -7,7 +7,7 @@ import PopupForm from "../Layout/PopupForm";
 
 export default function Home(){
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
-    const { userId } = useParams<{ userId: string }>();
+    const userId = Number(useParams().userId);
     const {data, isLoading, isError, error} = useFetchUserTodos(userId!);
     const deleteUserTodo = useDeleteUserTodo(userId!)
     const totalTasks = data?.todos?.length || 0;
@@ -19,16 +19,12 @@ export default function Home(){
     const handlePopupForm = () => {
         setIsPopupOpen(!isPopupOpen);
     }
-
-    /**TODO:
-     * Add Logic to create tasks
-     */
-
+    
     return(
         <section className="relative">
             <IndicatorPanels totalTasks={totalTasks} />
             <TasksTable handleAddUserTask={handlePopupForm}  userTodos={data?.todos} deleteUserTodo={handleDelete} isLoading={isLoading} isError={isError} error={error}/>
-            {isPopupOpen && <PopupForm handleClose={handlePopupForm}/>}
+            {isPopupOpen && <PopupForm userId={Number(userId)} handleClose={handlePopupForm}/>}
         </section>
     );
 }

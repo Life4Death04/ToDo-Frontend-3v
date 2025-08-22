@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addUserTodo, deleteUserTodo, fetchUserTodos } from "./task.api";
+import { createTodo, deleteUserTodo, fetchUserTodos } from "./task.api";
 
 type QueryKeys = {
     fetchTodos: string
@@ -9,25 +9,25 @@ const queryKeys: QueryKeys = {
     fetchTodos: 'userTodos'
 }
 
-export const useFetchUserTodos = (userId: string) =>{
+export const useFetchUserTodos = (userId: number) =>{
     return useQuery({
         queryKey: [queryKeys.fetchTodos, userId],
         queryFn: () => fetchUserTodos(userId)
     })
 }
 
-export const useCreateuserTodo = () =>{
+export const useCreateTodo = () =>{
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: addUserTodo,
+        mutationFn: createTodo,
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: [queryKeys.fetchTodos]})
         }
     })
 }
 
-export const useDeleteUserTodo = (authorId: string) =>{
+export const useDeleteUserTodo = (authorId: number) =>{
     const queryClient = useQueryClient();
 
     return useMutation({
