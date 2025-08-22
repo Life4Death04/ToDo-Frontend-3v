@@ -1,17 +1,22 @@
 import { Button } from "../Common/CommonComponents";
 
-type Todo = {
-    id: number;
-    content: string;
-    check: true | false;
+type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
+type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
+
+type Task = {
+    id: number,
+    taskName: string;
+    description?: string;
+    dueDate?: string;
+    priority: PriorityTypes;
+    status: StatusTypes;
     authorId: number;
 }
-
 type CurrentStatusTask = 'Not Started' | 'In Progress' | 'Completed';
 
 type TasksTableProps = {
-    userTodos?: Todo[];
-    deleteUserTodo: (taskId: number) => void;
+    userTasks?: Task[];
+    deleteUserTask: (taskId: number) => void;
     handleAddUserTask: () => void,
     isLoading: boolean;
     isError: boolean;
@@ -19,7 +24,7 @@ type TasksTableProps = {
 }
 
 type TaskItemProps = {
-    content: string,
+    taskName: string,
     dueDate?: string,
     priority?: string,
     status?: CurrentStatusTask,
@@ -32,7 +37,7 @@ type AddTaskProps = {
 
 
 // -------------------- Main Table Component --------------------
-export function TasksTable({ userTodos, deleteUserTodo, isLoading, isError, error, handleAddUserTask }: TasksTableProps){
+export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, error, handleAddUserTask }: TasksTableProps){
     return(
         <section className="px-4 pl-4 pt-4">
             <header className="flex justify-between items-center mb-4">
@@ -49,14 +54,17 @@ export function TasksTable({ userTodos, deleteUserTodo, isLoading, isError, erro
             <ul className="flex flex-col gap-3 lg:gap-0 lg:divide-y lg:divide-gray-200">
                 {isLoading && <li>Loading...</li>}
                 {isError && <li>Error: {error?.message}</li>}
-                {!userTodos?.length && (
+                {!userTasks?.length && (
                     <NoTaskMessage />
                 )}
-                {userTodos?.map(todo => (
+                {userTasks?.map(task => (
                     <TaskItem 
-                        key={todo.id}
-                        content={todo.content}
-                        onDelete={() => deleteUserTodo(todo.id)}
+                        key={task.id}
+                        taskName={task.taskName}
+                        dueDate={task.dueDate || ""}
+                        priority={task.priority}
+                        status={task.status as CurrentStatusTask}
+                        onDelete={() => deleteUserTask(task.id)}
                     />
                 ))}
             </ul>
@@ -65,7 +73,7 @@ export function TasksTable({ userTodos, deleteUserTodo, isLoading, isError, erro
 }
 
 // -------------------- Task Item Component --------------------
-function TaskItem({content, dueDate, priority, status, onDelete}: TaskItemProps){
+function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps){
     return(
         <li className="lg:flex lg:gap-3 bg-white lg:border-b-1 lg:border-gray-400 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none">
             <div className="flex gap-2 items-center flex-[2]">
@@ -73,7 +81,7 @@ function TaskItem({content, dueDate, priority, status, onDelete}: TaskItemProps)
                     {getCheckIcon(status === 'Completed')}
                 </button>
                 <span className="xsm:text-sm md:text-base lg:text-lg overflow break-words">
-                    {content}
+                    {taskName}
                 </span>
                 <Button iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></Button>
                 <div className="ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
@@ -82,7 +90,7 @@ function TaskItem({content, dueDate, priority, status, onDelete}: TaskItemProps)
             </div>
             <div className="flex xsm:flex-col lg:flex-row lg:items-center xsm:gap-3 xsm:mt-2 lg:mt-0 flex-[3]">
                 <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1">
-                    {dueDate}
+                    {dueDate ? new Date(dueDate).toLocaleDateString() : ""}
                 </span>
                 <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1 text-red-500 font-bold">
                     {priority}

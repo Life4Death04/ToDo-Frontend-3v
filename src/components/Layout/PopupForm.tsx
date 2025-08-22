@@ -90,26 +90,37 @@
 import { useState } from "react";
 import { Button } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
-import { useCreateTodo } from "../../api/tasksQuery";
+import { useCreateTask } from "../../api/tasksQuery";
 
 type PopupFormProps = {
     handleClose: () => void;
     userId: number;
 }
 
+type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
+type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
+
 type FormData = {
-    content: string;
+    taskName: string;
+    description?: string;
+    dueDate?: string;
+    priority: PriorityTypes;
+    status: StatusTypes;
     authorId: number;
 }
 
 export default function PopupForm({handleClose, userId}: PopupFormProps) {
-    const { mutate, isSuccess } = useCreateTodo();
+    const { mutate } = useCreateTask();
     const [formData, setFormData] = useState<FormData>({
-        content: '',
+        taskName: '',
+        description: '',
+        dueDate: undefined,
+        priority: 'LOW',
+        status: 'TODO',
         authorId: Number(userId),
     });
 
-    function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
         const { name, value } = e.target;
         setFormData((prev) => (
             {
@@ -121,12 +132,21 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
 
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        mutate(formData);
-        isSuccess && handleClose();
+
+        const submitData = {
+            ...formData,
+             dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : undefined
+        }
+
+        mutate(submitData, {
+            onSuccess: () => {
+                handleClose();
+            }
+        });
     }
 
     return (
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-full bg-black/50">
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
             <section className="rounded-2xl bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150">
                 <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400">
                     <h2>Add New Task</h2>
@@ -135,38 +155,72 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                 <form onSubmit={(e) => {
                     onSubmit(e);
                 }} className="my-4 text-center">
-                    {/* <Input
+                    <Input
                         name="taskName" 
                         type="text"
                         value={formData.taskName}
                         label="Task Name"
                         placeholder="Enter task name"
                         onChange={onChange} 
-                    /> */}
+                    />
                     <Input
                         name="dueDate" 
-                        type="text"
-                        value=""
+                        type="date"
+                        value={formData.dueDate || ''}
                         label="Due Date"
                         placeholder="mm/dd/yyyy"
                         onChange={onChange} 
                     />
-                    <Input
-                        name="content" 
-                        type="text"
-                        value={formData.content}
+                    {/* <Input
+                        name="description" 
+                        type="textarea"
+                        value={formData.description || ''}
                         label="Content"
                         placeholder="Enter task content"
                         onChange={onChange} 
-                    />
-                    <Input
-                        name="due date" 
-                        type="text"
-                        value=""
-                        label="Due Date"
-                        placeholder="mm/dd/yyyy"
-                        onChange={onChange} 
-                    />
+                    /> */}
+                    <div className="text-left flex-grow mb-5">
+                        <label className="block font-bold mb-2 capitalize">
+                            Priority
+                        </label>
+                        <select
+                            className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-2xl w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
+                            name="priority"
+                            value={formData.priority}
+                            onChange={onChange}
+                        >
+                            <option value="LOW">Low</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="HIGH">High</option>
+                        </select>
+                    </div>
+                    <div className="text-left flex-grow mb-5">
+                        <label className="block font-bold mb-2 capitalize">
+                            Description
+                        </label>
+                        <textarea
+                        className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-2xl w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
+                        name="description" 
+                        value={formData.description || ''}
+                        placeholder="Enter task content"
+                        onChange={onChange}
+                        ></textarea>
+                    </div>
+                    <div className="text-left flex-grow mb-5">
+                        <label className="block font-bold mb-2 capitalize">
+                            Status
+                        </label>
+                        <select
+                            className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-2xl w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
+                            name="status"
+                            value={formData.status}
+                            onChange={onChange}
+                        >
+                            <option value="TODO">To do</option>
+                            <option value="IN_PROGRESS">In Progress</option>
+                            <option value="DONE">Done</option>
+                        </select>
+                    </div>
                     <SubmitBtn buttonText="Add Task" isPending={false}/>
                 </form>
             </section>

@@ -1,38 +1,44 @@
 import axios from 'axios';
 import api from './axios';
 
-type Todo = {
+type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
+type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
+
+type Task = {
     id: number,
-    content: string,
-    check: true | false,
-    authorId: number
+    taskName: string;
+    description?: string;
+    dueDate?: string;
+    priority: PriorityTypes;
+    status: StatusTypes;
+    authorId: number;
 }
 
-type FetchTodosResponse = {
-    todos?: Todo[];
+type FetchTaskResponse = {
+    tasks: Task[];
 }
 
-type CreateTodoResponse = {
+type CreateTaskResponse = {
     message: string;
-    todo: Todo;
+    task: Task;
 }
 
-export const fetchUserTodos = async(userId: number):Promise<FetchTodosResponse> =>{
+export const fetchUserTasks = async(userId: number):Promise<FetchTaskResponse> =>{
     try{
         const res = await api.get(`http://localhost:3000/task/${userId}`)
         return res.data
     }catch(error){
         if(axios.isAxiosError(error)){
-            throw new Error(error.response?.data?.message || `Error fetching User's todos`)
+            throw new Error(error.response?.data?.message || `Error fetching User's tasks`)
         }else{
             throw new Error(`Unexpected error fetching User's todos`)
         }
     }
 }
 
-export const createTodo = async(todo: Omit<Todo, 'id' | 'check'>):Promise<CreateTodoResponse> =>{
+export const createTodo = async(task: Omit<Task, 'id'>):Promise<CreateTaskResponse> =>{
     try{
-        const res = await api.post(`http://localhost:3000/task/create`, todo);
+        const res = await api.post(`http://localhost:3000/task/create`, task);
         return res.data
     }catch(error){
         if(axios.isAxiosError(error)){
@@ -43,12 +49,12 @@ export const createTodo = async(todo: Omit<Todo, 'id' | 'check'>):Promise<Create
     }
 }
 
-export const deleteUserTodo = async(authorId: number, taskId: number): Promise<void> =>{
+export const deleteUserTask = async(authorId: number, taskId: number): Promise<void> =>{
     try{
-        await api.delete(`http://localhost:3000/task/deleteTask/${authorId}/${taskId}`)
+        await api.delete(`http://localhost:3000/task/delete/${authorId}/${taskId}`)
     }catch(error){
         if(axios.isAxiosError(error)){
-            throw new Error(error.response?.data?.message || `Error deleting User's todo`)
+            throw new Error(error.response?.data?.message || `Error deleting User's task`)
         }else{
             throw new Error(`Unexpected error deleting User's todo`)
         }
