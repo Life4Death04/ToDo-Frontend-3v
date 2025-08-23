@@ -48,6 +48,10 @@ type TaskItemProps = {
     onArchive: () => void,
 }
 
+type NoTaskMessageProps = {
+    handleAddUserTask: () => void;
+}
+
 type AddTaskProps = {
     onClick: () => void;
 }
@@ -81,7 +85,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
                 {isLoading && <li>Loading...</li>}
                 {isError && <li>Error: {error?.message}</li>}
                 {!userTasks?.length && (
-                    <NoTaskMessage />
+                    <NoTaskMessage handleAddUserTask={handleAddUserTask} />
                 )}
                 {userTasks?.map(task => (
                     <TaskItem 
@@ -148,14 +152,12 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive}: Ta
     );
 }
 // -------------------- No Task Message Component --------------------
-function NoTaskMessage(){
+function NoTaskMessage({handleAddUserTask}: NoTaskMessageProps){
     return(
         <li className="mx-auto w-full text-center py-12 border-b border-gray-300">
             <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl">No tasks yet</span>
             <p className="pt-3 pb-5 text-gray-400 xsm:text-xs md:text-sm lg:text-base">Looks like you're all caught up!</p>
-            <button className="bg-orange text-white text-xl px-3 py-2 rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-base sm:text-lg lg:text-xl">
-                + Create Task
-            </button>
+            <AddTaskButton onClick={handleAddUserTask} />
         </li>
     );
 }
