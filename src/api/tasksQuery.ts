@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createTodo, deleteUserTask, fetchUserTasks } from "./task.api";
+import { createTodo, deleteUserTask, fetchUserTasks, toggleUserTaskArchived } from "./task.api";
 
 type QueryKeys = {
     fetchTasks: string
@@ -38,6 +38,17 @@ export const useDeleteUserTask = (authorId: number) =>{
 
     return useMutation({
         mutationFn: (taskId: number /*This parameter is what we need to pass to the mutation function*/) => deleteUserTask(authorId, taskId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: [queryKeys.fetchTasks, authorId]})
+        }
+    })
+}
+
+export const useToggleTaskArchived = (authorId: number) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (taskId: number) => toggleUserTaskArchived(authorId, taskId),
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: [queryKeys.fetchTasks, authorId]})
         }

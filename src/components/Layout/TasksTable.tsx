@@ -33,6 +33,7 @@ type TasksTableProps = {
     userTasks?: Task[];
     deleteUserTask: (taskId: number) => void;
     handleAddUserTask: () => void,
+    handleArchive: (taskId: number) => void,
     isLoading: boolean;
     isError: boolean;
     error: Error | null;
@@ -44,6 +45,7 @@ type TaskItemProps = {
     priority?: string,
     status?: StatusTypes,
     onDelete: () => void,
+    onArchive: () => void,
 }
 
 type AddTaskProps = {
@@ -60,7 +62,7 @@ type AddTaskProps = {
  * @param handleAddUserTask - function to handle adding a user task
  * @returns JSX.Element
  */
-export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, error, handleAddUserTask }: TasksTableProps){
+export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, error, handleAddUserTask, handleArchive }: TasksTableProps){
     return(
         <section className="px-4 pl-4 pt-4">
             <header className="flex justify-between items-center mb-4">
@@ -89,6 +91,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
                         priority={task.priority}
                         status={task.status as StatusTypes}
                         onDelete={() => deleteUserTask(task.id)}
+                        onArchive={() => handleArchive(task.id)}
                     />
                 ))}
             </ul>
@@ -105,7 +108,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
  * @param onDelete - function to call when deleting the task
  * @returns JSX.Element
  */
-function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps){
+function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive}: TaskItemProps){
     // - `getCheckIcon` renders the done/undone icon.
     // - Date formatting delegated to `formatDueDate` (consistent locale rules).
     // - Priority & status classes come from helpers to keep styles consistent.
@@ -119,7 +122,8 @@ function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps
                     {taskName}
                 </span>
                 <Button iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></Button>
-                <div className="ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
+                <div className="flex justify-center ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
+                    <Button onClick={onArchive} iconStyle="fa-solid fa-archive"></Button>
                     <Button onClick={onDelete} iconStyle="fa-regular fa-trash-can"></Button>
                 </div>
             </div>
@@ -136,7 +140,8 @@ function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps
                     </span>
                 </div>
             </div>
-            <div className="ml-auto mt-auto text-center w-20 lg:block lg:self-center xsm:hidden">
+            <div className="gap-1 xsm:hidden lg:flex">
+                <Button onClick={onArchive} iconStyle="fa-solid fa-archive"></Button>
                 <Button onClick={onDelete} iconStyle="fa-regular fa-trash-can"></Button>
             </div>
         </li>

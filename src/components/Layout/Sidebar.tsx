@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import { useLogoutUser } from "../../api/usersQuery";
+import { UserBadge } from "../UserBadge/UserBadge";
 
 // -------------------- Main Login Component --------------------
 type SideBarLinkItem = {
@@ -30,20 +31,12 @@ export function Sidebar(){
       {/* Navigation Links */}
       <ul className="flex flex-col h-full gap-4 w-full xsm:items-center lg:items-start">
         <SidebarLinkItem linkText="My Tasks" linkUrl="/settings" classIcon="fa-solid fa-user" hoverEffect={true}/>
-        <SidebarLinkItem linkText="Shared Tasks" linkUrl="/settings" classIcon="fa-solid fa-archive" hoverEffect={true}/>
-        <SidebarLinkItem linkText="Archived Tasks" linkUrl="/settings" classIcon="fa-solid fa-clock" hoverEffect={true}/>
+        <SidebarLinkItem linkText="Archived Tasks" linkUrl="/settings" classIcon="fa-solid fa-archive" hoverEffect={true}/>
+        <SidebarLinkItem linkText="Reminders " linkUrl="/settings" classIcon="fa-solid fa-clock" hoverEffect={true}/>
       </ul>
 
       {/* User Info */}
-      <div className="relative w-full p-1 rounded-4xl mb-4 lg:bg-amber-200">
-        <div className="aspect-square xsm:w-8 sm:w-12 lg:w-14 rounded-3xl mx-auto lg:m-0 xsm:outline-4 xsm:outline-amber-200 lg:outline-0">
-          <img src="https://imgs.search.brave.com/91UaRWoJ6GVVcNlXKts7R56v_b3bFixb4RO8DDuRhco/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9mYWtl/cGVyc29uLWZhY2Uu/b3NzLXVzLXdlc3Qt/MS5hbGl5dW5jcy5j/b20vRmFjZS9tYWxl/L21hbGUxMDg1MzI0/NDYwMjA1LmpwZw" alt="User Image" className="w-full h-full rounded-full object-cover"/>
-        </div>
-        <div className="absolute top-1/2 transform -translate-y-1/2 left-17 flex flex-col items-center xsm:hidden lg:inline-block lg:items-start">
-          <p className="text-[10px] font-bold capitalize">santiago rodriguez</p>
-          <p className="text-[10px] font-bold underline truncate overflow-hidden whitespace-nowrap max-w-3/4">santiagoroasdfasfdriguez@gmail.com</p>
-        </div>
-      </div>
+      <UserBadge />
 
       {/* Footer Links */}
       <footer className="mt-auto w-full lg:px-2 lg:py-3 lg:border-t-1 border-t-black/50">
