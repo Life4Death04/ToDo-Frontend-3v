@@ -18,6 +18,12 @@ type RadialIndicatorProps = {
     completedTasks: number,
 }
 // -------------------- Main Panel Component --------------------
+/**
+ * IndicatorPanels component for displaying task indicators
+ * @param {number} totalTasks - Total number of tasks
+ * @param {number} completedTasks - Number of completed tasks
+ * @returns JSX.Element
+ */
 export function IndicatorPanels({totalTasks, completedTasks}: IndicatorPanelProps){
     return (
         <section className="flex items-center flex-wrap justify-center p-6 gap-8 rounded-lg w-full mx-auto">
@@ -29,6 +35,11 @@ export function IndicatorPanels({totalTasks, completedTasks}: IndicatorPanelProp
 }
 
 // -------------------- Card Wrapper Component --------------------
+/**
+ * IndicatorCard component for wrapping indicator content
+ * @param {React.ReactNode} children - The content to display inside the card
+ * @returns JSX.Element
+ */
 function IndicatorCard({children}: {children: React.ReactNode}){
   return(
     <div className="flex flex-col flex-1 items-center justify-center bg-amber-100 rounded-2xl shadow-md 
@@ -39,6 +50,13 @@ function IndicatorCard({children}: {children: React.ReactNode}){
 }
 
 // -------------------- Text Indicator Component --------------------
+/**
+ * TextIndicator component for displaying a text-based task indicator
+ * @param {string} textIndicator - The text to display for the indicator
+ * @param {number} totalItems - The total number of items for the indicator
+ * @param {string} iconIndicator - The icon class for the indicator
+ * @returns JSX.Element
+ */
 function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicatorProps){
     return(
       <IndicatorCard>
@@ -58,6 +76,13 @@ function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicator
 }
 
 // -------------------- Radial Indicator Component --------------------
+/**
+ * RadialIndicator component for displaying a radial progress indicator
+ * @param {string} textIndicator - The text to display for the indicator
+ * @param {number} totalTasks - The total number of tasks for the indicator
+ * @param {number} completedTasks - The number of completed tasks for the indicator
+ * @returns JSX.Element
+ */
 export function RadialIndicator({textIndicator, totalTasks, completedTasks}:RadialIndicatorProps) {
   const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0; //Safeguard in case totaltask equals 0
 

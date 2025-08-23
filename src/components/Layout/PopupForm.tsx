@@ -190,7 +190,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                         placeholder="mm/dd/yyyy"
                         onChange={onChange} 
                     />
-                    {/* Priority Select */}
+                    {/* Priority Select - Make a component */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Priority
@@ -206,7 +206,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                             <option value="HIGH">High</option>
                         </select>
                     </div>
-                    {/* Description Textarea */}
+                    {/* Description Textarea - Make a component */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Description
@@ -219,7 +219,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                         onChange={onChange}
                         ></textarea>
                     </div>
-                    {/* Status Select */}
+                    {/* Status Select - Make a component*/}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Status

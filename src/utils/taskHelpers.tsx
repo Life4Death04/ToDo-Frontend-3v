@@ -1,8 +1,11 @@
-// Utility helpers for task UI presentation
-
 export type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
 export type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
+/**
+ * Get the text color for a given priority level
+ * @param priority - The priority level of the task
+ * @returns The corresponding text color class
+ */
 export function getPriorityColor(priority: PriorityTypes){
     switch(priority){
         case 'LOW':
@@ -16,6 +19,11 @@ export function getPriorityColor(priority: PriorityTypes){
     }
 }
 
+/**
+ * Get the background and text color for a given status
+ * @param status - The status of the task
+ * @returns The corresponding background and text color classes
+ */
 export function getStatusColor(status: StatusTypes){
     switch(status){
         case 'TODO':
@@ -29,10 +37,20 @@ export function getStatusColor(status: StatusTypes){
     }
 }
 
+/**
+ * Format the due date to a more readable string
+ * @param dueDate - The due date string to format
+ * @returns The formatted due date string
+ */
 export function formatDueDate(dueDate?: string){
     return dueDate ? new Date(dueDate).toLocaleDateString() : '';
 }
 
+/**
+ * Get the check icon for a given task
+ * @param isChecked - Whether the task is checked
+ * @returns The corresponding check icon JSX element
+ */
 export function getCheckIcon(isChecked: boolean){
     return isChecked ? (
         <i className="fa-solid fa-square-check text-orange xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden="true"></i>
@@ -41,6 +59,11 @@ export function getCheckIcon(isChecked: boolean){
     );
 }
 
+/**
+ * Get the status badge for a given task
+ * @param status - The status of the task
+ * @returns The corresponding status badge text
+ */
 export function getStatusBadge(status: StatusTypes){
     switch(status){
         case 'TODO':
