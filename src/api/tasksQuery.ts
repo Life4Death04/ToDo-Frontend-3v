@@ -12,7 +12,13 @@ const queryKeys: QueryKeys = {
 export const useFetchUserTasks = (userId: number) =>{
     return useQuery({
         queryKey: [queryKeys.fetchTasks, userId],
-        queryFn: () => fetchUserTasks(userId)
+        queryFn: () => fetchUserTasks(userId),
+        //This select allow us to transform the data returned by the query
+        select: (data) => ({
+            tasks: data?.tasks ?? [], //Could be an empty array if no tasks found
+            totalTasks: data?.tasks?.length ?? 0,
+            completedTasks: data?.tasks?.filter(task => task.status === 'DONE').length ?? 0
+        })
     })
 }
 
