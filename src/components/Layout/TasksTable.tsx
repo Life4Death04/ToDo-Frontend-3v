@@ -1,9 +1,7 @@
 import { Button } from "../Common/CommonComponents";
-
-// -------------------- Types --------------------
-type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
-type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
-type CurrentStatusTask = 'Not Started' | 'In Progress' | 'Completed';
+import { getPriorityColor, getStatusColor, formatDueDate, getCheckIcon, getStatusBadge } from '../../utils/taskHelpers';
+import type { PriorityTypes, StatusTypes} from '../../utils/taskHelpers';
+/* type CurrentStatusTask = 'Not Started' | 'In Progress' | 'Completed'; */
 
 type Task = {
     id: number,
@@ -28,7 +26,7 @@ type TaskItemProps = {
     taskName: string,
     dueDate?: string,
     priority?: string,
-    status?: CurrentStatusTask,
+    status?: StatusTypes,
     onDelete: () => void,
 }
 
@@ -64,7 +62,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
                         taskName={task.taskName}
                         dueDate={task.dueDate || ""}
                         priority={task.priority}
-                        status={task.status as CurrentStatusTask}
+                        status={task.status as StatusTypes}
                         onDelete={() => deleteUserTask(task.id)}
                     />
                 ))}
@@ -74,30 +72,31 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
 }
 // -------------------- Task Item Component --------------------
 function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps){
+    // use helpers from utils/taskHelpers.tsx
     return(
         <li className="lg:flex lg:gap-3 bg-white lg:border-b-1 lg:border-gray-400 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none">
             <div className="flex gap-2 items-center flex-[2]">
                 <button>
-                    {getCheckIcon(status === 'Completed')}
+                    {getCheckIcon(status === 'DONE') /*Not Ready*/}
                 </button>
                 <span className="xsm:text-sm md:text-base lg:text-lg overflow break-words">
                     {taskName}
                 </span>
                 <Button iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></Button>
                 <div className="ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
-                    <i className="fa-regular fa-trash-can xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden:true></i>
+                    <Button onClick={onDelete} iconStyle="fa-regular fa-trash-can"></Button>
                 </div>
             </div>
             <div className="flex xsm:flex-col lg:flex-row lg:items-center xsm:gap-3 xsm:mt-2 lg:mt-0 flex-[3]">
                 <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1">
-                    {dueDate ? new Date(dueDate).toLocaleDateString() : ""}
+                    {formatDueDate(dueDate)}
                 </span>
-                <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1 text-red-500 font-bold">
+                <span className={`font-bold xsm:text-xs md:text-sm lg:text-base lg:flex-1 ${getPriorityColor(priority as PriorityTypes)}`}>
                     {priority}
                 </span>
                 <div className="lg:flex-1"> 
-                    <span className="xsm:text-xs md:text-sm lg:text-base xsm:w-fit bg-amber-100 px-2 py-1 rounded-xl text-amber-500 font-bold">
-                        {status}
+                    <span className={`xsm:text-xs md:text-sm lg:text-base xsm:w-fit px-2 py-1 rounded-xl font-bold ${getStatusColor(status as StatusTypes)}`}>
+                        {getStatusBadge(status as StatusTypes)}
                     </span>
                 </div>
             </div>
@@ -106,14 +105,6 @@ function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps
             </div>
         </li>
     );
-}
-// -------------------- Helper: Check Icon --------------------
-function getCheckIcon(isChecked: boolean){
-    return isChecked ? (
-        <i className="fa-solid fa-square-check text-orange xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden:true></i>
-    ) : (
-        <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden:true></i>
-    )
 }
 // -------------------- No Task Message Component --------------------
 function NoTaskMessage(){
