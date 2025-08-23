@@ -35,7 +35,6 @@ type ButtonProps = {
     buttonStyle?: string,
 }
 
-
 // -------------------- Input Component --------------------
 export function Input({ type, value, name, label, required, placeholder, onChange }:InputCompTypes){
     return(
@@ -90,7 +89,7 @@ export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
 // -------------------- Reusable Button Component --------------------
 export function Button({ onClick, iconStyle, textButton, buttonStyle }: ButtonProps){
     return(
-        <button className={`hover:cursor-pointer hover:text-orange px-4 py-2 ${buttonStyle}`} onClick={onClick}>
+        <button className={`hover:cursor-pointer hover:text-orange xsm:px-2 sm:px-3 py-2 ${buttonStyle}`} onClick={onClick}>
             <i className={`${iconStyle} xsm:text-base lg:text-lg`} aria-hidden:true>{textButton}</i>
         </button>
     );

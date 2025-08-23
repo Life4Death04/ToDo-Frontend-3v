@@ -33,6 +33,7 @@ type TasksTableProps = {
     userTasks?: Task[];
     deleteUserTask: (taskId: number) => void;
     handleAddUserTask: () => void,
+    handleArchive: (taskId: number) => void,
     isLoading: boolean;
     isError: boolean;
     error: Error | null;
@@ -44,6 +45,11 @@ type TaskItemProps = {
     priority?: string,
     status?: StatusTypes,
     onDelete: () => void,
+    onArchive: () => void,
+}
+
+type NoTaskMessageProps = {
+    handleAddUserTask: () => void;
 }
 
 type AddTaskProps = {
@@ -60,7 +66,7 @@ type AddTaskProps = {
  * @param handleAddUserTask - function to handle adding a user task
  * @returns JSX.Element
  */
-export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, error, handleAddUserTask }: TasksTableProps){
+export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, error, handleAddUserTask, handleArchive }: TasksTableProps){
     return(
         <section className="px-4 pl-4 pt-4">
             <header className="flex justify-between items-center mb-4">
@@ -79,7 +85,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
                 {isLoading && <li>Loading...</li>}
                 {isError && <li>Error: {error?.message}</li>}
                 {!userTasks?.length && (
-                    <NoTaskMessage />
+                    <NoTaskMessage handleAddUserTask={handleAddUserTask} />
                 )}
                 {userTasks?.map(task => (
                     <TaskItem 
@@ -89,6 +95,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
                         priority={task.priority}
                         status={task.status as StatusTypes}
                         onDelete={() => deleteUserTask(task.id)}
+                        onArchive={() => handleArchive(task.id)}
                     />
                 ))}
             </ul>
@@ -105,7 +112,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
  * @param onDelete - function to call when deleting the task
  * @returns JSX.Element
  */
-function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps){
+function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive}: TaskItemProps){
     // - `getCheckIcon` renders the done/undone icon.
     // - Date formatting delegated to `formatDueDate` (consistent locale rules).
     // - Priority & status classes come from helpers to keep styles consistent.
@@ -119,7 +126,8 @@ function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps
                     {taskName}
                 </span>
                 <Button iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></Button>
-                <div className="ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
+                <div className="flex justify-center ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
+                    <Button onClick={onArchive} iconStyle="fa-solid fa-archive"></Button>
                     <Button onClick={onDelete} iconStyle="fa-regular fa-trash-can"></Button>
                 </div>
             </div>
@@ -136,21 +144,20 @@ function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps
                     </span>
                 </div>
             </div>
-            <div className="ml-auto mt-auto text-center w-20 lg:block lg:self-center xsm:hidden">
+            <div className="gap-1 xsm:hidden lg:flex">
+                <Button onClick={onArchive} iconStyle="fa-solid fa-archive"></Button>
                 <Button onClick={onDelete} iconStyle="fa-regular fa-trash-can"></Button>
             </div>
         </li>
     );
 }
 // -------------------- No Task Message Component --------------------
-function NoTaskMessage(){
+function NoTaskMessage({handleAddUserTask}: NoTaskMessageProps){
     return(
         <li className="mx-auto w-full text-center py-12 border-b border-gray-300">
             <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl">No tasks yet</span>
             <p className="pt-3 pb-5 text-gray-400 xsm:text-xs md:text-sm lg:text-base">Looks like you're all caught up!</p>
-            <button className="bg-orange text-white text-xl px-3 py-2 rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-base sm:text-lg lg:text-xl">
-                + Create Task
-            </button>
+            <AddTaskButton onClick={handleAddUserTask} />
         </li>
     );
 }

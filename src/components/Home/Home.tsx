@@ -1,7 +1,7 @@
 import { IndicatorPanels } from "../Layout/Indicators";
 import { TasksTable } from "../Layout/TasksTable";
 import { useParams } from "react-router";
-import { useFetchUserTasks, useDeleteUserTask } from "../../api/tasksQuery";
+import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived } from "../../api/tasksQuery";
 import { useState } from "react";
 import PopupForm from "../Layout/PopupForm";
 /**
@@ -36,8 +36,14 @@ export default function Home(){
     // fetch user's tasks (the hook is expected to return a shaped `data`)
     const { data, isLoading, isError, error } = useFetchUserTasks(userId);
 
+    // mutation for toggling a user task's archived status (scoped to this userId)
+    const toggleTaskArchived = useToggleTaskArchived(userId);
+
     // mutation for deleting a user task (scoped to this userId)
     const deleteUserTask = useDeleteUserTask(userId);
+
+    // -------------------- Data Filtered-------------------------
+    const filteredTasks = data?.tasks.filter(task => !task.archived) ?? [];
 
     // ---------------------- Event Handlers ---------------------
     // handler passed down to `TasksTable` to delete a task by id
@@ -50,6 +56,11 @@ export default function Home(){
         setIsPopupOpen(prev => !prev);
     }
 
+    // archiving a task
+    const handleArchive = (taskId: number) => {
+        toggleTaskArchived.mutate(taskId);
+    }
+
     // ---------------------- Props objects ----------------------
     const indicatorPanelsProps = {
         totalTasks: data?.totalTasks ?? 0,
@@ -57,9 +68,10 @@ export default function Home(){
     }
 
     const tasksTableProps = {
-        userTasks: data?.tasks ?? [],
+        userTasks: filteredTasks,
         deleteUserTask: handleDelete,
         handleAddUserTask: handlePopupForm,
+        handleArchive: handleArchive,
         isLoading,
         isError,
         error,

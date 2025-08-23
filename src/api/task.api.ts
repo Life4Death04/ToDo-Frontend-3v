@@ -8,6 +8,7 @@ type Task = {
     id: number,
     taskName: string;
     description?: string;
+    archived: boolean;
     dueDate?: string;
     priority: PriorityTypes;
     status: StatusTypes;
@@ -19,6 +20,11 @@ type FetchTaskResponse = {
 }
 
 type CreateTaskResponse = {
+    message: string;
+    task: Task;
+}
+
+type ToggleArchivedTask = {
     message: string;
     task: Task;
 }
@@ -57,6 +63,19 @@ export const deleteUserTask = async(authorId: number, taskId: number): Promise<v
             throw new Error(error.response?.data?.message || `Error deleting User's task`)
         }else{
             throw new Error(`Unexpected error deleting User's todo`)
+        }
+    }
+}
+
+export const toggleUserTaskArchived = async(authorId: number, taskId: number): Promise<ToggleArchivedTask> =>{
+    try{
+        const res = await api.patch(`http://localhost:3000/task/toggleArchived/${authorId}/${taskId}`)
+        return res.data
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error toggling User's task archived status`)
+        }else{
+            throw new Error(`Unexpected error toggling User's task archived status`)
         }
     }
 }
