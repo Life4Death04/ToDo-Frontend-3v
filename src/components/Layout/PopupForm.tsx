@@ -92,13 +92,14 @@ import { Button } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
 import { useCreateTask } from "../../api/tasksQuery";
 
+// -------------------- Types --------------------
+type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
+type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
+
 type PopupFormProps = {
     handleClose: () => void;
     userId: number;
 }
-
-type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
-type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
 type FormData = {
     taskName: string;
@@ -108,7 +109,13 @@ type FormData = {
     status: StatusTypes;
     authorId: number;
 }
-
+// --------------------PopupForm  Component--------------------
+/**
+ * PopupForm component for adding a new task
+ * @param {function} handleClose - Function to close the popup
+ * @param {number} userId - ID of the user
+ * @returns JSX.Element
+ */
 export default function PopupForm({handleClose, userId}: PopupFormProps) {
     const { mutate } = useCreateTask();
     const [formData, setFormData] = useState<FormData>({
@@ -120,6 +127,10 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
         authorId: Number(userId),
     });
 
+    /**
+     * Handle changes to any input, textarea or select
+     * @param {e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} - Change event
+     */
     function onChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
         const { name, value } = e.target;
         setFormData((prev) => (
@@ -130,6 +141,12 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
         ));
     }
 
+    /**
+     * Handle form submission
+     * Converts dueDate to ISO string if present.
+     * Calls the mutation to create the task and closes the popup on success
+     * @param {e: React.FormEvent<HTMLFormElement>} - Submit event
+     */
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
@@ -155,6 +172,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                 <form onSubmit={(e) => {
                     onSubmit(e);
                 }} className="my-4 text-center">
+                    {/* Task Name Input */}
                     <Input
                         name="taskName" 
                         type="text"
@@ -163,6 +181,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                         placeholder="Enter task name"
                         onChange={onChange} 
                     />
+                    {/* Due Date Input */}
                     <Input
                         name="dueDate" 
                         type="date"
@@ -171,14 +190,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                         placeholder="mm/dd/yyyy"
                         onChange={onChange} 
                     />
-                    {/* <Input
-                        name="description" 
-                        type="textarea"
-                        value={formData.description || ''}
-                        label="Content"
-                        placeholder="Enter task content"
-                        onChange={onChange} 
-                    /> */}
+                    {/* Priority Select */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Priority
@@ -194,6 +206,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                             <option value="HIGH">High</option>
                         </select>
                     </div>
+                    {/* Description Textarea */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Description
@@ -206,6 +219,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                         onChange={onChange}
                         ></textarea>
                     </div>
+                    {/* Status Select */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Status
@@ -221,6 +235,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                             <option value="DONE">Done</option>
                         </select>
                     </div>
+                    {/* Submit Button */}
                     <SubmitBtn buttonText="Add Task" isPending={false}/>
                 </form>
             </section>

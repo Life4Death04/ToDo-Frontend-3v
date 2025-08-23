@@ -1,7 +1,9 @@
 import { Button } from "../Common/CommonComponents";
 
+// -------------------- Types --------------------
 type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
 type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
+type CurrentStatusTask = 'Not Started' | 'In Progress' | 'Completed';
 
 type Task = {
     id: number,
@@ -12,7 +14,6 @@ type Task = {
     status: StatusTypes;
     authorId: number;
 }
-type CurrentStatusTask = 'Not Started' | 'In Progress' | 'Completed';
 
 type TasksTableProps = {
     userTasks?: Task[];
@@ -34,8 +35,6 @@ type TaskItemProps = {
 type AddTaskProps = {
     onClick: () => void;
 }
-
-
 // -------------------- Main Table Component --------------------
 export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, error, handleAddUserTask }: TasksTableProps){
     return(
@@ -44,6 +43,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
                 <h1 className="font-bold xsm:text-xl md:text-2xl lg:text-3xl">My Tasks</h1>
                 <AddTaskButton onClick={handleAddUserTask} />
             </header>
+
             <header className="items-center bg-gray-100 px-4 py-2 text-gray-400 border-gray-400 border-b font-bold xsm:hidden lg:flex">
                 <span className="flex-2">Task Name</span> {/* //flex-[2] */}
                 <span className="flex-1">Due Date</span>
@@ -51,6 +51,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
                 <span className="flex-1">Status</span>
                 <span className="w-20 text-right">Actions</span>
             </header>
+
             <ul className="flex flex-col gap-3 lg:gap-0 lg:divide-y lg:divide-gray-200">
                 {isLoading && <li>Loading...</li>}
                 {isError && <li>Error: {error?.message}</li>}
@@ -71,7 +72,6 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
         </section>
     );
 }
-
 // -------------------- Task Item Component --------------------
 function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps){
     return(
@@ -107,7 +107,6 @@ function TaskItem({taskName, dueDate, priority, status, onDelete}: TaskItemProps
         </li>
     );
 }
-
 // -------------------- Helper: Check Icon --------------------
 function getCheckIcon(isChecked: boolean){
     return isChecked ? (
@@ -116,7 +115,6 @@ function getCheckIcon(isChecked: boolean){
         <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden:true></i>
     )
 }
-
 // -------------------- No Task Message Component --------------------
 function NoTaskMessage(){
     return(
@@ -129,7 +127,6 @@ function NoTaskMessage(){
         </li>
     );
 }
-
 // -------------------- Add Task Button Component --------------------
 function AddTaskButton({onClick}: AddTaskProps){
     return(

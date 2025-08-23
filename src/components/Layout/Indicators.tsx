@@ -2,8 +2,8 @@ import type React from "react";
 
 // -------------------- Types --------------------
 type IndicatorPanelProps = {
-  totalTasks: number;
-  completedTasks: number;
+  totalTasks?: number;
+  completedTasks?: number;
 }
 
 type TextIndicatorProps = {
@@ -21,7 +21,7 @@ type RadialIndicatorProps = {
 export function IndicatorPanels({totalTasks, completedTasks}: IndicatorPanelProps){
     return (
         <section className="flex items-center flex-wrap justify-center p-6 gap-8 rounded-lg w-full mx-auto">
-          <RadialIndicator textIndicator="Tasks Completed" totalTasks={totalTasks} completedTasks={completedTasks}/>
+          <RadialIndicator textIndicator="Tasks Completed" totalTasks={totalTasks ?? 0} completedTasks={completedTasks ?? 0}/>
           <TextIndicator textIndicator="Reminder" totalItems={3} iconIndicator="fa-solid fa-clock"/>
           <TextIndicator textIndicator="Archived Tasks" totalItems={3} iconIndicator="fa-solid fa-archive"/>
         </section>

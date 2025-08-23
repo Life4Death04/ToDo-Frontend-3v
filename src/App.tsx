@@ -25,6 +25,7 @@ const router = createBrowserRouter([
   },{
     path: '/accounts/:userId', 
     element: <MainLayout></MainLayout>,
+    errorElement:<NotFound />,
     children: [
       { path: '', element: <Home /> }
     ]
