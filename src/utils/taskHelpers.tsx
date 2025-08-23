@@ -1,6 +1,7 @@
 export type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
 export type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
+// -------------------- Priority Color --------------------
 /**
  * Get the text color for a given priority level
  * @param priority - The priority level of the task
@@ -18,7 +19,7 @@ export function getPriorityColor(priority: PriorityTypes){
             return 'text-gray-500';
     }
 }
-
+// -------------------- Status Color --------------------
 /**
  * Get the background and text color for a given status
  * @param status - The status of the task
@@ -36,7 +37,7 @@ export function getStatusColor(status: StatusTypes){
             return 'text-gray-500';
     }
 }
-
+// -------------------- Due Date Formatter --------------------
 /**
  * Format the due date to a more readable string
  * @param dueDate - The due date string to format
@@ -45,7 +46,7 @@ export function getStatusColor(status: StatusTypes){
 export function formatDueDate(dueDate?: string){
     return dueDate ? new Date(dueDate).toLocaleDateString() : '';
 }
-
+// -------------------- Check Icon --------------------
 /**
  * Get the check icon for a given task
  * @param isChecked - Whether the task is checked
@@ -58,7 +59,7 @@ export function getCheckIcon(isChecked: boolean){
         <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden="true"></i>
     );
 }
-
+// -------------------- Status Badge --------------------
 /**
  * Get the status badge for a given task
  * @param status - The status of the task
