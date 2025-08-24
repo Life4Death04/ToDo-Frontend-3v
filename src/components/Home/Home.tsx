@@ -18,9 +18,13 @@ import PopupForm from "../Layout/PopupForm";
  * - Defaults are applied when spreading props to children so strict `number` types
  *   and arrays don't receive `undefined`.
  */
+type PopupFormModes = 'EDIT' | 'CREATE';
+
 export default function Home(){
     // ---------------------- Local UI State ----------------------
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+    const [popupFormMode, setPopupFormMode] = useState<PopupFormModes>('CREATE');
+    const [taskToUpdate, setTaskToUpdate] = useState<any>(null); // to hold the task data when editing
 
     // ---------------------- Route Params ------------------------
     // read and validate userId from route params
@@ -61,6 +65,18 @@ export default function Home(){
         toggleTaskArchived.mutate(taskId);
     }
 
+    const handleAdd = () =>{
+        setPopupFormMode('CREATE');
+        handlePopupForm();
+    }
+
+    const handleUpdate = (taskId: number) => {
+        const taskToUpdate = data?.tasks?.find(task => task.id === taskId);
+        setTaskToUpdate(taskToUpdate);
+        setPopupFormMode('EDIT');
+        handlePopupForm();
+    }
+
     // ---------------------- Props objects ----------------------
     const indicatorPanelsProps = {
         totalTasks: data?.totalTasks ?? 0,
@@ -70,7 +86,7 @@ export default function Home(){
     const tasksTableProps = {
         userTasks: filteredTasks,
         deleteUserTask: handleDelete,
-        handleAddUserTask: handlePopupForm,
+        handleAddUserTask: handleAdd,
         handleArchive: handleArchive,
         isLoading,
         isError,
@@ -78,6 +94,8 @@ export default function Home(){
     }
 
     const popupFormProps = {
+        mode: popupFormMode,
+        initialValue: taskToUpdate,
         userId: userId,
         handleClose: handlePopupForm
     }
@@ -89,7 +107,7 @@ export default function Home(){
             <IndicatorPanels {...indicatorPanelsProps} />
 
             {/* tasks list + actions */}
-            <TasksTable {...tasksTableProps} />
+            <TasksTable handleEdit={handleUpdate} {...tasksTableProps} />
 
             {/* popup form to create a new task (conditionally rendered) */}
             {isPopupOpen && <PopupForm {...popupFormProps} />}

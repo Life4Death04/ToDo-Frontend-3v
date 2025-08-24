@@ -1,5 +1,6 @@
 import { useFetchUserData } from "../../api/usersQuery";
 import { useParams } from "react-router";
+import type { User } from '../../types';
 
 // -------------------- User Info Component (self-contained) --------------------
 export function UserBadge(){
@@ -13,6 +14,7 @@ export function UserBadge(){
     }
 
     const { data, isLoading, isError } = useFetchUserData(Number(userId));
+    const user = data as User | undefined;
 
     // Simple loading skeleton to avoid layout shift
     if(isLoading){
@@ -44,10 +46,10 @@ export function UserBadge(){
     }
 
     // Data present
-    const firstName = data?.firstName ?? '';
-    const lastName = data?.lastName ?? '';
-    const email = data?.email ?? '';
-    const avatarUrl = (data as any)?.avatarUrl ?? null; // optional property if exists
+    const firstName = user?.firstName ?? '';
+    const lastName = user?.lastName ?? '';
+    const email = user?.email ?? '';
+    const avatarUrl = (user as any)?.avatarUrl ?? null; // optional property if exists
 
     const fullName = `${firstName} ${lastName}`.trim();
 
