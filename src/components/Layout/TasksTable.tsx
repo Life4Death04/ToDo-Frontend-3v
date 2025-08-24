@@ -1,6 +1,6 @@
 import { Button } from "../Common/CommonComponents";
 import { getPriorityColor, getStatusColor, formatDueDate, getCheckIcon, getStatusBadge } from '../../utils/taskHelpers';
-import type { PriorityTypes, StatusTypes} from '../../utils/taskHelpers';
+import type { PriorityTypes, StatusTypes, Task } from '../../types';
 
 /**
 TasksTable
@@ -19,21 +19,14 @@ Important:
     Keep this file focused on layout; presentation helpers live in utils/taskHelpers. 
 */
 
-type Task = {
-    id: number,
-    taskName: string;
-    description?: string;
-    dueDate?: string;
-    priority: PriorityTypes;
-    status: StatusTypes;
-    authorId: number;
-}
+// ...existing code uses centralized Task type from `src/types.ts`
 
 type TasksTableProps = {
     userTasks?: Task[];
     deleteUserTask: (taskId: number) => void;
     handleAddUserTask: () => void,
     handleArchive: (taskId: number) => void,
+    handleEdit: (taskId: number) => void,
     isLoading: boolean;
     isError: boolean;
     error: Error | null;
@@ -46,6 +39,7 @@ type TaskItemProps = {
     status?: StatusTypes,
     onDelete: () => void,
     onArchive: () => void,
+    onEdit: () => void,
 }
 
 type NoTaskMessageProps = {
@@ -66,7 +60,7 @@ type AddTaskProps = {
  * @param handleAddUserTask - function to handle adding a user task
  * @returns JSX.Element
  */
-export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, error, handleAddUserTask, handleArchive }: TasksTableProps){
+export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, error, handleAddUserTask, handleArchive, handleEdit }: TasksTableProps){
     return(
         <section className="px-4 pl-4 pt-4">
             <header className="flex justify-between items-center mb-4">
@@ -96,6 +90,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
                         status={task.status as StatusTypes}
                         onDelete={() => deleteUserTask(task.id)}
                         onArchive={() => handleArchive(task.id)}
+                        onEdit={() => handleEdit(task.id)}
                     />
                 ))}
             </ul>
@@ -112,7 +107,7 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
  * @param onDelete - function to call when deleting the task
  * @returns JSX.Element
  */
-function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive}: TaskItemProps){
+function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive, onEdit}: TaskItemProps){
     // - `getCheckIcon` renders the done/undone icon.
     // - Date formatting delegated to `formatDueDate` (consistent locale rules).
     // - Priority & status classes come from helpers to keep styles consistent.
@@ -125,7 +120,7 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive}: Ta
                 <span className="xsm:text-sm md:text-base lg:text-lg overflow break-words">
                     {taskName}
                 </span>
-                <Button iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></Button>
+                <Button onClick={onEdit} iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></Button>
                 <div className="flex justify-center ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
                     <Button onClick={onArchive} iconStyle="fa-solid fa-archive"></Button>
                     <Button onClick={onDelete} iconStyle="fa-regular fa-trash-can"></Button>

@@ -1,5 +1,4 @@
-export type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
-export type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
+import type { PriorityTypes, StatusTypes } from '../types';
 
 // -------------------- Priority Color --------------------
 /**

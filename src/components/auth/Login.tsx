@@ -51,8 +51,7 @@ export default function Login(){
 
     function handleSubmit(e: FormEvent):void{
         e.preventDefault();
-        console.log(`Email: ${formData.email} - Password: ${formData.password}`)
-        mutate(formData)
+        mutate(formData);
     }
 
     return(

@@ -90,25 +90,19 @@
 import { useState } from "react";
 import { Button } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
-import { useCreateTask } from "../../api/tasksQuery";
+import { useCreateTask, useUpdateTask } from "../../api/tasksQuery";
+import type { Task } from '../../types';
 
-// -------------------- Types --------------------
-type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
-type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
+type PopupFormModes = 'CREATE' | 'EDIT';
 
 type PopupFormProps = {
-    handleClose: () => void;
     userId: number;
+    mode: PopupFormModes;
+    initialValue?: Partial<Task>;
+    handleClose: () => void;
 }
 
-type FormData = {
-    taskName: string;
-    description?: string;
-    dueDate?: string;
-    priority: PriorityTypes;
-    status: StatusTypes;
-    authorId: number;
-}
+type FormData = Partial<Task> & { authorId: number };
 // --------------------PopupForm  Component--------------------
 /**
  * PopupForm component for adding a new task
@@ -116,12 +110,15 @@ type FormData = {
  * @param {number} userId - ID of the user
  * @returns JSX.Element
  */
-export default function PopupForm({handleClose, userId}: PopupFormProps) {
-    const { mutate } = useCreateTask();
+export default function PopupForm({handleClose, userId, mode, initialValue}: PopupFormProps) {
+    const createTaskMutation = useCreateTask();
+    const updateTaskMutation = useUpdateTask();
+    const [updateFormData, setUpdateFormData] = useState<Partial<FormData>>(initialValue || {});
     const [formData, setFormData] = useState<FormData>({
         taskName: '',
         description: '',
-        dueDate: undefined,
+        archived: false,
+        dueDate: null,
         priority: 'LOW',
         status: 'TODO',
         authorId: Number(userId),
@@ -133,21 +130,61 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
      */
     function onChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
         const { name, value } = e.target;
-        setFormData((prev) => (
-            {
-                ...prev, 
-                [name]: value 
-            }
-        ));
+        if(mode === 'EDIT'){
+            setUpdateFormData((prev) => (
+                {
+                    ...prev, 
+                    [name]: value 
+                }
+            ));
+        }else{
+            setFormData((prev) => (
+                {
+                    ...prev, 
+                    [name]: value 
+                }
+            ));
+        }   
     }
 
+    function onSubmitTry(e: React.FormEvent<HTMLFormElement>){
+        e.preventDefault();
+        if(mode === 'EDIT'){
+            const submitData = {
+                ...updateFormData,
+                dueDate: updateFormData.dueDate ? new Date(updateFormData.dueDate).toISOString() : undefined
+            }
+            console.log(submitData)
+            updateTaskMutation.mutate(submitData, {
+                onSuccess: () => {
+                    handleClose();
+                }
+            });
+        }else{
+            const submitData = {
+                taskName: formData.taskName || '',
+                description: formData.description || '',
+                archived: formData.archived || false,
+                dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : undefined,
+                priority: (formData.priority as Task['priority']) || 'LOW',
+                status: (formData.status as Task['status']) || 'TODO',
+                authorId: Number(userId),
+            }
+
+            createTaskMutation.mutate(submitData, {
+                onSuccess: () => {
+                    handleClose();
+                }
+            });
+        }
+    }
     /**
      * Handle form submission
      * Converts dueDate to ISO string if present.
      * Calls the mutation to create the task and closes the popup on success
      * @param {e: React.FormEvent<HTMLFormElement>} - Submit event
      */
-    function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    /* function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const submitData = {
@@ -155,12 +192,12 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
              dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : undefined
         }
 
-        mutate(submitData, {
+        createTaskMutation.mutate(submitData, {
             onSuccess: () => {
                 handleClose();
             }
         });
-    }
+    } */
 
     return (
         <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
@@ -170,13 +207,13 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                     <Button iconStyle="fa-solid fa-x" onClick={handleClose}/>
                 </div>
                 <form onSubmit={(e) => {
-                    onSubmit(e);
+                    onSubmitTry(e);
                 }} className="my-4 text-center">
                     {/* Task Name Input */}
                     <Input
                         name="taskName" 
                         type="text"
-                        value={formData.taskName}
+                        value={mode === 'EDIT' ? (updateFormData.taskName || '') : (formData.taskName || '')}
                         label="Task Name"
                         placeholder="Enter task name"
                         onChange={onChange} 
@@ -185,7 +222,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                     <Input
                         name="dueDate" 
                         type="date"
-                        value={formData.dueDate || ''}
+                        value={mode === 'EDIT' ? (updateFormData.dueDate ? new Date(updateFormData.dueDate).toISOString().split('T')[0] : '') : (formData.dueDate ? new Date(formData.dueDate).toISOString().split('T')[0] : '')}
                         label="Due Date"
                         placeholder="mm/dd/yyyy"
                         onChange={onChange} 
@@ -198,7 +235,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                         <select
                             className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-2xl w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
                             name="priority"
-                            value={formData.priority}
+                            value={mode === 'EDIT' ? updateFormData.priority : formData.priority}
                             onChange={onChange}
                         >
                             <option value="LOW">Low</option>
@@ -214,7 +251,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                         <textarea
                         className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-2xl w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
                         name="description" 
-                        value={formData.description || ''}
+                        value={mode === 'EDIT' ? updateFormData.description : formData.description || ''}
                         placeholder="Enter task content"
                         onChange={onChange}
                         ></textarea>
@@ -227,7 +264,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                         <select
                             className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-2xl w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
                             name="status"
-                            value={formData.status}
+                            value={mode === 'EDIT' ? updateFormData.status : formData.status}
                             onChange={onChange}
                         >
                             <option value="TODO">To do</option>
@@ -236,7 +273,7 @@ export default function PopupForm({handleClose, userId}: PopupFormProps) {
                         </select>
                     </div>
                     {/* Submit Button */}
-                    <SubmitBtn buttonText="Add Task" isPending={false}/>
+                    <SubmitBtn buttonText={mode === 'EDIT' ? 'Update Task' : 'Add Task'} isPending={false}/>
                 </form>
             </section>
         </div>

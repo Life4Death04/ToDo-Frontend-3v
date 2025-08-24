@@ -61,7 +61,7 @@ function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicator
     return(
       <IndicatorCard>
         <div className="relative flex items-center justify-center bg-white xsm:p-4 md:p-6 lg:p-8  rounded-full">
-          <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl`} aria-hidden:true></i>
+          <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl`} aria-hidden={true}></i>
         </div>
 
         <h2 className="mt-4 mb-2 text-center text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800">
