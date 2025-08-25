@@ -48,7 +48,8 @@ export default function Home(){
 
     // -------------------- Data Filtered-------------------------
     const filteredTasks = data?.tasks.filter(task => !task.archived) ?? [];
-
+    const totalTasks = data?.totalTasks ?? 0;
+    const completedTasks = data?.completedTasks ?? 0;
     // ---------------------- Event Handlers ---------------------
     // handler passed down to `TasksTable` to delete a task by id
     const handleDelete = (taskId: number) => {
@@ -76,41 +77,29 @@ export default function Home(){
         setPopupFormMode('EDIT');
         handlePopupForm();
     }
-
-    // ---------------------- Props objects ----------------------
-    const indicatorPanelsProps = {
-        totalTasks: data?.totalTasks ?? 0,
-        completedTasks: data?.completedTasks ?? 0
-    }
-
-    const tasksTableProps = {
-        userTasks: filteredTasks,
-        deleteUserTask: handleDelete,
-        handleAddUserTask: handleAdd,
-        handleArchive: handleArchive,
-        isLoading,
-        isError,
-        error,
-    }
-
-    const popupFormProps = {
-        mode: popupFormMode,
-        initialValue: taskToUpdate,
-        userId: userId,
-        handleClose: handlePopupForm
-    }
-
     // ---------------------- Render -----------------------------
     return(
         <section className="relative">
             {/* summary panels */}
-            <IndicatorPanels {...indicatorPanelsProps} />
+            <IndicatorPanels 
+                totalTasks={totalTasks} 
+                completedTasks={completedTasks} 
+            />
 
             {/* tasks list + actions */}
-            <TasksTable handleEdit={handleUpdate} {...tasksTableProps} />
+            <TasksTable 
+                userTasks={filteredTasks} 
+                deleteUserTask={handleDelete} 
+                handleAddUserTask={handleAdd} 
+                isLoading={isLoading} 
+                isError={isError} 
+                error={error} 
+                handleArchive={handleArchive}
+                handleEdit={handleUpdate} 
+            />
 
             {/* popup form to create a new task (conditionally rendered) */}
-            {isPopupOpen && <PopupForm {...popupFormProps} />}
+            {isPopupOpen && <PopupForm mode={popupFormMode} initialValue={taskToUpdate} userId={userId} handleClose={handlePopupForm} />}
         </section>
     );
 }

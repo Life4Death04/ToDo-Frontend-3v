@@ -115,8 +115,8 @@ export default function PopupForm({handleClose, userId, mode, initialValue}: Pop
     const updateTaskMutation = useUpdateTask();
     const [updateFormData, setUpdateFormData] = useState<Partial<FormData>>(initialValue || {});
     const [formData, setFormData] = useState<FormData>({
-        taskName: '',
-        description: '',
+        taskName: null,
+        description: null,
         archived: false,
         dueDate: null,
         priority: 'LOW',
@@ -147,36 +147,36 @@ export default function PopupForm({handleClose, userId, mode, initialValue}: Pop
         }   
     }
 
-    function onSubmitTry(e: React.FormEvent<HTMLFormElement>){
-        e.preventDefault();
-        if(mode === 'EDIT'){
-            const submitData = {
-                ...updateFormData,
-                dueDate: updateFormData.dueDate ? new Date(updateFormData.dueDate).toISOString() : undefined
-            }
-            console.log(submitData)
-            updateTaskMutation.mutate(submitData, {
-                onSuccess: () => {
-                    handleClose();
-                }
-            });
-        }else{
-            const submitData = {
-                taskName: formData.taskName || '',
-                description: formData.description || '',
-                archived: formData.archived || false,
-                dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : undefined,
-                priority: (formData.priority as Task['priority']) || 'LOW',
-                status: (formData.status as Task['status']) || 'TODO',
-                authorId: Number(userId),
-            }
-
-            createTaskMutation.mutate(submitData, {
-                onSuccess: () => {
-                    handleClose();
-                }
-            });
+    function onEditSubmit(e: React.FormEvent<HTMLFormElement>){
+        const submitData = {
+            ...updateFormData,
+            dueDate: updateFormData.dueDate ? new Date(updateFormData.dueDate).toISOString() : undefined
         }
+        console.log(submitData)
+        updateTaskMutation.mutate(submitData, {
+            onSuccess: () => {
+                handleClose();
+            }
+        });
+    }
+
+    function onAddSubmit(e: React.FormEvent<HTMLFormElement>){
+        e.preventDefault();
+        const submitData = {
+            taskName: formData.taskName || '',
+            description: formData.description || '',
+            archived: formData.archived || false,
+            dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : undefined,
+            priority: formData.priority || 'LOW',
+            status: formData.status || 'TODO',
+            authorId: Number(userId),
+        }
+
+        createTaskMutation.mutate(submitData, {
+            onSuccess: () => {
+                handleClose();
+            }
+        });
     }
     /**
      * Handle form submission
@@ -207,7 +207,7 @@ export default function PopupForm({handleClose, userId, mode, initialValue}: Pop
                     <Button iconStyle="fa-solid fa-x" onClick={handleClose}/>
                 </div>
                 <form onSubmit={(e) => {
-                    onSubmitTry(e);
+                    onAddSubmit(e);
                 }} className="my-4 text-center">
                     {/* Task Name Input */}
                     <Input
@@ -251,7 +251,7 @@ export default function PopupForm({handleClose, userId, mode, initialValue}: Pop
                         <textarea
                         className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-2xl w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
                         name="description" 
-                        value={mode === 'EDIT' ? updateFormData.description : formData.description || ''}
+                        value={mode === 'EDIT' ? updateFormData.description || "" : formData.description || ""}
                         placeholder="Enter task content"
                         onChange={onChange}
                         ></textarea>

@@ -1,10 +1,12 @@
 import axios from 'axios'
 import api from './axios';
-
-// -------------------- Static Values --------------------
-let registerUrl:string = 'http://localhost:3000/user/register';
-
 // -------------------- Types --------------------
+type BACKEND_ROUTES_USERS = {
+    REGISTER: string;
+    LOGIN: string;
+    FETCH: (userId: number) => string;
+}
+
 type NewUser = {
     firstName: string,
     lastName: string,
@@ -36,6 +38,13 @@ type Credentials = {
     email: string,
     password: string
 }
+// -------------------- Backend Routes --------------------
+const BACKEND_ROUTES: BACKEND_ROUTES_USERS = {
+    REGISTER: '/user/register',
+    LOGIN: '/user/login',
+    FETCH: (userId: number) => `/user/find/${userId}`
+}
+
 //Protected Routes
 /*
     After logged in and having our token, we should create protected routes where we use the token as a security element to keep in sync our actions with the token
@@ -43,7 +52,7 @@ type Credentials = {
 // -------------------- Register User --------------------
 export const registerUser = async(newUser: NewUser): Promise<Response> =>{
     try{
-        const res = await axios.post(registerUrl, newUser);
+        const res = await axios.post(BACKEND_ROUTES.REGISTER, newUser);
         return res.data
     }catch(error){
         if(axios.isAxiosError(error)){
@@ -56,7 +65,7 @@ export const registerUser = async(newUser: NewUser): Promise<Response> =>{
 // -------------------- Login User --------------------
 export const loginUser = async(credentials: Credentials): Promise<Response> => {
     try{
-        const res = await api.post('http://localhost:3000/user/login', credentials)
+        const res = await api.post(BACKEND_ROUTES.LOGIN, credentials)
         return res.data
 
     }catch(error){
@@ -70,7 +79,7 @@ export const loginUser = async(credentials: Credentials): Promise<Response> => {
 // -------------------- Fetching User Data --------------------
 export const fetchUserData = async(userId: number): Promise<FetchUserDataResponse> =>{
     try{
-        const res = await api.get(`http://localhost:3000/user/find/${userId}`);
+        const res = await api.get(BACKEND_ROUTES.FETCH(userId));
         return res.data;
     }catch(error){
         if(axios.isAxiosError(error)){

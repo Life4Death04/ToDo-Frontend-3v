@@ -3,8 +3,8 @@ export type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
 export type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
 export type User = {
-  id: number;
-  email: string;
+  id?: number;
+  email?: string;
   name?: string;
   firstName?: string;
   lastName?: string;
@@ -13,8 +13,8 @@ export type User = {
 
 export type Task = {
   id: number;
-  taskName: string;
-  description?: string;
+  taskName: string | null;
+  description?: string | null;
   archived: boolean;
   dueDate?: string | null;
   priority: PriorityTypes;

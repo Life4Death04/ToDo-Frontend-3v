@@ -16,7 +16,7 @@ const queryKeys: QueryKeys = {
     fetchUserData: 'userData'
 }
 
-let messages: Messages = {
+const messages: Messages = {
     success: `Action completed Successfully`,
     error: `Something went wrong`
 }

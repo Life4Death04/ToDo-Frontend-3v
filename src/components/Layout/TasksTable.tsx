@@ -35,8 +35,8 @@ type TasksTableProps = {
 type TaskItemProps = {
     taskName: string,
     dueDate?: string,
-    priority?: string,
-    status?: StatusTypes,
+    priority: PriorityTypes,
+    status: StatusTypes,
     onDelete: () => void,
     onArchive: () => void,
     onEdit: () => void,
@@ -84,10 +84,10 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
                 {userTasks?.map(task => (
                     <TaskItem 
                         key={task.id}
-                        taskName={task.taskName}
+                        taskName={task.taskName || ""}
                         dueDate={task.dueDate || ""}
                         priority={task.priority}
-                        status={task.status as StatusTypes}
+                        status={task.status}
                         onDelete={() => deleteUserTask(task.id)}
                         onArchive={() => handleArchive(task.id)}
                         onEdit={() => handleEdit(task.id)}
@@ -130,12 +130,12 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive, onE
                 <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1">
                     {formatDueDate(dueDate)}
                 </span>
-                <span className={`font-bold xsm:text-xs md:text-sm lg:text-base lg:flex-1 ${getPriorityColor(priority as PriorityTypes)}`}>
+                <span className={`font-bold xsm:text-xs md:text-sm lg:text-base lg:flex-1 ${getPriorityColor(priority)}`}>
                     {priority}
                 </span>
                 <div className="lg:flex-1"> 
-                    <span className={`xsm:text-xs md:text-sm lg:text-base xsm:w-fit px-2 py-1 rounded-xl font-bold ${getStatusColor(status as StatusTypes)}`}>
-                        {getStatusBadge(status as StatusTypes)}
+                    <span className={`xsm:text-xs md:text-sm lg:text-base xsm:w-fit px-2 py-1 rounded-xl font-bold ${getStatusColor(status)}`}>
+                        {getStatusBadge(status)}
                     </span>
                 </div>
             </div>
