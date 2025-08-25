@@ -1,8 +1,7 @@
 import { NavLink } from "react-router";
-import { useLogoutUser } from "../../api/usersQuery";
+import { useFetchMeData, useLogoutUser } from "../../queries/usersQuery";
 import { UserBadge } from "../UserBadge/UserBadge";
-
-// -------------------- Main Login Component --------------------
+// -------------------- Types --------------------
 type SideBarLinkItem = {
   linkText: string,
   linkUrl: string,
@@ -20,6 +19,7 @@ type SideBarButtonProps = {
 // -------------------- Sidebar Component --------------------
 export function Sidebar(){
   const logout = useLogoutUser();
+  const { data: meData, isError, isLoading } = useFetchMeData();
   return(
     <nav className="fixed top-0 left-0 h-screen w-12 py-3 sm:w-20 lg:w-64 lg:px-2 bg-gray-200 flex flex-col">
       {/* Logo & Title */}
@@ -36,7 +36,7 @@ export function Sidebar(){
       </ul>
 
       {/* User Info */}
-      <UserBadge />
+      <UserBadge userData={meData || {}} isLoading={isLoading} isError={isError} />
 
       {/* Footer Links */}
       <footer className="mt-auto w-full lg:px-2 lg:py-3 lg:border-t-1 border-t-black/50">

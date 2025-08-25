@@ -1,15 +1,32 @@
 import axios from 'axios';
 import api from './axios';
 import type { Task, FetchTaskResponse, CreateTaskResponse } from '../types';
+// -------------------- Types --------------------
+type BACKEND_ROUTES_TASKS = {
+    FETCH_USER_TASKS: string;
+    CREATE_TASK: string;
+    DELETE_TASK: (authorId: number, taskId: number) => string;
+    TOGGLE_ARCHIVED: (authorId: number, taskId: number) => string;
+    UPDATE_TASK: string;
+}
 
 type ToggleArchivedTask = {
     message: string;
     task: Task;
 }
 
-export const fetchUserTasks = async(userId: number):Promise<FetchTaskResponse> =>{
-    try{
-        const res = await api.get(`http://localhost:3000/task/${userId}`)
+// -------------------- Backend Routes --------------------
+const BACKEND_ROUTES: BACKEND_ROUTES_TASKS = {
+    FETCH_USER_TASKS: `/task/get`,
+    CREATE_TASK: `/task/create`,
+    DELETE_TASK: (authorId: number, taskId: number) => `/task/delete/${authorId}/${taskId}`,
+    TOGGLE_ARCHIVED: (authorId: number, taskId: number) => `/task/toggleArchived/${authorId}/${taskId}`,
+    UPDATE_TASK: `/task/update`
+}
+
+export const fetchUserTasks = async():Promise<FetchTaskResponse> =>{
+    try{    
+        const res = await api.get(BACKEND_ROUTES.FETCH_USER_TASKS)
         return res.data
     }catch(error){
         if(axios.isAxiosError(error)){
@@ -22,7 +39,7 @@ export const fetchUserTasks = async(userId: number):Promise<FetchTaskResponse> =
 
 export const createTodo = async(task: Omit<Task, 'id'>):Promise<CreateTaskResponse> =>{
     try{
-        const res = await api.post(`http://localhost:3000/task/create`, task);
+        const res = await api.post(BACKEND_ROUTES.CREATE_TASK, task);
         return res.data
     }catch(error){
         if(axios.isAxiosError(error)){
@@ -35,7 +52,7 @@ export const createTodo = async(task: Omit<Task, 'id'>):Promise<CreateTaskRespon
 
 export const deleteUserTask = async(authorId: number, taskId: number): Promise<void> =>{
     try{
-        await api.delete(`http://localhost:3000/task/delete/${authorId}/${taskId}`)
+        await api.delete(BACKEND_ROUTES.DELETE_TASK(authorId, taskId))
     }catch(error){
         if(axios.isAxiosError(error)){
             throw new Error(error.response?.data?.message || `Error deleting User's task`)
@@ -47,7 +64,7 @@ export const deleteUserTask = async(authorId: number, taskId: number): Promise<v
 
 export const toggleUserTaskArchived = async(authorId: number, taskId: number): Promise<ToggleArchivedTask> =>{
     try{
-        const res = await api.patch(`http://localhost:3000/task/toggleArchived/${authorId}/${taskId}`)
+        const res = await api.patch(BACKEND_ROUTES.TOGGLE_ARCHIVED(authorId, taskId))
         return res.data
     }catch(error){
         if(axios.isAxiosError(error)){
@@ -60,7 +77,7 @@ export const toggleUserTaskArchived = async(authorId: number, taskId: number): P
 
 export const updateTask = async(taskToUpdate: Partial<Task>): Promise<CreateTaskResponse> =>{
     try{
-        const res = await api.patch(`http://localhost:3000/task/update`, taskToUpdate)
+        const res = await api.patch(BACKEND_ROUTES.UPDATE_TASK, taskToUpdate)
         return res.data
     }catch(error){
         if(axios.isAxiosError(error)){

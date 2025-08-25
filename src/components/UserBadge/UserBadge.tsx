@@ -1,77 +1,88 @@
-import { useFetchUserData } from "../../api/usersQuery";
-import { useParams } from "react-router";
-import type { User } from '../../types';
+import type { User } from "../../types";
+
+type UserBadgeProps = {
+    userData: User;
+    isLoading: boolean;
+    isError: boolean;
+}
 
 // -------------------- User Info Component (self-contained) --------------------
-export function UserBadge(){
-    // Read userId from route params; component handles its own fetching
-    const { userId: userIdParam } = useParams();
-    const userId = userIdParam ? Number(userIdParam) : undefined;
+export function UserBadge({userData, isLoading, isError}: UserBadgeProps){
+    const { firstName, lastName, email, avatarUrl } = userData;
 
-    // Validate userId: if missing/invalid, render nothing (sidebar may still render)
-    if(!userIdParam || Number.isNaN(userId as number)){
-        return null;
-    }
-
-    const { data, isLoading, isError } = useFetchUserData(Number(userId));
-    const user = data as User | undefined;
-
-    // Simple loading skeleton to avoid layout shift
-    if(isLoading){
-        return (
-            <div className="relative w-full p-1 rounded-2xl mb-4 lg:bg-amber-200" aria-busy="true" aria-live="polite">
-                <div className="flex items-center gap-3 animate-pulse">
-                    <div className="w-10 h-10 rounded-full bg-gray-300" />
-                    <div className="hidden lg:flex flex-col gap-1">
-                        <div className="w-32 h-3 bg-gray-300 rounded" />
-                        <div className="w-48 h-3 bg-gray-300 rounded" />
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    // Error or no data: show minimal fallback
-    if(isError || !data){
-        return (
-            <div className="relative w-full p-1 rounded-2xl mb-4 lg:bg-amber-200">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-sm font-bold text-gray-600">?</div>
-                    <div className="hidden lg:block">
-                        <p className="text-xs font-bold">Unknown user</p>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    // Data present
+    /* // Data present
     const firstName = user?.firstName ?? '';
     const lastName = user?.lastName ?? '';
     const email = user?.email ?? '';
-    const avatarUrl = (user as any)?.avatarUrl ?? null; // optional property if exists
+    const avatarUrl = user?.profileImage ?? null; // optional property if exists */
 
-    const fullName = `${firstName} ${lastName}`.trim();
+    const fullName = `${firstName} ${lastName}`;
 
     // Fallback initials when no avatar
-    const initials = `${firstName?.[0] ?? ''}${lastName?.[0] ?? ''}`.toUpperCase() || 'U';
+    const initials = `${firstName?.[0] ?? ''}${lastName?.[0] ?? ''}`.toUpperCase() || '?';
 
     return(
-        <div className="relative w-full p-1 rounded-2xl mb-4 lg:bg-amber-200" title={fullName || email} aria-label={fullName || email}>
+        <BadgeShell isError={isError} isLoading={isLoading} fullName={fullName} email={email}>
+            <Avatar avatarUrl={avatarUrl} initials={initials} isError={isError}/>
+        </BadgeShell>
+    );
+}
+
+type BadgeShellProps = {
+    children?: React.ReactNode;
+    isLoading?: boolean;
+    isError?: boolean;
+    email?: string;
+    fullName?: string;
+}
+
+export function BadgeShell({ isLoading, isError, children, email, fullName }: BadgeShellProps){
+    const busy = isLoading;
+    return (
+        <div 
+            className="relative w-full p-1 rounded-2xl mb-4 lg:bg-amber-200"
+            aria-busy={busy}
+            aria-live="polite"
+            title={fullName || 'No name'}
+            aria-label={fullName || ''}
+        >
             <div className="flex items-center gap-3 xsm:justify-center lg:justify-start">
                 <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
-                    {avatarUrl ? (
-                        <img src={avatarUrl} alt={fullName || 'User avatar'} className="w-full h-full object-cover" loading="lazy"/>
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center text-sm font-bold text-gray-700">{initials}</div>
-                    )}
+                    {children}
                 </div>
 
                 <div className="hidden lg:flex flex-col overflow-hidden">
-                    <p className="text-sm font-bold capitalize truncate max-w-[160px]">{fullName || 'No name'}</p>
+                    {isError && <p className="text-xs font-bold">Unknown user</p>}
+                    {isLoading && 
+                        <div className="hidden lg:flex flex-col gap-1">
+                            <div className="w-32 h-3 bg-gray-300 rounded" />
+                            <div className="w-48 h-3 bg-gray-300 rounded" />
+                        </div>}
+                    <p className="text-sm font-bold capitalize truncate max-w-[160px]">{fullName}</p>
                     <p className="text-xs text-gray-700 truncate max-w-[160px]">{email}</p>
                 </div>
             </div>
-      </div>
+        </div>
+    );
+}
+
+type AvatarProps = {
+    avatarUrl?: string | null;
+    initials?: string | null;
+    isError: boolean;
+}
+
+export function Avatar({ avatarUrl, initials, isError }: AvatarProps){
+    if(avatarUrl){
+        return (
+            <img src={avatarUrl} alt="User avatar" className="w-full h-full object-cover" loading="lazy"/>
+        );
+    }
+    // Fallback initials when no avatar
+    return (
+        <div className="w-full h-full flex items-center justify-center text-sm font-bold text-gray-700">
+            {isError && <span className="text-red-500"></span>}
+            {avatarUrl ? <img src={avatarUrl} alt="User avatar" className="w-full h-full object-cover" loading="lazy"/> : initials}
+        </div>
     );
 }

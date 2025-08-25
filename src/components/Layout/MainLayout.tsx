@@ -1,5 +1,6 @@
 import { Sidebar } from "./Sidebar";
 import { Outlet } from "react-router";
+import { useFetchMeData } from "../../queries/usersQuery";
 
 export default function MainLayout(){
     return(

@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { loginUser, registerUser, fetchUserData } from "./users.api";
+import { loginUser, registerUser, fetchUserData, fetchMeData } from "../api/users.api";
 import { useNavigate } from "react-router";
 
 // -------------------- Types --------------------
 type QueryKeys = {
     fetchUserData: string
+    fetchMeData: string
 }
 
 type Messages = {
@@ -13,10 +14,11 @@ type Messages = {
 }
 // -------------------- Static Values --------------------
 const queryKeys: QueryKeys = {
-    fetchUserData: 'userData'
+    fetchUserData: 'userData',
+    fetchMeData: 'me'
 }
 
-let messages: Messages = {
+const messages: Messages = {
     success: `Action completed Successfully`,
     error: `Something went wrong`
 }
@@ -59,5 +61,12 @@ export const useFetchUserData = (userId: number) =>{
     return useQuery({
         queryKey: [queryKeys.fetchUserData, userId],
         queryFn: () => fetchUserData(userId)
+    })
+}
+// -------------------- Fetching User Data Hook --------------------
+export const useFetchMeData = () =>{
+    return useQuery({
+        queryKey: [queryKeys.fetchMeData],
+        queryFn: fetchMeData
     })
 }

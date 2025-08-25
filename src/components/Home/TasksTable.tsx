@@ -35,8 +35,8 @@ type TasksTableProps = {
 type TaskItemProps = {
     taskName: string,
     dueDate?: string,
-    priority?: string,
-    status?: StatusTypes,
+    priority: PriorityTypes,
+    status: StatusTypes,
     onDelete: () => void,
     onArchive: () => void,
     onEdit: () => void,
@@ -44,6 +44,8 @@ type TaskItemProps = {
 
 type NoTaskMessageProps = {
     handleAddUserTask: () => void;
+    isLoading: boolean;
+    isError: boolean;
 }
 
 type AddTaskProps = {
@@ -76,18 +78,16 @@ export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, erro
             </header>
 
             <ul className="flex flex-col gap-3 lg:gap-0 lg:divide-y lg:divide-gray-200">
-                {isLoading && <li>Loading...</li>}
-                {isError && <li>Error: {error?.message}</li>}
                 {!userTasks?.length && (
-                    <NoTaskMessage handleAddUserTask={handleAddUserTask} />
+                    <NoTaskMessage isError={isError} isLoading={isLoading} handleAddUserTask={handleAddUserTask} />
                 )}
                 {userTasks?.map(task => (
                     <TaskItem 
                         key={task.id}
-                        taskName={task.taskName}
+                        taskName={task.taskName || ""}
                         dueDate={task.dueDate || ""}
                         priority={task.priority}
-                        status={task.status as StatusTypes}
+                        status={task.status}
                         onDelete={() => deleteUserTask(task.id)}
                         onArchive={() => handleArchive(task.id)}
                         onEdit={() => handleEdit(task.id)}
@@ -130,12 +130,12 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive, onE
                 <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1">
                     {formatDueDate(dueDate)}
                 </span>
-                <span className={`font-bold xsm:text-xs md:text-sm lg:text-base lg:flex-1 ${getPriorityColor(priority as PriorityTypes)}`}>
+                <span className={`font-bold xsm:text-xs md:text-sm lg:text-base lg:flex-1 ${getPriorityColor(priority)}`}>
                     {priority}
                 </span>
                 <div className="lg:flex-1"> 
-                    <span className={`xsm:text-xs md:text-sm lg:text-base xsm:w-fit px-2 py-1 rounded-xl font-bold ${getStatusColor(status as StatusTypes)}`}>
-                        {getStatusBadge(status as StatusTypes)}
+                    <span className={`xsm:text-xs md:text-sm lg:text-base xsm:w-fit px-2 py-1 rounded-xl font-bold ${getStatusColor(status)}`}>
+                        {getStatusBadge(status)}
                     </span>
                 </div>
             </div>
@@ -147,12 +147,16 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive, onE
     );
 }
 // -------------------- No Task Message Component --------------------
-function NoTaskMessage({handleAddUserTask}: NoTaskMessageProps){
+function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessageProps){
     return(
         <li className="mx-auto w-full text-center py-12 border-b border-gray-300">
-            <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl">No tasks yet</span>
+            <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl">
+            {isLoading && "Loading..."}
+            {isError && `Error: Oops! We couldn't fetch your tasks :c`}
+            {!isLoading && !isError && "No tasks yet"}
+            </span>
             <p className="pt-3 pb-5 text-gray-400 xsm:text-xs md:text-sm lg:text-base">Looks like you're all caught up!</p>
-            <AddTaskButton onClick={handleAddUserTask} />
+            {!isError && !isLoading && <AddTaskButton onClick={handleAddUserTask} />}
         </li>
     );
 }
