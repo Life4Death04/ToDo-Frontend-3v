@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createTodo, deleteUserTask, fetchUserTasks, toggleUserTaskArchived, updateTask } from "./task.api";
+import { createTodo, deleteUserTask, fetchUserTasks, toggleUserTaskArchived, updateTask } from "../api/task.api";
 import type { Task } from '../types'
 
 type QueryKeys = {
@@ -13,7 +13,7 @@ const queryKeys: QueryKeys = {
 export const useFetchUserTasks = (userId: number) =>{
     return useQuery({
     queryKey: [queryKeys.fetchTasks, userId],
-        queryFn: () => fetchUserTasks(userId),
+        queryFn: fetchUserTasks,
         //This select allow us to transform the data returned by the query
         select: (data) => ({
             tasks: data?.tasks ?? [], //Could be an empty array if no tasks found

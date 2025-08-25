@@ -1,9 +1,10 @@
-import { IndicatorPanels } from "../Layout/Indicators";
-import { TasksTable } from "../Layout/TasksTable";
+import { IndicatorPanels } from "./Indicators";
+import { TasksTable } from "./TasksTable";
 import { useParams } from "react-router";
-import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived } from "../../api/tasksQuery";
+import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived } from "../../queries/tasksQuery";
 import { useState } from "react";
-import PopupForm from "../Layout/PopupForm";
+import PopupForm from "../PopupForm/PopupFormCreate";
+import PopupFormEdit from "../PopupForm/PopupFormEdit";
 /**
  * Home (page)
  *
@@ -18,12 +19,13 @@ import PopupForm from "../Layout/PopupForm";
  * - Defaults are applied when spreading props to children so strict `number` types
  *   and arrays don't receive `undefined`.
  */
-type PopupFormModes = 'EDIT' | 'CREATE';
+/* type PopupFormModes = 'EDIT' | 'CREATE'; */
 
 export default function Home(){
     // ---------------------- Local UI State ----------------------
-    const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
-    const [popupFormMode, setPopupFormMode] = useState<PopupFormModes>('CREATE');
+    const [isPopupCreateOpen, setIsPopupCreateOpen] = useState<boolean>(false);
+    const [isPopupEditOpen, setIsPopupEditOpen] = useState<boolean>(false);
+    /* const [popupFormMode, setPopupFormMode] = useState<PopupFormModes>('CREATE'); */
     const [taskToUpdate, setTaskToUpdate] = useState<any>(null); // to hold the task data when editing
 
     // ---------------------- Route Params ------------------------
@@ -58,7 +60,11 @@ export default function Home(){
 
     // toggle popup for creating a new task
     const handlePopupForm = () => {
-        setIsPopupOpen(prev => !prev);
+        setIsPopupCreateOpen(prev => !prev);
+    }
+
+    const handlePopupFormEdit = () => {
+        setIsPopupEditOpen(prev => !prev);
     }
 
     // archiving a task
@@ -67,15 +73,13 @@ export default function Home(){
     }
 
     const handleAdd = () =>{
-        setPopupFormMode('CREATE');
         handlePopupForm();
     }
 
     const handleUpdate = (taskId: number) => {
         const taskToUpdate = data?.tasks?.find(task => task.id === taskId);
         setTaskToUpdate(taskToUpdate);
-        setPopupFormMode('EDIT');
-        handlePopupForm();
+        handlePopupFormEdit();
     }
     // ---------------------- Render -----------------------------
     return(
@@ -99,7 +103,8 @@ export default function Home(){
             />
 
             {/* popup form to create a new task (conditionally rendered) */}
-            {isPopupOpen && <PopupForm mode={popupFormMode} initialValue={taskToUpdate} userId={userId} handleClose={handlePopupForm} />}
+            {isPopupCreateOpen && <PopupForm userId={userId} handleClose={handlePopupForm} />}
+            {isPopupEditOpen && <PopupFormEdit userId={userId} initialValue={taskToUpdate} handleClose={handlePopupFormEdit} />}
         </section>
     );
 }

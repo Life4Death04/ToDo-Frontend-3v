@@ -30,8 +30,8 @@ type FetchUserDataResponse = {
     email: string;
     profileImage?: string;
     phoneNumber?: string;
-    createdAt: Date;
-    emailVerified: boolean;
+    createdAt?: Date;
+    emailVerified?: boolean;
 }
 
 type Credentials = {
@@ -52,7 +52,7 @@ const BACKEND_ROUTES: BACKEND_ROUTES_USERS = {
 // -------------------- Register User --------------------
 export const registerUser = async(newUser: NewUser): Promise<Response> =>{
     try{
-        const res = await axios.post(BACKEND_ROUTES.REGISTER, newUser);
+        const res = await api.post(BACKEND_ROUTES.REGISTER, newUser);
         return res.data
     }catch(error){
         if(axios.isAxiosError(error)){
@@ -80,6 +80,18 @@ export const loginUser = async(credentials: Credentials): Promise<Response> => {
 export const fetchUserData = async(userId: number): Promise<FetchUserDataResponse> =>{
     try{
         const res = await api.get(BACKEND_ROUTES.FETCH(userId));
+        return res.data;
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error fetching user data`)
+        }
+        throw new Error(`Unexpected error fetching user data`)
+    }
+}
+
+export const fetchMeData = async(): Promise<FetchUserDataResponse> =>{
+    try{
+        const res = await api.get('/user/getUser');
         return res.data;
     }catch(error){
         if(axios.isAxiosError(error)){

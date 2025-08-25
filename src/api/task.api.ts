@@ -3,7 +3,7 @@ import api from './axios';
 import type { Task, FetchTaskResponse, CreateTaskResponse } from '../types';
 // -------------------- Types --------------------
 type BACKEND_ROUTES_TASKS = {
-    FETCH_USER_TASKS: (userId: number) => string;
+    FETCH_USER_TASKS: string;
     CREATE_TASK: string;
     DELETE_TASK: (authorId: number, taskId: number) => string;
     TOGGLE_ARCHIVED: (authorId: number, taskId: number) => string;
@@ -17,16 +17,16 @@ type ToggleArchivedTask = {
 
 // -------------------- Backend Routes --------------------
 const BACKEND_ROUTES: BACKEND_ROUTES_TASKS = {
-    FETCH_USER_TASKS: (userId: number) => `/task/${userId}`,
+    FETCH_USER_TASKS: `/task/get`,
     CREATE_TASK: `/task/create`,
     DELETE_TASK: (authorId: number, taskId: number) => `/task/delete/${authorId}/${taskId}`,
     TOGGLE_ARCHIVED: (authorId: number, taskId: number) => `/task/toggleArchived/${authorId}/${taskId}`,
     UPDATE_TASK: `/task/update`
 }
 
-export const fetchUserTasks = async(userId: number):Promise<FetchTaskResponse> =>{
-    try{
-        const res = await api.get(BACKEND_ROUTES.FETCH_USER_TASKS(userId))
+export const fetchUserTasks = async():Promise<FetchTaskResponse> =>{
+    try{    
+        const res = await api.get(BACKEND_ROUTES.FETCH_USER_TASKS)
         return res.data
     }catch(error){
         if(axios.isAxiosError(error)){

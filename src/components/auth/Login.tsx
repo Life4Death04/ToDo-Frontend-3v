@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { useLoginUser } from "../../api/usersQuery";
+import { useLoginUser } from "../../queries/usersQuery";
 import { 
     Footer, 
     Header, 
