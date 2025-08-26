@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
-import { useCreateTask } from "../../queries/tasksQuery";
+import { useCreateTask } from "../../hooks/useTasks";
 import type { Task } from '../../types';
 
 type PopupFormProps = {

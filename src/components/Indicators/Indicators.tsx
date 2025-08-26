@@ -133,7 +133,7 @@ export function RadialIndicator({textIndicator, totalTasks, completedTasks}:Radi
 
       {/* Labels */}
       <h2 className="m-2 text-sm text-center sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800">
-        {textIndicator}
+        {textIndicator} 
       </h2>
       <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600">
         {percentage}%

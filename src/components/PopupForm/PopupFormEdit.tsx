@@ -1,8 +1,8 @@
 //------------------ENHANCED VERSION BY CHAT GPT (AGENT MODE)-----------------------------------
 import { useState } from "react";
-import { Button } from "../Common/CommonComponents";
+import { ButtonIcon } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
-import { useUpdateTask } from "../../queries/tasksQuery";
+import { useUpdateTask } from "../../hooks/useTasks";
 import type { Task } from '../../types';
 
 type PopupFormProps = {
@@ -94,7 +94,7 @@ export default function PopupFormEdit({handleClose, initialValue}: PopupFormProp
             <section className="rounded-2xl bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150">
                 <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400">
                     <h2>Add New Task</h2>
-                    <Button iconStyle="fa-solid fa-x" onClick={handleClose}/>
+                    <ButtonIcon iconStyle="fa-solid fa-x" onClick={handleClose}/>
                 </div>
                 <form onSubmit={(e) => {
                     onSubmitEdit(e);
