@@ -1,8 +1,9 @@
 import { IndicatorPanels } from "../components/Indicators/Indicators";
 import { TasksTable } from "../components/TasksTable/TasksTable";
 import { useParams } from "react-router";
-import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived } from "../hooks/useTasks";
+import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived, useCreateTask, useUpdateTask } from "../hooks/useTasks";
 import { useState } from "react";
+import type { PriorityTypes, Task } from "../types";
 import PopupFormCreate from "../components/PopupForm/PopupFormCreate";
 import PopupFormEdit from "../components/PopupForm/PopupFormEdit";
 /**
@@ -21,12 +22,22 @@ import PopupFormEdit from "../components/PopupForm/PopupFormEdit";
  */
 /* type PopupFormModes = 'EDIT' | 'CREATE'; */
 
+type FormData = Partial<Task>;
+
 export default function HomeContainer(){
     // ---------------------- Local UI State ----------------------
+    const [formCreateData, setFormCreateData] = useState<FormData>({
+        taskName: '',
+        description: '',
+        dueDate: '',
+        priority: 'LOW',
+        archived: false,
+        status: 'TODO',
+        authorId: undefined,
+    });
+    const [formEditData, setFormEditData] = useState<Partial<FormData>>({})
     const [isPopupCreateOpen, setIsPopupCreateOpen] = useState<boolean>(false);
     const [isPopupEditOpen, setIsPopupEditOpen] = useState<boolean>(false);
-    /* const [popupFormMode, setPopupFormMode] = useState<PopupFormModes>('CREATE'); */
-    const [taskToUpdate, setTaskToUpdate] = useState<any>(null); // to hold the task data when editing
 
     // ---------------------- Route Params ------------------------
     // read and validate userId from route params
@@ -40,6 +51,8 @@ export default function HomeContainer(){
 
     // ---------------------- Data Hooks -------------------------
     // fetch user's tasks (the hook is expected to return a shaped `data`)
+    const createTaskMutation = useCreateTask();
+    const updateTaskMutation = useUpdateTask();
     const { data, isLoading, isError, error } = useFetchUserTasks(userId);
 
     // mutation for toggling a user task's archived status (scoped to this userId)
@@ -53,6 +66,54 @@ export default function HomeContainer(){
     const totalTasks = data?.totalTasks ?? 0;
     const completedTasks = data?.completedTasks ?? 0;
     // ---------------------- Event Handlers ---------------------
+    const handleChangeCreate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
+        const {name, value} = e.target;
+        setFormCreateData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    }
+
+    const handleChangeEdit = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
+        const {name, value} = e.target;
+        setFormEditData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    }
+
+    const handleSubmitData = (e: React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
+        const submitData = {
+            taskName: formCreateData.taskName || '',
+            description: formCreateData.description || '',
+            archived: formCreateData.archived || false,
+            dueDate: formCreateData.dueDate ? new Date(formCreateData.dueDate).toISOString() : undefined,
+            priority: formCreateData.priority as PriorityTypes,
+            status: formCreateData.status || 'TODO',
+            authorId: Number(userId),
+        }
+
+        createTaskMutation.mutate(submitData, {
+            onSuccess: () => {
+                setIsPopupCreateOpen(false);
+            }
+        });
+    }
+
+    const handleSubmitEditedData = (e: React.FormEvent<HTMLFormElement>) =>{
+        const submitData = {
+            ...formEditData,
+            dueDate: formEditData.dueDate ? new Date(formEditData.dueDate).toISOString() : undefined
+        }
+        console.log(submitData)
+        updateTaskMutation.mutate(submitData, {
+            onSuccess: () => {
+                setIsPopupEditOpen(false);
+            }
+        });
+    }
+
     // handler passed down to `TasksTable` to delete a task by id
     const handleDelete = (taskId: number) => {
         deleteUserTask.mutate(taskId); // mutation expects taskId parameter
@@ -78,7 +139,7 @@ export default function HomeContainer(){
 
     const handleUpdate = (taskId: number) => {
         const taskToUpdate = data?.tasks?.find(task => task.id === taskId);
-        setTaskToUpdate(taskToUpdate);
+        setFormEditData(taskToUpdate!);
         handlePopupFormEdit();
     }
     // ---------------------- Render -----------------------------
@@ -103,8 +164,9 @@ export default function HomeContainer(){
             />
 
             {/* popup form to create a new task (conditionally rendered) */}
-            {isPopupCreateOpen && <PopupFormCreate userId={userId} handleClose={handlePopupForm} />}
-            {isPopupEditOpen && <PopupFormEdit userId={userId} initialValue={taskToUpdate} handleClose={handlePopupFormEdit} />}
+            {isPopupCreateOpen && <PopupFormCreate values={formCreateData} onChange={handleChangeCreate} onSubmit={handleSubmitData} onClose={handlePopupForm} />}
+            {/* {isPopupEditOpen && <PopupFormEdit userId={userId} initialValue={formEditData} handleClose={handlePopupFormEdit} />} */}
+            {isPopupEditOpen && <PopupFormEdit values={formEditData} onChange={handleChangeEdit} onSubmit={handleSubmitEditedData} onClose={handlePopupFormEdit} />}
         </section>
     );
 }
