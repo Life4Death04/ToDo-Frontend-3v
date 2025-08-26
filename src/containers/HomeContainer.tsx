@@ -3,7 +3,7 @@ import { TasksTable } from "../components/TasksTable/TasksTable";
 import { useParams } from "react-router";
 import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived } from "../hooks/useTasks";
 import { useState } from "react";
-import PopupForm from "../components/PopupForm/PopupFormCreate";
+import PopupFormCreate from "../components/PopupForm/PopupFormCreate";
 import PopupFormEdit from "../components/PopupForm/PopupFormEdit";
 /**
  * Home (page)
@@ -103,7 +103,7 @@ export default function HomeContainer(){
             />
 
             {/* popup form to create a new task (conditionally rendered) */}
-            {isPopupCreateOpen && <PopupForm userId={userId} handleClose={handlePopupForm} />}
+            {isPopupCreateOpen && <PopupFormCreate userId={userId} handleClose={handlePopupForm} />}
             {isPopupEditOpen && <PopupFormEdit userId={userId} initialValue={taskToUpdate} handleClose={handlePopupFormEdit} />}
         </section>
     );

@@ -1,4 +1,4 @@
-import { Button } from "../Common/CommonComponents";
+import { ButtonIcon } from "../Common/CommonComponents";
 import { getPriorityColor, getStatusColor, formatDueDate, getCheckIcon, getStatusBadge } from '../../utils/taskHelpers';
 import type { PriorityTypes, StatusTypes, Task } from '../../types';
 
@@ -120,10 +120,10 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive, onE
                 <span className="xsm:text-sm md:text-base lg:text-lg overflow break-words">
                     {taskName}
                 </span>
-                <Button onClick={onEdit} iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></Button>
+                <ButtonIcon onClick={onEdit} iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></ButtonIcon>
                 <div className="flex justify-center ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
-                    <Button onClick={onArchive} iconStyle="fa-solid fa-archive"></Button>
-                    <Button onClick={onDelete} iconStyle="fa-regular fa-trash-can"></Button>
+                    <ButtonIcon onClick={onArchive} iconStyle="fa-solid fa-archive"></ButtonIcon>
+                    <ButtonIcon onClick={onDelete} iconStyle="fa-regular fa-trash-can"></ButtonIcon>
                 </div>
             </div>
             <div className="flex xsm:flex-col lg:flex-row lg:items-center xsm:gap-3 xsm:mt-2 lg:mt-0 flex-[3]">
@@ -140,8 +140,8 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive, onE
                 </div>
             </div>
             <div className="gap-1 xsm:hidden lg:flex">
-                <Button onClick={onArchive} iconStyle="fa-solid fa-archive"></Button>
-                <Button onClick={onDelete} iconStyle="fa-regular fa-trash-can"></Button>
+                <ButtonIcon onClick={onArchive} iconStyle="fa-solid fa-archive"></ButtonIcon>
+                <ButtonIcon onClick={onDelete} iconStyle="fa-regular fa-trash-can"></ButtonIcon>
             </div>
         </li>
     );

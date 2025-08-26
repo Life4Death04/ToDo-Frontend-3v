@@ -18,7 +18,7 @@ type FormData = Partial<Task> & { authorId: number };
  * @param {number} userId - ID of the user
  * @returns JSX.Element
  */
-export default function PopupForm({handleClose, userId}: PopupFormProps) {
+export default function PopupFormCreate({handleClose, userId}: PopupFormProps) {
     const createTaskMutation = useCreateTask();
     const [formData, setFormData] = useState<FormData>({
         taskName: null,
