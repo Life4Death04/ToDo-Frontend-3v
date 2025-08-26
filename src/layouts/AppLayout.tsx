@@ -1,8 +1,7 @@
-import { Sidebar } from "./Sidebar";
+import { Sidebar } from "../components/Sidebar/Sidebar";
 import { Outlet } from "react-router";
-import { useFetchMeData } from "../../queries/usersQuery";
 
-export default function MainLayout(){
+export default function AppPage(){
     return(
         <main className="xsm:ml-12 sm:ml-20 lg:ml-64">
             <Sidebar></Sidebar>

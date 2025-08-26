@@ -1,10 +1,10 @@
-import { IndicatorPanels } from "./Indicators";
-import { TasksTable } from "./TasksTable";
+import { IndicatorPanels } from "../components/Indicators/Indicators";
+import { TasksTable } from "../components/TasksTable/TasksTable";
 import { useParams } from "react-router";
-import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived } from "../../queries/tasksQuery";
+import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived } from "../hooks/useTasks";
 import { useState } from "react";
-import PopupForm from "../PopupForm/PopupFormCreate";
-import PopupFormEdit from "../PopupForm/PopupFormEdit";
+import PopupForm from "../components/PopupForm/PopupFormCreate";
+import PopupFormEdit from "../components/PopupForm/PopupFormEdit";
 /**
  * Home (page)
  *
@@ -21,7 +21,7 @@ import PopupFormEdit from "../PopupForm/PopupFormEdit";
  */
 /* type PopupFormModes = 'EDIT' | 'CREATE'; */
 
-export default function Home(){
+export default function HomeContainer(){
     // ---------------------- Local UI State ----------------------
     const [isPopupCreateOpen, setIsPopupCreateOpen] = useState<boolean>(false);
     const [isPopupEditOpen, setIsPopupEditOpen] = useState<boolean>(false);

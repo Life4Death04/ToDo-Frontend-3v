@@ -62,7 +62,7 @@ type AddTaskProps = {
  * @param handleAddUserTask - function to handle adding a user task
  * @returns JSX.Element
  */
-export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, error, handleAddUserTask, handleArchive, handleEdit }: TasksTableProps){
+export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleArchive, handleEdit }: TasksTableProps){
     return(
         <section className="px-4 pl-4 pt-4">
             <header className="flex justify-between items-center mb-4">

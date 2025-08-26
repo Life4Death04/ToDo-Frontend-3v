@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import { useState, type ChangeEvent, type FormEvent } from "react";
-import { useLoginUser } from "../../queries/usersQuery";
+import type { ChangeEvent, FormEvent } from "react";
+import type { FormData } from "../../containers/LoginContainer";
 import { 
     Footer, 
     Header, 
@@ -29,53 +29,39 @@ const submitBtnContent: SubmitBtnProps = {
 }
 
 // -------------------- Types --------------------
-type FormData = {
-    email: string,
-    password: string,
+type LoginFormProps = {
+    onSubmit: (e: FormEvent) => void
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void
+    values: FormData
+    isPending: boolean
+    isError: boolean
+    error: Error | null
 }
 
 // -------------------- Main Login Component --------------------
-export default function Login(){
-    const {isPending, isSuccess, mutate, isError, error} = useLoginUser()
-    const [formData, setFormData] = useState<FormData>({
-        email: '', password: ''
-    })
-
-    function handleChange(e: ChangeEvent<HTMLInputElement>):void{
-        const {name, value} = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value
-        }))
-    }
-
-    function handleSubmit(e: FormEvent):void{
-        e.preventDefault();
-        mutate(formData);
-    }
-
+export default function LoginForm({onSubmit, onChange, values, isPending, isError, error}: LoginFormProps) {
     return(
         <main className="h-screen flex items-center justify-center">
             <section className="mx-auto text-center w-max-auth shadow-2xl rounded-xl p-8">
                 <Header {...headerText}></Header>
-                <form onSubmit={handleSubmit} className="flex flex-col content-around mt-6 mb-4">
+                <form onSubmit={onSubmit} className="flex flex-col content-around mt-6 mb-4">
                         <Input 
                             type="email" 
                             name="email" 
                             label="email"
-                            value={formData.email}
+                            value={values.email}
                             required={true} 
                             placeholder="Enter your email address"
-                            onChange={handleChange}>
+                            onChange={onChange}>
                         </Input>
                         <Input 
                             type="password" 
                             name="password" 
                             label="password"
-                            value={formData.password}
+                            value={values.password}
                             required={true} 
                             placeholder="Enter your password"
-                            onChange={handleChange}>
+                            onChange={onChange}>
                         </Input>
                         <div className="flex justify-between mb-4">
                             <div className="">
@@ -91,8 +77,7 @@ export default function Login(){
                             </Link>
                         </div>
                         <SubmitBtn {...submitBtnContent} isPending={isPending}></SubmitBtn>
-                        {isError && <p>{error.message}</p>}
-                        {isSuccess && <p>User logged in!</p>}
+                        {isError && <p>{error?.message}</p>}
                 </form>
                 <Footer {...footerContent}></Footer>
             </section>

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { useFetchMeData, useLogoutUser } from "../../queries/usersQuery";
+import { useFetchMeData, useLogoutUser } from "../../hooks/useUsers";
 import { UserBadge } from "../UserBadge/UserBadge";
 // -------------------- Types --------------------
 type SideBarLinkItem = {

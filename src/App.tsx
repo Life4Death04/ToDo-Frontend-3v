@@ -1,9 +1,9 @@
 import './App.css'
-import Login from './components/auth/Login'
-import Register from './components/auth/Register'
-import NotFound from './components/404NotFound/404NotFound'
-import MainLayout from './components/Layout/MainLayout'
-import Home from './components/Home/Home'
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import HomePage from './pages/HomePage';
+import NotFoundPage from './pages/NotFoundPage';
+import AppPage from './layouts/AppLayout';
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
@@ -18,18 +18,18 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    path: '/', element: <Login />
+    path: '/', element: <LoginPage />
   },{
-    path: '/accounts/register', element: <Register></Register>
+    path: '/accounts/register', element: <RegisterPage />
   },{
     path: '/accounts/:userId', 
-    element: <MainLayout></MainLayout>,
-    errorElement:<NotFound />,
+    element: <AppPage />,
+    errorElement:<NotFoundPage />,
     children: [
-      { index: true, element: <Home /> }
+      { index: true, element: <HomePage /> }
     ]
   },{
-    path: '*', element: <NotFound></NotFound>
+    path: '*', element: <NotFoundPage />
   }
 ])
 

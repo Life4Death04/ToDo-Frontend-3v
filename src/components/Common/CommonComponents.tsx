@@ -87,7 +87,16 @@ export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
 }
 
 // -------------------- Reusable Button Component --------------------
-export function Button({ onClick, iconStyle, textButton, buttonStyle }: ButtonProps){
+export function Button({ onClick, textButton, buttonStyle }: ButtonProps){
+    return(
+        <button className={`bg-orange text-white font-bold xsm:p-2 sm:text-xl lg:text-2xl sm:p-3 lg:p-4 rounded-xl hover:cursor-pointer hover:bg-orange-strong ${buttonStyle}`} onClick={onClick}>
+            {textButton}
+        </button>
+    );
+}
+
+// -------------------- Reusable Button Icon Component --------------------
+export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: ButtonProps){
     return(
         <button className={`hover:cursor-pointer hover:text-orange xsm:px-2 sm:px-3 py-2 ${buttonStyle}`} onClick={onClick}>
             <i className={`${iconStyle} xsm:text-base lg:text-lg`} aria-hidden={true}>{textButton}</i>
