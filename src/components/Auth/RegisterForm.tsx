@@ -37,13 +37,24 @@ type RegisterFormProps = {
     isPending: boolean,
     isSuccess: boolean,
     error: Error | null,
+    fieldErrors?: Partial<ErrorTypes>
+}
+
+type ErrorTypes = {
+    email: string;
+    password: string;
+}
+
+const errorMessages:ErrorTypes = {
+    email: "Email already in use",
+    password: "Passwords don't match"
 }
 
 // -------------------- Main Register Component --------------------
-export default function RegisterForm({ values, onChange, onSubmit, isError, isPending, error, isSuccess }: RegisterFormProps){
+export default function RegisterForm({ values, onChange, onSubmit, isPending, error, isSuccess, fieldErrors }: RegisterFormProps){
     return(
         <main className="flex items-center justify-center">
-            <section className="text-center mx-auto w-max-auth shadow-2xl rounded-xl p-8 pt-4">
+            <section className="bg-white text-center mx-auto w-max-auth shadow-2xl rounded-xl p-8 pt-4 bg0">
                 <Header {...headerText}></Header>
                 <form className="flex flex-col content-around" onSubmit={onSubmit}>
                         <div className="flex justify-between gap-8">
@@ -71,7 +82,9 @@ export default function RegisterForm({ values, onChange, onSubmit, isError, isPe
                             placeholder="Enter your email address" 
                             required={true}
                             value={values.email}
-                            onChange={onChange}>
+                            onChange={onChange}
+                            error={(error?.message === errorMessages.email) ? error : undefined}
+                        >
                         </Input>
                         <Input 
                             type="password" 
@@ -80,9 +93,9 @@ export default function RegisterForm({ values, onChange, onSubmit, isError, isPe
                             placeholder="Enter your password" 
                             required={true}
                             value={values.password}
-                            onChange={onChange}>
+                            onChange={onChange}
+                        >
                         </Input>
-                        {isError && <p>Password Invalidation!</p>}
                         <Input 
                             type="password" 
                             name="confirmPassword"
@@ -90,12 +103,12 @@ export default function RegisterForm({ values, onChange, onSubmit, isError, isPe
                             placeholder="Confirm your password" 
                             required={true}
                             value={values.confirmPassword}
-                            onChange={onChange}>
+                            onChange={onChange}
+                            error={(fieldErrors?.password === errorMessages.password) ? new Error(errorMessages.password) : undefined}
+                        >
                         </Input>
-                        {/* <button type="submit" className="bg-orange text-white font-bold  rounded-md p-3 mt-4 mb-2 hover:cursor-pointer hover:bg-orange-strong">Register</button> */}
                         <SubmitBtn {...submitBtnContent} isPending={isPending}></SubmitBtn>
-                        {isError && <p>{error?.message}</p>}
-                        {isSuccess && <p>User created successfully</p>}
+                        {isSuccess && <p className="bg-green-100 text-green-800 border border-green-800 mt-4 w-fit mx-auto px-2 py-1 rounded-lg xsm:text-xs md:text-sm lg:text-base">User created successfully</p>}
                 </form>
                 <Footer {...footerContent}></Footer>
             </section>

@@ -10,8 +10,14 @@ export type FormData = {
     confirmPassword: string,
 }
 
+type ErrorTypes = {
+    email: string;
+    password: string;
+}
+
 export default function RegisterContainer(){
     const { mutate, isPending, isError, error, isSuccess } = useRegisterNewUser();
+    const [fieldErrors, setFieldErrors] = useState<Partial<ErrorTypes>>({})
     const [formData, setFormData] = useState<FormData>({
         firstName: "",
         lastName: "",
@@ -31,7 +37,13 @@ export default function RegisterContainer(){
 
     function handleOnSubmit(e: React.FormEvent):void{
         e.preventDefault();
-        mutate(formData);
+        if(formData.password !== formData.confirmPassword){
+            setFieldErrors({ password: "Passwords don't match" })
+            return;
+        }
+        setFieldErrors({password: ''})
+        const {firstName, lastName, email, password} = formData;
+        mutate({firstName, lastName, email, password});
     }
 
     return(
@@ -43,6 +55,7 @@ export default function RegisterContainer(){
             isPending={isPending}
             error={error}
             isSuccess={isSuccess}
+            fieldErrors={fieldErrors}
         />
     );
 }

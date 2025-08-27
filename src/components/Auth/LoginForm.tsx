@@ -38,12 +38,22 @@ type LoginFormProps = {
     error: Error | null
 }
 
+type ErrorTypes = {
+    email: string;
+    password: string;
+}
+
+const errorMessages: ErrorTypes = {
+    email: 'Email not registered',
+    password: 'Invalid password or email',
+}
+
 // -------------------- Main Login Component --------------------
-export default function LoginForm({onSubmit, onChange, values, isPending, isError, error}: LoginFormProps) {
+export default function LoginForm({onSubmit, onChange, values, isPending, error}: LoginFormProps) {
     return(
-        <main className="h-screen flex items-center justify-center">
-            <section className="mx-auto text-center w-max-auth shadow-2xl rounded-xl p-8">
-                <Header {...headerText}></Header>
+        <main className="h-screen flex items-center justify-center border-2 bg-white">
+            <section className="mx-auto text-center w-max-auth h-fit shadow-2xl rounded-xl p-8">
+                <Header {...headerText} />
                 <form onSubmit={onSubmit} className="flex flex-col content-around mt-6 mb-4">
                         <Input 
                             type="email" 
@@ -52,8 +62,9 @@ export default function LoginForm({onSubmit, onChange, values, isPending, isErro
                             value={values.email}
                             required={true} 
                             placeholder="Enter your email address"
-                            onChange={onChange}>
-                        </Input>
+                            onChange={onChange}
+                            error={(error?.message === errorMessages.email) ? error : undefined}
+                        />
                         <Input 
                             type="password" 
                             name="password" 
@@ -61,8 +72,9 @@ export default function LoginForm({onSubmit, onChange, values, isPending, isErro
                             value={values.password}
                             required={true} 
                             placeholder="Enter your password"
-                            onChange={onChange}>
-                        </Input>
+                            onChange={onChange}
+                            error={(error?.message === errorMessages.password) ? error : undefined}
+                        />
                         <div className="flex justify-between mb-4">
                             <div className="">
                                 <input type="checkbox" className="mr-2 size-3.5"/>
@@ -76,10 +88,9 @@ export default function LoginForm({onSubmit, onChange, values, isPending, isErro
                                 </button>
                             </Link>
                         </div>
-                        <SubmitBtn {...submitBtnContent} isPending={isPending}></SubmitBtn>
-                        {isError && <p>{error?.message}</p>}
+                        <SubmitBtn {...submitBtnContent} isPending={isPending} />
                 </form>
-                <Footer {...footerContent}></Footer>
+                <Footer {...footerContent} />
             </section>
         </main>
     )
