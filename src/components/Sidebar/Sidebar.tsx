@@ -21,7 +21,7 @@ export function Sidebar(){
   const logout = useLogoutUser();
   const { data: meData, isError, isLoading } = useFetchMeData();
   return(
-    <nav className="fixed top-0 left-0 h-screen w-12 py-3 sm:w-20 lg:w-64 lg:px-2 bg-gray-200 flex flex-col">
+    <nav className="fixed top-0 left-0 h-screen w-12 py-3 sm:w-20 lg:w-64 lg:px-2 bg-white flex flex-col">
       {/* Logo & Title */}
       <header className="flex gap-4 px-3 py-2 xsm:mb-4 xsm:justify-center">
         <i className="fa-solid fa-list-check xsm:text-2xl md:text-3xl lg:text-3xl" aria-hidden={true}></i>
@@ -29,8 +29,8 @@ export function Sidebar(){
       </header>
 
       {/* Navigation Links */}
-      <ul className="flex flex-col h-full gap-4 w-full xsm:items-center lg:items-start">
-        <SidebarLinkItem linkText="My Tasks" linkUrl="/settings" classIcon="fa-solid fa-user" hoverEffect={true}/>
+      <ul className="flex flex-col h-full gap-3 w-full xsm:items-center lg:items-start">
+        <SidebarLinkItem linkText="My Tasks" linkUrl="/accounts/1" classIcon="fa-solid fa-user" hoverEffect={true}/>
         <SidebarLinkItem linkText="Archived Tasks" linkUrl="/settings" classIcon="fa-solid fa-archive" hoverEffect={true}/>
         <SidebarLinkItem linkText="Reminders " linkUrl="/settings" classIcon="fa-solid fa-clock" hoverEffect={true}/>
       </ul>
@@ -39,8 +39,8 @@ export function Sidebar(){
       <UserBadge userData={meData || {}} isLoading={isLoading} isError={isError} />
 
       {/* Footer Links */}
-      <footer className="mt-auto w-full lg:px-2 lg:py-3 lg:border-t-1 border-t-black/50">
-        <section className="flex flex-col gap-4 lg:items-start">
+      <footer className="w-full lg:px-2 pb-2">
+        <section className="flex flex-col gap-2 lg:items-start">
           <SidebarLinkItem linkText="Settings" linkUrl="/settings" classIcon="fa-solid fa-gear" hoverEffect={true}></SidebarLinkItem>
           {/* <SidebarLinkItem linkText="Log Out" linkUrl="/logout" classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true}></SidebarLinkItem> */}
           <SideBarButton linkText="Log Out" classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true} onClick={logout}/>
@@ -53,7 +53,7 @@ export function Sidebar(){
 // -------------------- Sidebar Link Item Component --------------------
 function SidebarLinkItem({linkText, linkUrl, classIcon, hoverEffect}: SideBarLinkItem){
   return(
-    <NavLink to={linkUrl} className={`flex justify-center gap-2 w-full py-2 lg:justify-start lg:px-4 ${hoverEffect && 'hover:bg-white hover:rounded-3xl hover:shadow-md'}`}>
+    <NavLink to={linkUrl} className={`flex justify-center gap-4 w-full py-2 text-gray-600 lg:justify-start lg:px-4 active:rounded-xl active:bg-gray-200 active:text-black ${hoverEffect && 'hover:rounded-xl hover:bg-gray-200 hover:text-black'}`}>
         <i className={`${classIcon} sm:text-2xl md:text-2xl`} aria-hidden={true}></i>
         <span className="xsm:hidden lg:inline">{linkText}</span>
     </NavLink>
@@ -63,7 +63,7 @@ function SidebarLinkItem({linkText, linkUrl, classIcon, hoverEffect}: SideBarLin
 // -------------------- Sidebar Button Component --------------------
 function SideBarButton({onClick, linkText, classIcon, hoverEffect}: SideBarButtonProps){
   return(
-    <button onClick={onClick} className={`flex justify-center gap-2 w-full py-2 lg:justify-start lg:px-4 ${hoverEffect && 'hover:bg-white hover:rounded-3xl hover:shadow-md hover:cursor-pointer'}`}>
+    <button onClick={onClick} className={`flex justify-center gap-2 w-full py-2 text-gray-600 lg:justify-start lg:px-4 ${hoverEffect && 'hover:cursor-pointer hover:rounded-xl hover:bg-gray-200 hover:text-black'}`}>
       <i className={`${classIcon} sm:text-2xl md:text-2xl`} aria-hidden={true}></i>
         <span className="xsm:hidden lg:inline">{linkText}</span>
     </button>

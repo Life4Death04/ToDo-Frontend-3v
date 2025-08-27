@@ -42,7 +42,7 @@ export function IndicatorPanels({totalTasks, completedTasks}: IndicatorPanelProp
  */
 function IndicatorCard({children}: {children: React.ReactNode}){
   return(
-    <div className="flex flex-col flex-1 items-center justify-center bg-amber-100 rounded-2xl shadow-md 
+    <div className="flex flex-col flex-1 items-center justify-center bg-white rounded-2xl 
     w-44 h-44 xsm:p-8 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60">
       {children}
     </div>
@@ -60,11 +60,11 @@ function IndicatorCard({children}: {children: React.ReactNode}){
 function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicatorProps){
     return(
       <IndicatorCard>
-        <div className="relative flex items-center justify-center bg-white xsm:p-4 md:p-6 lg:p-8  rounded-full">
-          <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl`} aria-hidden={true}></i>
+        <div className="relative flex items-center justify-center bg-white xsm:p-4 md:p-6 lg:p-8 rounded-full">
+          <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl text-gray-600 bg-gray-200 p-4 rounded-full`} aria-hidden={true}></i>
         </div>
 
-        <h2 className="mt-4 mb-2 text-center text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800">
+        <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600">
           {textIndicator}
         </h2>
 
@@ -132,7 +132,7 @@ export function RadialIndicator({textIndicator, totalTasks, completedTasks}:Radi
       </div>
 
       {/* Labels */}
-      <h2 className="m-2 text-sm text-center sm:text-base md:text-lg lg:text-xl font-semibold text-gray-800">
+      <h2 className="m-2 text-sm text-center sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600">
         {textIndicator} 
       </h2>
       <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600">
