@@ -9,6 +9,7 @@ type InputCompTypes = {
     label: string,
     required?: false | true,
     placeholder: string,
+    error?: Error | null ,
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
 };
 
@@ -36,14 +37,14 @@ type ButtonProps = {
 }
 
 // -------------------- Input Component --------------------
-export function Input({ type, value, name, label, required, placeholder, onChange }:InputCompTypes){
+export function Input({ type, value, name, label, required, placeholder, onChange, error }:InputCompTypes){
     return(
         <div className="text-left flex-grow mb-5">
-            <label className="block font-bold mb-2 capitalize">
+            <label className="block font-bold mb-2 capitalize xsm:text-xs md:text-sm">
                 {label}
             </label>
             <input 
-                className="lg:px-4 lg:py-3 border-2 border-black/20 rounded-2xl w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
+                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md ${error ? 'border-red-500' : ''}`}
                 type={type} 
                 value={value} 
                 onChange={onChange} 
@@ -51,6 +52,7 @@ export function Input({ type, value, name, label, required, placeholder, onChang
                 name={name} 
                 placeholder={placeholder}
             />
+            {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
         </div>
     );
 }
@@ -59,10 +61,10 @@ export function Input({ type, value, name, label, required, placeholder, onChang
 export function Header({textH2, label}: HeaderProps){
     return(
         <header className="mb-6">
-            <img className="mx-auto" src="../icon-main.png"></img>
-            <h1 className="text-4xl font-bold">TaskMaster</h1>
-            <h2 className="text-6xl font-bold my-3">{textH2}</h2>
-            <label className="text-black/60">{label}</label>
+            <img className="mx-auto xsm:w-20 md:w-25" src="../icon-main.png"></img>
+            <h1 className="xsm:text-2xl md:text-4xl font-bold">TaskMaster</h1>
+            <h2 className="text-gray-700 xsm:text-xl md:text-2xl font-bold mt-2 mb-1">{textH2}</h2>
+            <label className="text-gray-500 xsm:text-base md:text-xl">{label}</label>
         </header>
     );
 }
@@ -71,9 +73,9 @@ export function Header({textH2, label}: HeaderProps){
 export function Footer({label, buttonUrl, buttonText}: FooterProps){
     return(
         <footer className="mt-4">
-            <label>{label}</label>
+            <label className="xsm:text-xs md:text-sm lg:text-base">{label}</label>
             <Link to={`${buttonUrl}`}>
-                <button className="text-orange font-bold hover:cursor-pointer">{buttonText}</button>
+                <button className="text-orange font-bold hover:cursor-pointer xsm:text-xs md:text-sm lg:text-base">{buttonText}</button>
             </Link>
         </footer>
     );
@@ -82,14 +84,14 @@ export function Footer({label, buttonUrl, buttonText}: FooterProps){
 // -------------------- Submit Button Component --------------------
 export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
     return(
-        <button type="submit" className="bg-orange text-white rounded-md xsm:p-2 xsm:text-sm xsm:text-semibold lg:p-3 lg:font-bold lg:text-lg  hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
+        <button type="submit" className="bg-orange text-white rounded-md xsm:p-2 xsm:text-sm md:text-base xsm:text-semibold lg:p-3 lg:font-bold lg:text-lg hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
     );
 }
 
 // -------------------- Reusable Button Component --------------------
 export function Button({ onClick, textButton, buttonStyle }: ButtonProps){
     return(
-        <button className={`bg-orange text-white font-bold xsm:p-2 sm:text-xl lg:text-2xl sm:p-3 lg:p-4 rounded-xl hover:cursor-pointer hover:bg-orange-strong ${buttonStyle}`} onClick={onClick}>
+        <button className={`bg-orange text-white font-bold xsm:p-2 sm:text-xl lg:text-xl sm:p-3 lg:p-4 rounded-xl hover:cursor-pointer hover:bg-orange-strong ${buttonStyle}`} onClick={onClick}>
             {textButton}
         </button>
     );
