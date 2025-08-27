@@ -100,8 +100,8 @@ export function Button({ onClick, textButton, buttonStyle }: ButtonProps){
 // -------------------- Reusable Button Icon Component --------------------
 export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: ButtonProps){
     return(
-        <button className={`hover:cursor-pointer hover:text-orange xsm:px-2 sm:px-3 py-2 ${buttonStyle}`} onClick={onClick}>
-            <i className={`${iconStyle} xsm:text-base lg:text-lg`} aria-hidden={true}>{textButton}</i>
+        <button className={`hover:cursor-pointer xsm:px-2 sm:px-3 py-2 ${buttonStyle}`} onClick={onClick}>
+            <i className={`${iconStyle} text-gray-500 xsm:text-base lg:text-lg hover:text-orange`} aria-hidden={true}>{textButton}</i>
         </button>
     );
 }

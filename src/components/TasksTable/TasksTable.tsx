@@ -64,12 +64,12 @@ type AddTaskProps = {
  */
 export function TasksTable({ userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleArchive, handleEdit }: TasksTableProps){
     return(
-        <section className="px-4 pl-4 pt-4">
+        <section className="px-6 pt-4 mx-6 bg-white rounded-2xl">
             <header className="flex justify-between items-center mb-4">
                 <h1 className="font-bold xsm:text-xl md:text-2xl lg:text-3xl">My Tasks</h1>
                 <AddTaskButton onClick={handleAddUserTask} />
             </header>
-            <header className="items-center bg-gray-100 px-4 py-2 text-gray-400 border-gray-400 border-b font-bold xsm:hidden lg:flex">
+            <header className="items-center px-4 py-2 text-gray-400 border-gray-200 border-b font-bold xsm:hidden lg:flex">
                 <span className="flex-2">Task Name</span> {/* //flex-[2] */}
                 <span className="flex-1">Due Date</span>
                 <span className="flex-1">Priority</span>
@@ -112,12 +112,12 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive, onE
     // - Date formatting delegated to `formatDueDate` (consistent locale rules).
     // - Priority & status classes come from helpers to keep styles consistent.
     return(
-        <li className="lg:flex lg:gap-3 bg-white lg:border-b-1 lg:border-gray-400 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none">
-            <div className="flex gap-2 items-center flex-[2]">
+        <li className="lg:flex lg:gap-3 bg-white lg:border-b lg:border-gray-200 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none">
+            <div className="flex gap-3 items-center flex-[2]">
                 <button>
                     {getCheckIcon(status === 'DONE') /*Not Ready*/}
                 </button>
-                <span className="xsm:text-sm md:text-base lg:text-lg overflow break-words">
+                <span className="font-bold xsm:text-sm md:text-base lg:text-lg overflow break-words">
                     {taskName}
                 </span>
                 <ButtonIcon onClick={onEdit} iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></ButtonIcon>
@@ -127,11 +127,13 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onArchive, onE
                 </div>
             </div>
             <div className="flex xsm:flex-col lg:flex-row lg:items-center xsm:gap-3 xsm:mt-2 lg:mt-0 flex-[3]">
-                <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1">
+                <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1 text-gray-600 font-semibold">
                     {formatDueDate(dueDate)}
                 </span>
-                <span className={`font-bold xsm:text-xs md:text-sm lg:text-base lg:flex-1 ${getPriorityColor(priority)}`}>
+                <span className={`font-bold xsm:text-xs md:text-sm lg:text-base lg:flex-1`}>
+                    <span className={`px-2 py-1 rounded-2xl ${getPriorityColor(priority)}`}>
                     {priority}
+                    </span>
                 </span>
                 <div className="lg:flex-1"> 
                     <span className={`xsm:text-xs md:text-sm lg:text-base xsm:w-fit px-2 py-1 rounded-xl font-bold ${getStatusColor(status)}`}>
@@ -168,7 +170,7 @@ function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessagePro
  */
 function AddTaskButton({onClick}: AddTaskProps){
     return(
-        <button onClick={onClick} className="bg-orange ml-auto  text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl">
+        <button onClick={onClick} className="bg-orange ml-auto text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl">
             + Add Task
         </button>
     );

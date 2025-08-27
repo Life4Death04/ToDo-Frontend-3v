@@ -40,14 +40,14 @@ export function BadgeShell({ isLoading, isError, children, email, fullName }: Ba
     const busy = isLoading;
     return (
         <div 
-            className="relative w-full p-1 rounded-2xl mb-4 lg:bg-amber-200"
+            className="relative w-full p-1 rounded-2xl mb-4"
             aria-busy={busy}
             aria-live="polite"
             title={fullName || 'No name'}
             aria-label={fullName || ''}
         >
             <div className="flex items-center gap-3 xsm:justify-center lg:justify-start">
-                <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+                <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-500 flex-shrink-0">
                     {children}
                 </div>
 
@@ -80,7 +80,7 @@ export function Avatar({ avatarUrl, initials, isError }: AvatarProps){
     }
     // Fallback initials when no avatar
     return (
-        <div className="w-full h-full flex items-center justify-center text-sm font-bold text-gray-700">
+        <div className="w-full h-full flex items-center justify-center text-sm font-bold text-gray-200">
             {isError && <span className="text-red-500"></span>}
             {avatarUrl ? <img src={avatarUrl} alt="User avatar" className="w-full h-full object-cover" loading="lazy"/> : initials}
         </div>
