@@ -1,13 +1,17 @@
 import axios from 'axios';
 import api from './axios';
-import type { FetchListsResponse } from '../types';
+import type { FetchListsResponse, CreateListResponse, List, FetchListDataResponse } from '../types';
 
 type BACKEND_ROUTES_LISTS = {
     FETCH_LISTS: string;
+    CREATE_LIST: string;
+    FETCH_LIST_DATA: (listId:number) => string;
 }
 
 const BACKEND_ROUTES: BACKEND_ROUTES_LISTS = {
     FETCH_LISTS: '/lists/',
+    CREATE_LIST: '/lists/',
+    FETCH_LIST_DATA: (listId:number) => `/lists/${listId}`
 }
 
 export const fetchLists = async (): Promise<FetchListsResponse> => {
@@ -19,6 +23,32 @@ export const fetchLists = async (): Promise<FetchListsResponse> => {
             throw new Error(error.response?.data?.message || `Error fetching lists`);
         }else{
             throw new Error(`Unexpected error fetching lists`);
+        }
+    }
+}
+
+export const createList = async (list: Omit<List, 'id' | 'tasks'>): Promise<CreateListResponse> => {
+    try{
+        const response = await api.post(BACKEND_ROUTES.CREATE_LIST, list);
+        return response.data;
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error creating list`)
+        }else{
+            throw new Error(`Unexpected error creating list`)
+        }
+    }
+}
+
+export const fetchListData = async (listId:number): Promise<FetchListDataResponse> =>{
+    try{
+        const response = await api.get(BACKEND_ROUTES.FETCH_LIST_DATA(listId));
+        return response.data;
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error fetching list data`)
+        }else{
+            throw new Error(`Unexpected error fetching list data`)
         }
     }
 }

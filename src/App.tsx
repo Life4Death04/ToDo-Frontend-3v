@@ -3,9 +3,10 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
-import AppPage from './layouts/AppLayout';
+import AppPage from './pages/AppPage';
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import { ListPage } from './pages/ListPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,7 +27,11 @@ const router = createBrowserRouter([
     element: <AppPage />,
     errorElement:<NotFoundPage />,
     children: [
-      { index: true, element: <HomePage /> }
+      { index: true, element: <HomePage /> },
+      {
+        path: 'lists/:id',
+        element: <ListPage />
+      }
     ]
   },{
     path: '*', element: <NotFoundPage />

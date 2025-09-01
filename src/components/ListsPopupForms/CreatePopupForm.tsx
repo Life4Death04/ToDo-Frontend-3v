@@ -3,7 +3,7 @@ import { ButtonIcon } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
 import type { List } from "../../types";
 
-type ListSummary = Pick<List, 'name'>;
+type ListSummary = Pick<List, 'title' | 'color'>;
 
 type CreatePopupFormProps = {
     values: ListSummary;
@@ -25,17 +25,17 @@ export default function CreatePopupForm({ values, onChange, onSubmit }: CreatePo
                 </div>
                 <form className="mt-4 text-center" onSubmit={onSubmit}>
                     <Input 
-                        name="name"
+                        name="title"
                         type="text" 
-                        value={values.name}
-                        label="List Name"
-                        placeholder="Enter list name"
+                        value={values.title}
+                        label="List Title"
+                        placeholder="Enter list title"
                         onChange={onChange}
                     />
                     <Input 
-                        name="listColor"
+                        name="color"
                         type="color" 
-                        value="222"
+                        value={values.color}
                         label="List Color"
                         dimensions="xsm:h-20 md:h-40"
                         onChange={onChange}
