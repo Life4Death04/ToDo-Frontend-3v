@@ -1,106 +1,138 @@
-import { TasksTable } from "../components/TasksTable/TasksTable";
+/* import { TasksTable } from "../components/TasksTable/TasksTable";
 import { useFetchListData } from "../hooks/useLists";
 import { useCreateTask, useDeleteUserTask } from "../hooks/useTasks";
-import type { PriorityTypes, Task, List } from "../types";
 import { useParams } from "react-router";
 import { useState } from "react";
 import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query"; */
 
+import type { PriorityTypes, Task, List } from "../types";
 type FormData = Partial<Task>;
 
-export function ListContainer(){
-    const [isPopupCreateOpen, setIsPopupCreateOpen] = useState<boolean>(false);
-    const [isPopupEditOpen, setIsPopupEditOpen] = useState<boolean>(false);
-    const [formCreateData, setFormCreateData] = useState<FormData>({
-        taskName: '',
-        description: '',
-        dueDate: '',
-        priority: 'LOW',
-        status: 'TODO',
-        authorId: undefined,
-    })
+// export function ListContainer(){
+//     const [isPopupCreateOpen, setIsPopupCreateOpen] = useState<boolean>(false);
+//     const [isPopupEditOpen, setIsPopupEditOpen] = useState<boolean>(false);
+//     const [formCreateData, setFormCreateData] = useState<FormData>({
+//         taskName: '',
+//         description: '',
+//         dueDate: '',
+//         priority: 'LOW',
+//         status: 'TODO',
+//         authorId: undefined,
+//     })
     
-    const queryClient = useQueryClient();
+//     const queryClient = useQueryClient();
 
-    const { userId: userIdParam } = useParams();
-    const userId = Number(userIdParam);
+//     const { userId: userIdParam } = useParams();
+//     const userId = Number(userIdParam);
 
-    // simple validation
-    if(!userIdParam || Number.isNaN(userId)){
-        return <div>Invalid User ID</div>;
-    }
+//     // simple validation
+//     if(!userIdParam || Number.isNaN(userId)){
+//         return <div>Invalid User ID</div>;
+//     }
 
-    const { id: listIdParam } = useParams();
-    const listId = Number(listIdParam);
+//     const { id: listIdParam } = useParams();
+//     const listId = Number(listIdParam);
 
-    // simple validation
-    if(!listIdParam || Number.isNaN(listId)){
-        return <div>Invalid List ID</div>;
-    }
+//     // simple validation
+//     if(!listIdParam || Number.isNaN(listId)){
+//         return <div>Invalid List ID</div>;
+//     }
 
-    const createTaskMutation = useCreateTask();
-    const { data, isLoading, isError, error } = useFetchListData(listId);
-    const deleteUserTask = useDeleteUserTask(userId);
+//     const createTaskMutation = useCreateTask();
+//     const { data, isLoading, isError, error } = useFetchListData(listId);
+//     const deleteUserTask = useDeleteUserTask(userId);
 
-    const filteredList = data?.list.tasks.filter((task:FormData) => listId === task.listId) ?? [];
+//     const filteredList = data?.list.tasks.filter((task:FormData) => listId === task.listId) ?? [];
 
-    const handleChangeCreate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
-        const {name, value} = e.target;
-        setFormCreateData((prev) => ({
-            ...prev,
-            [name]: value
-        }));
-    }
+//     const handleChangeCreate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
+//         const {name, value} = e.target;
+//         setFormCreateData((prev) => ({
+//             ...prev,
+//             [name]: value
+//         }));
+//     }
 
-    const handleSubmitData = (e: React.FormEvent<HTMLFormElement>) =>{
-        e.preventDefault();
-        const submitData = {
-            taskName: formCreateData.taskName || '',
-            description: formCreateData.description || '',
-            dueDate: formCreateData.dueDate ? new Date(formCreateData.dueDate).toISOString() : undefined,
-            priority: formCreateData.priority as PriorityTypes,
-            status: formCreateData.status || 'TODO',
-            authorId: Number(userId),
-            listId: Number(listId)
-        }
+//     const handleSubmitData = (e: React.FormEvent<HTMLFormElement>) =>{
+//         e.preventDefault();
+//         const submitData = {
+//             taskName: formCreateData.taskName || '',
+//             description: formCreateData.description || '',
+//             dueDate: formCreateData.dueDate ? new Date(formCreateData.dueDate).toISOString() : undefined,
+//             priority: formCreateData.priority as PriorityTypes,
+//             status: formCreateData.status || 'TODO',
+//             authorId: Number(userId),
+//             listId: Number(listId)
+//         }
 
-        createTaskMutation.mutate(submitData, {
-            onSuccess: () => {
-                setIsPopupCreateOpen(false);
-            }
-        });
-    }
+//         createTaskMutation.mutate(submitData, {
+//             onSuccess: () => {
+//                 setIsPopupCreateOpen(false);
+//             }
+//         });
+//     }
 
-    const handleDelete = (taskId: number) => {
-        deleteUserTask.mutate(taskId); // mutation expects taskId parameter
-    }
+//     const handleDelete = (taskId: number) => {
+//         deleteUserTask.mutate(taskId); // mutation expects taskId parameter
+//     }
 
-    const handlePopupForm = () =>{
-        setIsPopupCreateOpen(prev => !prev)
-    }
+//     const handlePopupForm = () =>{
+//         setIsPopupCreateOpen(prev => !prev)
+//     }
 
-    const handleAdd = () => {
-        handlePopupForm();
-    }
+//     const handleAdd = () => {
+//         handlePopupForm();
+//     }
 
-    return(
-        <main className="py-6">
-            <TasksTable
-                tableTitle={data?.list.title || "My Tasks"}
-                userTasks={filteredList}
-                deleteUserTask={handleDelete}
-                handleAddUserTask={handleAdd}
-                isLoading={isLoading}
-                isError={isError}
-                error={error}
-                handleArchive={() => {}}
-                handleEdit={() => {}}
-            />
+//     return(
+//         <main className="py-6">
+//             <TasksTable
+//                 tableTitle={data?.list.title || "My Tasks"}
+//                 userTasks={filteredList}
+//                 deleteUserTask={handleDelete}
+//                 handleAddUserTask={handleAdd}
+//                 isLoading={isLoading}
+//                 isError={isError}
+//                 error={error}
+//                 handleArchive={() => {}}
+//                 handleEdit={() => {}}
+//             />
 
-            {/* popup form to create a new task (conditionally rendered) */}
-            {isPopupCreateOpen && <PopupFormCreate values={formCreateData} onChange={handleChangeCreate} onSubmit={handleSubmitData} onClose={handlePopupForm} />}
-            {/* {isPopupEditOpen && <PopupFormEdit values={formEditData} onChange={handleChangeEdit} onSubmit={handleSubmitEditedData} onClose={handlePopupFormEdit} />} */}
-        </main> 
-    );
+//             {/* popup form to create a new task (conditionally rendered) */}
+//             {isPopupCreateOpen && <PopupFormCreate values={formCreateData} onChange={handleChangeCreate} onSubmit={handleSubmitData} onClose={handlePopupForm} />}
+//             {/* {isPopupEditOpen && <PopupFormEdit values={formEditData} onChange={handleChangeEdit} onSubmit={handleSubmitEditedData} onClose={handlePopupFormEdit} />} */}
+//         </main> 
+//     );
+// }
+
+import { useParams } from "react-router";
+import { useTasksManager } from "../hooks/useTaskManager";
+import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
+import { TasksTable } from "../components/TasksTable/TasksTable";
+
+export function ListContainer(){  
+  const { id: listIdParam, userId: userIdParam } = useParams();
+  const listId = Number(listIdParam);
+  const userId = Number(userIdParam);
+
+  const {
+    listTitle, tasks, isLoading, isError, error, form,
+    isCreateOpen, toggleCreate, handleChange, handleSubmit, handleDelete
+  } = useTasksManager({ userId, listId });
+
+  return (
+    <main className="py-6">
+      <TasksTable
+        tableTitle={listTitle || "My Tasks"}
+        userTasks={tasks}
+        deleteUserTask={handleDelete}
+        handleAddUserTask={toggleCreate}
+        isLoading={isLoading}
+        isError={isError}
+        error={error || null}
+        handleEdit={() => {}}
+      />
+      {isCreateOpen && <PopupFormCreate values={form} onChange={handleChange} onSubmit={handleSubmit} onClose={toggleCreate} />}
+    </main>
+  );
 }
