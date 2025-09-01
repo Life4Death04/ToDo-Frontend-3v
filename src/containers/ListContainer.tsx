@@ -109,6 +109,7 @@ import { useParams } from "react-router";
 import { useTasksManager } from "../hooks/useTaskManager";
 import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
 import { TasksTable } from "../components/TasksTable/TasksTable";
+import PopupFormEdit from "../components/TasksPopupForms/PopupFormEdit";
 
 export function ListContainer(){  
   const { id: listIdParam, userId: userIdParam } = useParams();
@@ -117,8 +118,11 @@ export function ListContainer(){
 
   const {
     listTitle, tasks, isLoading, isError, error, form,
-    isCreateOpen, toggleCreate, handleChange, handleSubmit, handleDelete
+    isCreateOpen, toggleCreate, handleChange, handleSubmit, handleDelete,
+    isEditOpen, toggleEdit, editForm, setEditForm, handleChangeEdit, openEditWith, handleSubmitEdit
   } = useTasksManager({ userId, listId });
+
+  console.log(editForm)
 
   return (
     <main className="py-6">
@@ -130,9 +134,10 @@ export function ListContainer(){
         isLoading={isLoading}
         isError={isError}
         error={error || null}
-        handleEdit={() => {}}
+        handleEdit={openEditWith}
       />
       {isCreateOpen && <PopupFormCreate values={form} onChange={handleChange} onSubmit={handleSubmit} onClose={toggleCreate} />}
+      {isEditOpen && <PopupFormEdit values={editForm} onChange={handleChangeEdit} onSubmit={handleSubmitEdit} onClose={toggleEdit} />}
     </main>
   );
 }

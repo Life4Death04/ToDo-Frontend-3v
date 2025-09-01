@@ -1,7 +1,7 @@
 import { IndicatorPanels } from "../components/Indicators/Indicators";
 import { TasksTable } from "../components/TasksTable/TasksTable";
 import { useParams } from "react-router";
-import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived, useCreateTask, useUpdateTask } from "../hooks/useTasks";
+import { useFetchUserTasks, useDeleteUserTask, useCreateTask, useUpdateTask } from "../hooks/useTasks";
 import { useState } from "react";
 import type { PriorityTypes, Task, List } from "../types";
 import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
@@ -63,8 +63,6 @@ export default function HomeContainer(){
     const createListMutation = useCreateList();
     const { data, isLoading, isError, error } = useFetchUserTasks(userId);
 
-    // mutation for toggling a user task's archived status (scoped to this userId)
-    const toggleTaskArchived = useToggleTaskArchived(userId);
 
     // mutation for deleting a user task (scoped to this userId)
     const deleteUserTask = useDeleteUserTask(userId);
@@ -159,11 +157,6 @@ export default function HomeContainer(){
         setIsPopupEditOpen(prev => !prev);
     }
 
-    // archiving a task
-    const handleArchive = (taskId: number) => {
-        toggleTaskArchived.mutate(taskId);
-    }
-
     const handleAdd = () =>{
         handlePopupForm();
     }
@@ -191,7 +184,6 @@ export default function HomeContainer(){
                 isLoading={isLoading} 
                 isError={isError} 
                 error={error} 
-                handleArchive={handleArchive}
                 handleEdit={handleUpdate} 
             />
 
