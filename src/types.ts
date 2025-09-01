@@ -13,7 +13,8 @@ export type User = {
 
 export type List = {
   id: number;
-  name: string;
+  title: string;
+  color: string;
   authorId: number;
   tasks: Task[];
 }
@@ -22,11 +23,11 @@ export type Task = {
   id: number;
   taskName: string | null;
   description?: string | null;
-  archived: boolean;
   dueDate?: string | null;
   priority: PriorityTypes;
   status: StatusTypes;
   authorId: number;
+  listId?: number;
 }
 
 export type FetchTaskResponse = {
@@ -38,9 +39,21 @@ export type CreateTaskResponse = {
   task: Task;
 }
 
-export type ListsSummary = Pick<List, 'id' | 'name'>;
+export type ListsSummary = Pick<List, 'id' | 'title' | 'color'>;
 
 export type FetchListsResponse = {
   message: string;
   lists: ListsSummary[];
+}
+
+export type CreateListResponse = {
+  message: string;
+  list: List;
+}
+
+export type ListDataSummary = Omit<List, 'authorId'>;
+
+export type FetchListDataResponse = {
+  message: string;
+  list: ListDataSummary;
 }

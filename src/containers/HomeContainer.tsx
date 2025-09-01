@@ -7,6 +7,8 @@ import type { PriorityTypes, Task, List } from "../types";
 import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
 import PopupFormEdit from "../components/TasksPopupForms/PopupFormEdit";
 import CreatePopupForm from "../components/ListsPopupForms/CreatePopupForm";
+import { useCreateList } from "../hooks/useLists";
+import { useModal } from "../contexts/ModalContext";
 /**
  * Home (page)
  *
@@ -32,13 +34,13 @@ export default function HomeContainer(){
         description: '',
         dueDate: '',
         priority: 'LOW',
-        archived: false,
         status: 'TODO',
         authorId: undefined,
     });
     const [formEditData, setFormEditData] = useState<Partial<FormData>>({})
-    const [formListData, setFormListData] = useState<Pick<List, 'name'>>({
-        name: ''
+    const [formListData, setFormListData] = useState<Pick<List,'title' | 'color'>>({
+        title: '',
+        color: '#000000'
     })
     const [isPopupCreateOpen, setIsPopupCreateOpen] = useState<boolean>(false);
     const [isPopupEditOpen, setIsPopupEditOpen] = useState<boolean>(false);
@@ -55,8 +57,10 @@ export default function HomeContainer(){
 
     // ---------------------- Data Hooks -------------------------
     // fetch user's tasks (the hook is expected to return a shaped `data`)
+    const { closeCreateList } = useModal();
     const createTaskMutation = useCreateTask();
     const updateTaskMutation = useUpdateTask();
+    const createListMutation = useCreateList();
     const { data, isLoading, isError, error } = useFetchUserTasks(userId);
 
     // mutation for toggling a user task's archived status (scoped to this userId)
@@ -66,7 +70,6 @@ export default function HomeContainer(){
     const deleteUserTask = useDeleteUserTask(userId);
 
     // -------------------- Data Filtered-------------------------
-    const filteredTasks = data?.tasks.filter(task => !task.archived) ?? [];
     const totalTasks = data?.totalTasks ?? 0;
     const completedTasks = data?.completedTasks ?? 0;
     // ---------------------- Event Handlers ---------------------
@@ -78,7 +81,7 @@ export default function HomeContainer(){
         }));
     }
 
-    const handleChangeList = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
+    const handleChangeList = (e: React.ChangeEvent<HTMLInputElement>) =>{
         const {name, value} = e.target;
         setFormListData((prev) => ({
             ...prev,
@@ -99,11 +102,11 @@ export default function HomeContainer(){
         const submitData = {
             taskName: formCreateData.taskName || '',
             description: formCreateData.description || '',
-            archived: formCreateData.archived || false,
             dueDate: formCreateData.dueDate ? new Date(formCreateData.dueDate).toISOString() : undefined,
             priority: formCreateData.priority as PriorityTypes,
             status: formCreateData.status || 'TODO',
             authorId: Number(userId),
+            listId: undefined,
         }
 
         createTaskMutation.mutate(submitData, {
@@ -129,15 +132,16 @@ export default function HomeContainer(){
     const handleSubmitList = (e: React.FormEvent) =>{
         e.preventDefault();
         const submitData = {
-            name: formListData.name || '',
+            title: formListData.title || '',
+            color: formListData.color || '#000000',
             authorId: userId,
         }
 
-        /* createListMutation.mutate(submitData, {
+        createListMutation.mutate(submitData, {
             onSuccess: () => {
-                setIsPopupCreateOpen(false);
+                closeCreateList();
             }
-        }); */
+        });
         console.log(submitData)
     }
 
@@ -180,7 +184,8 @@ export default function HomeContainer(){
 
             {/* tasks list + actions */}
             <TasksTable 
-                userTasks={filteredTasks} 
+                tableTitle={'All My Tasks'}
+                userTasks={data?.tasks} 
                 deleteUserTask={handleDelete} 
                 handleAddUserTask={handleAdd} 
                 isLoading={isLoading} 
