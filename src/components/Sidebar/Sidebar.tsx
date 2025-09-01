@@ -18,8 +18,6 @@ type SideBarButtonProps = {
   hoverEffect?: boolean,
 }
 
-
-
 type SidebarProps = {
   onLogout: () => void,
   meData: any,

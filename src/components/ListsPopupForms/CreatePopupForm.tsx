@@ -1,8 +1,17 @@
 import { useModal } from "../../contexts/ModalContext";
 import { ButtonIcon } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
+import type { List } from "../../types";
 
-export default function CreatePopupForm(){
+type ListSummary = Pick<List, 'name'>;
+
+type CreatePopupFormProps = {
+    values: ListSummary;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onSubmit: (e: React.FormEvent) => void;
+}
+
+export default function CreatePopupForm({ values, onChange, onSubmit }: CreatePopupFormProps){
     const { isCreateListOpen, closeCreateList } = useModal();
 
     if(!isCreateListOpen) return null;
@@ -14,22 +23,22 @@ export default function CreatePopupForm(){
                     <h2>Create New List</h2>
                     <ButtonIcon iconStyle="fa-solid fa-x" onClick={closeCreateList}/>
                 </div>
-                <form className="mt-4 text-center">
+                <form className="mt-4 text-center" onSubmit={onSubmit}>
                     <Input 
-                        name="listName"
+                        name="name"
                         type="text" 
-                        value=""
+                        value={values.name}
                         label="List Name"
                         placeholder="Enter list name"
-                        onChange={() => {}}
+                        onChange={onChange}
                     />
                     <Input 
                         name="listColor"
                         type="color" 
-                        value=""
+                        value="222"
                         label="List Color"
                         dimensions="xsm:h-20 md:h-40"
-                        onChange={() => {}}
+                        onChange={onChange}
                     />
                     <SubmitBtn buttonText="Create List" isPending={false} />
                 </form>
