@@ -8,7 +8,8 @@ type InputCompTypes = {
     name: string,
     label: string,
     required?: false | true,
-    placeholder: string,
+    placeholder?: string,
+    dimensions?: string,
     error?: Error | null ,
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
 };
@@ -37,14 +38,14 @@ type ButtonProps = {
 }
 
 // -------------------- Input Component --------------------
-export function Input({ type, value, name, label, required, placeholder, onChange, error }:InputCompTypes){
+export function Input({ type, value, name, label, required, placeholder, onChange, error, dimensions }:InputCompTypes){
     return(
         <div className="text-left flex-grow mb-5">
             <label className="block font-bold mb-2 capitalize xsm:text-xs md:text-sm">
                 {label}
             </label>
             <input 
-                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md ${error ? 'border-red-500' : ''}`}
+                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md ${error ? 'border-red-500' : ''} ${dimensions}`}
                 type={type} 
                 value={value} 
                 onChange={onChange} 

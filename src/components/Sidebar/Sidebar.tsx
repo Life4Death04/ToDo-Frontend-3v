@@ -1,7 +1,8 @@
 import { NavLink } from "react-router";
-import { useFetchMeData, useLogoutUser } from "../../hooks/useUsers";
+/* import { useFetchMeData, useLogoutUser } from "../../hooks/useUsers"; */
 import { UserBadge } from "../UserBadge/UserBadge";
-import { useFetchLists } from "../../hooks/useLists";
+import type { FetchListsResponse } from "../../types";
+/* import { useFetchLists } from "../../hooks/useLists"; */
 // -------------------- Types --------------------
 type SideBarLinkItem = {
   linkText: string,
@@ -17,11 +18,22 @@ type SideBarButtonProps = {
   hoverEffect?: boolean,
 }
 
+type SidebarProps = {
+  onLogout: () => void,
+  meData: any,
+  isMeDataLoading: boolean,
+  isMeDataError: boolean,
+  listsData: FetchListsResponse | undefined,
+  isListsLoading: boolean,
+  isListsError: boolean,
+  onCreateList: () => void,
+}
+
 // -------------------- Sidebar Component --------------------
-export function Sidebar(){
-  const logout = useLogoutUser();
+export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, listsData, isListsLoading, isListsError, onCreateList }: SidebarProps){
+  /* const logout = useLogoutUser();
   const { data: meData, isError, isLoading } = useFetchMeData();
-  const { data: listsData, isError: isListsError, isLoading: isListsLoading } = useFetchLists();
+  const { data: listsData, isError: isListsError, isLoading: isListsLoading } = useFetchLists(); */
   return(
     <nav className="fixed top-0 left-0 h-screen w-12 py-3 sm:w-20 lg:w-64 lg:px-2 bg-white flex flex-col">
       {/* Logo & Title */}
@@ -41,7 +53,9 @@ export function Sidebar(){
 
       <header className="flex justify-center items-center px-3 py-2 lg:justify-between mb-2">
         <span className="text-sm text-gray-500 font-semibold xsm:hidden lg:flex">MY LISTS</span>
-        <i className="fa-solid fa-plus text-gray-500 xsm:text-lg sm:text-2xl lg:text-lg" onClick={() => {console.log(listsData)}}></i>
+        <button onClick={onCreateList} className="group hover:cursor-pointer hover:text-gray-700">
+          <i className="fa-solid fa-plus text-gray-500 group-hover:text-gray-700 xsm:text-lg sm:text-2xl lg:text-lg"></i>
+        </button>
       </header>
       <ul className="flex flex-col h-full w-full gap-3 xsm:items-center lg:items-start">
         {isListsLoading && 
@@ -60,14 +74,14 @@ export function Sidebar(){
       </ul>
 
       {/* User Info */}
-      <UserBadge userData={meData || {}} isLoading={isLoading} isError={isError} />
+      <UserBadge userData={meData || {}} isLoading={isMeDataLoading} isError={isMeDataError} />
 
       {/* Footer Links */}
       <footer className="w-full lg:px-2 pb-2">
         <section className="flex flex-col gap-2 lg:items-start">
           <SidebarLinkItem linkText="Settings" linkUrl="/settings" classIcon="fa-solid fa-gear" hoverEffect={true}></SidebarLinkItem>
           {/* <SidebarLinkItem linkText="Log Out" linkUrl="/logout" classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true}></SidebarLinkItem> */}
-          <SideBarButton linkText="Log Out" classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true} onClick={logout}/>
+          <SideBarButton linkText="Log Out" classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true} onClick={onLogout}/>
         </section>
       </footer>
     </nav>

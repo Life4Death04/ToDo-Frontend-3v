@@ -3,9 +3,10 @@ import { TasksTable } from "../components/TasksTable/TasksTable";
 import { useParams } from "react-router";
 import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived, useCreateTask, useUpdateTask } from "../hooks/useTasks";
 import { useState } from "react";
-import type { PriorityTypes, Task } from "../types";
-import PopupFormCreate from "../components/PopupForm/PopupFormCreate";
-import PopupFormEdit from "../components/PopupForm/PopupFormEdit";
+import type { PriorityTypes, Task, List } from "../types";
+import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
+import PopupFormEdit from "../components/TasksPopupForms/PopupFormEdit";
+import CreatePopupForm from "../components/ListsPopupForms/CreatePopupForm";
 /**
  * Home (page)
  *
@@ -36,6 +37,9 @@ export default function HomeContainer(){
         authorId: undefined,
     });
     const [formEditData, setFormEditData] = useState<Partial<FormData>>({})
+    const [formListData, setFormListData] = useState<Pick<List, 'name'>>({
+        name: ''
+    })
     const [isPopupCreateOpen, setIsPopupCreateOpen] = useState<boolean>(false);
     const [isPopupEditOpen, setIsPopupEditOpen] = useState<boolean>(false);
 
@@ -69,6 +73,14 @@ export default function HomeContainer(){
     const handleChangeCreate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
         const {name, value} = e.target;
         setFormCreateData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    }
+
+    const handleChangeList = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
+        const {name, value} = e.target;
+        setFormListData((prev) => ({
             ...prev,
             [name]: value
         }));
@@ -112,6 +124,21 @@ export default function HomeContainer(){
                 setIsPopupEditOpen(false);
             }
         });
+    }
+
+    const handleSubmitList = (e: React.FormEvent) =>{
+        e.preventDefault();
+        const submitData = {
+            name: formListData.name || '',
+            authorId: userId,
+        }
+
+        /* createListMutation.mutate(submitData, {
+            onSuccess: () => {
+                setIsPopupCreateOpen(false);
+            }
+        }); */
+        console.log(submitData)
     }
 
     // handler passed down to `TasksTable` to delete a task by id
@@ -167,6 +194,7 @@ export default function HomeContainer(){
             {isPopupCreateOpen && <PopupFormCreate values={formCreateData} onChange={handleChangeCreate} onSubmit={handleSubmitData} onClose={handlePopupForm} />}
             {/* {isPopupEditOpen && <PopupFormEdit userId={userId} initialValue={formEditData} handleClose={handlePopupFormEdit} />} */}
             {isPopupEditOpen && <PopupFormEdit values={formEditData} onChange={handleChangeEdit} onSubmit={handleSubmitEditedData} onClose={handlePopupFormEdit} />}
+            <CreatePopupForm values={formListData} onChange={handleChangeList} onSubmit={handleSubmitList} />
         </section>
     );
 }

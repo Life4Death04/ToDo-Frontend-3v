@@ -14,8 +14,8 @@ export type User = {
 export type List = {
   id: number;
   name: string;
-  tasks: Task[];
   authorId: number;
+  tasks: Task[];
 }
 
 export type Task = {

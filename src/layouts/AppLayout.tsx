@@ -1,11 +1,14 @@
-import { Sidebar } from "../components/Sidebar/Sidebar";
+import { SidebarContainer } from "../containers/SidebarContainer";
 import { Outlet } from "react-router";
+import { ModalProvider } from "../contexts/ModalContext";
 
 export default function AppPage(){
     return(
-        <main className="xsm:ml-12 sm:ml-20 lg:ml-64">
-            <Sidebar></Sidebar>
-            <Outlet />
-        </main>
+        <ModalProvider>
+            <main className="xsm:ml-12 sm:ml-20 lg:ml-64">
+                <SidebarContainer />
+                <Outlet />
+            </main>
+        </ModalProvider>
     );
 }

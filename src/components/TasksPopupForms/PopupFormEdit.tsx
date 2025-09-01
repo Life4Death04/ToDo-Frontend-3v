@@ -10,7 +10,6 @@ type PopupFormProps = {
     onClose: () => void;
 }
 
-/* type FormData = Partial<Task> & { authorId: number }; */
 // --------------------PopupForm  Component--------------------
 /**
  * PopupForm component for adding a new task
@@ -19,75 +18,6 @@ type PopupFormProps = {
  * @returns JSX.Element
  */
 export default function PopupFormEdit({values, onChange, onSubmit, onClose}: PopupFormProps) {
-//     /* const createTaskMutation = useCreateTask(); */
-//     const updateTaskMutation = useUpdateTask();
-//     const [updateFormData, setUpdateFormData] = useState<Partial<FormData>>(initialValue || {});
-//     /* const [formData, setFormData] = useState<FormData>({
-//         taskName: null,
-//         description: null,
-//         archived: false,
-//         dueDate: null,
-//         priority: 'LOW',
-//         status: 'TODO',
-//         authorId: Number(userId),
-//     }); */
-
-//     /**
-//      * Handle changes to any input, textarea or select
-//      * @param {e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} - Change event
-//      */
-// /*     function onChangeAdd(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-//         const { name, value } = e.target;
-//         setFormData((prev) => (
-//                 {
-//                     ...prev, 
-//                     [name]: value 
-//                 }
-//             ));
-//     } */
-
-//     function onChangeEdit(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-//         const { name, value } = e.target;
-//         setUpdateFormData((prev) => (
-//             {
-//                 ...prev, 
-//                 [name]: value 
-//             }
-//         ));
-//     }
-
-//     function onSubmitEdit(e: React.FormEvent<HTMLFormElement>){
-//         const submitData = {
-//             ...updateFormData,
-//             dueDate: updateFormData.dueDate ? new Date(updateFormData.dueDate).toISOString() : undefined
-//         }
-//         console.log(submitData)
-//         updateTaskMutation.mutate(submitData, {
-//             onSuccess: () => {
-//                 handleClose();
-//             }
-//         });
-//     }
-
-// /*     function onSubmitAdd(e: React.FormEvent<HTMLFormElement>){
-//         e.preventDefault();
-//         const submitData = {
-//             taskName: formData.taskName || '',
-//             description: formData.description || '',
-//             archived: formData.archived || false,
-//             dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : undefined,
-//             priority: formData.priority || 'LOW',
-//             status: formData.status || 'TODO',
-//             authorId: Number(userId),
-//         }
-
-//         createTaskMutation.mutate(submitData, {
-//             onSuccess: () => {
-//                 handleClose();
-//             }
-//         });
-//     } */
-
     return (
         <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
             <section className="rounded-2xl bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150">
