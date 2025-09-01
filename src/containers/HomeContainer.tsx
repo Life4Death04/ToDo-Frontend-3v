@@ -4,8 +4,9 @@ import { useParams } from "react-router";
 import { useFetchUserTasks, useDeleteUserTask, useToggleTaskArchived, useCreateTask, useUpdateTask } from "../hooks/useTasks";
 import { useState } from "react";
 import type { PriorityTypes, Task } from "../types";
-import PopupFormCreate from "../components/PopupForm/PopupFormCreate";
-import PopupFormEdit from "../components/PopupForm/PopupFormEdit";
+import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
+import PopupFormEdit from "../components/TasksPopupForms/PopupFormEdit";
+import CreatePopupForm from "../components/ListsPopupForms/CreatePopupForm";
 /**
  * Home (page)
  *
@@ -167,6 +168,7 @@ export default function HomeContainer(){
             {isPopupCreateOpen && <PopupFormCreate values={formCreateData} onChange={handleChangeCreate} onSubmit={handleSubmitData} onClose={handlePopupForm} />}
             {/* {isPopupEditOpen && <PopupFormEdit userId={userId} initialValue={formEditData} handleClose={handlePopupFormEdit} />} */}
             {isPopupEditOpen && <PopupFormEdit values={formEditData} onChange={handleChangeEdit} onSubmit={handleSubmitEditedData} onClose={handlePopupFormEdit} />}
+            <CreatePopupForm></CreatePopupForm>
         </section>
     );
 }
