@@ -1,6 +1,7 @@
 import { NavLink } from "react-router";
 import { useFetchMeData, useLogoutUser } from "../../hooks/useUsers";
 import { UserBadge } from "../UserBadge/UserBadge";
+import { useFetchLists } from "../../hooks/useLists";
 // -------------------- Types --------------------
 type SideBarLinkItem = {
   linkText: string,
@@ -20,6 +21,7 @@ type SideBarButtonProps = {
 export function Sidebar(){
   const logout = useLogoutUser();
   const { data: meData, isError, isLoading } = useFetchMeData();
+  const { data: listsData, isError: isListsError, isLoading: isListsLoading } = useFetchLists();
   return(
     <nav className="fixed top-0 left-0 h-screen w-12 py-3 sm:w-20 lg:w-64 lg:px-2 bg-white flex flex-col">
       {/* Logo & Title */}
@@ -29,10 +31,32 @@ export function Sidebar(){
       </header>
 
       {/* Navigation Links */}
-      <ul className="flex flex-col h-full gap-3 w-full xsm:items-center lg:items-start">
+      <ul className="flex flex-col gap-4 w-full xsm:items-center lg:items-start">
         <SidebarLinkItem linkText="My Tasks" linkUrl="/accounts/1" classIcon="fa-solid fa-user" hoverEffect={true}/>
         <SidebarLinkItem linkText="Archived Tasks" linkUrl="/settings" classIcon="fa-solid fa-archive" hoverEffect={true}/>
         <SidebarLinkItem linkText="Reminders " linkUrl="/settings" classIcon="fa-solid fa-clock" hoverEffect={true}/>
+      </ul>
+
+      <hr className="mt-2 mb-3"/>
+
+      <header className="flex justify-center items-center px-3 py-2 lg:justify-between mb-2">
+        <span className="text-sm text-gray-500 font-semibold xsm:hidden lg:flex">MY LISTS</span>
+        <i className="fa-solid fa-plus text-gray-500 xsm:text-lg sm:text-2xl lg:text-lg" onClick={() => {console.log(listsData)}}></i>
+      </header>
+      <ul className="flex flex-col h-full w-full gap-3 xsm:items-center lg:items-start">
+        {isListsLoading && 
+          <div className="flex gap-3 w-full justify-center xsm:items-center lg:items-start">
+            <div className="bg-gray-400 rounded-full animate-pulse xsm:h-3 xsm:w-3 md:h-4 md:w-4"></div>
+            <div className="bg-gray-400 rounded-full animate-pulse w-full h-4 xsm:hidden lg:flex"></div>
+          </div>}
+        {isListsError && 
+          <div className="flex gap-3 w-full justify-center xsm:items-center lg:items-start">
+            <div className="bg-gray-600 rounded-full xsm:h-3 xsm:w-3 md:h-4 md:w-4"></div>
+            <div className="bg-gray-600 rounded-full w-full h-4 xsm:hidden lg:flex"></div>
+          </div>}
+          {listsData && listsData.lists?.map((list) => (
+            <SidebarLinkItem key={list.id} linkText={list.name} linkUrl={`/lists/${list.id}`} classIcon="bg-green-400 rounded-full xsm:h-3 xsm:w-3 md:h-4 md:w-4" hoverEffect={true}/>
+          ))}
       </ul>
 
       {/* User Info */}
@@ -53,7 +77,7 @@ export function Sidebar(){
 // -------------------- Sidebar Link Item Component --------------------
 function SidebarLinkItem({linkText, linkUrl, classIcon, hoverEffect}: SideBarLinkItem){
   return(
-    <NavLink to={linkUrl} className={`flex justify-center gap-4 w-full py-2 text-gray-600 lg:justify-start lg:px-4 active:rounded-xl active:bg-gray-200 active:text-black ${hoverEffect && 'hover:rounded-xl hover:bg-gray-200 hover:text-black'}`}>
+    <NavLink to={linkUrl} className={`flex justify-center items-center gap-4 w-full py-2 text-gray-600 lg:justify-start lg:px-4 active:rounded-xl active:bg-gray-200 active:text-black ${hoverEffect && 'hover:rounded-xl hover:bg-gray-200 hover:text-black'}`}>
         <i className={`${classIcon} sm:text-2xl md:text-2xl`} aria-hidden={true}></i>
         <span className="xsm:hidden lg:inline">{linkText}</span>
     </NavLink>

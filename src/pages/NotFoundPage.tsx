@@ -4,7 +4,7 @@ import { Button } from '../components/Common/CommonComponents';
 export default function NotFoundPage() {
     return (
         <main className="h-screen flex items-center justify-center">
-            <section className="flex flex-col items-center bg-amber-50 shadow-xl xsm:max-w-80 sm:max-w-[400px] xsm:p-4 xsm:mx-3 lg:p-8 lg:max-w-fit">
+            <section className="flex flex-col items-center bg-amber-50 shadow-xl xsm:max-w-80 rounded-xl sm:max-w-[400px] xsm:p-4 xsm:mx-3 lg:p-8 lg:max-w-fit">
                 <svg className="xsm:w-20 xsm:h-20 sm:w-30 sm:h-30 lg:w-40 lg:h-40">
                 <use href="../sprite.svg#icon-warning"></use>
             </svg>

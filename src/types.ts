@@ -11,6 +11,13 @@ export type User = {
   avatarUrl?: string | null;
 }
 
+export type List = {
+  id: number;
+  name: string;
+  tasks: Task[];
+  authorId: number;
+}
+
 export type Task = {
   id: number;
   taskName: string | null;
@@ -29,4 +36,11 @@ export type FetchTaskResponse = {
 export type CreateTaskResponse = {
   message: string;
   task: Task;
+}
+
+export type ListsSummary = Pick<List, 'id' | 'name'>;
+
+export type FetchListsResponse = {
+  message: string;
+  lists: ListsSummary[];
 }
