@@ -62,3 +62,7 @@ export type UpdateListDataResponse = {
   message: string;
   list: ListsSummary;
 }
+
+export type DeleteListDataResponse = {
+  message: string;
+}

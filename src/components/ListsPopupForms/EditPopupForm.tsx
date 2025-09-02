@@ -1,4 +1,4 @@
-import { ButtonIcon } from "../Common/CommonComponents";
+import { ButtonIcon, Button } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
 import type { List } from "../../types";
 
@@ -9,9 +9,10 @@ type CreatePopupFormProps = {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: (e: React.FormEvent) => void;
     onClose: () => void;
+    onDelete: () => void;
 }
 
-export default function EditPopupForm({ values, onChange, onSubmit, onClose }: CreatePopupFormProps){
+export default function EditPopupForm({ values, onChange, onSubmit, onClose, onDelete }: CreatePopupFormProps){
     return(
         <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
             <section className="rounded-2xl bg-white p-4 xsm:w-70 sm:w-110 lg:w-150">
@@ -36,8 +37,11 @@ export default function EditPopupForm({ values, onChange, onSubmit, onClose }: C
                         dimensions="xsm:h-20 md:h-40"
                         onChange={onChange}
                     />
-                    <SubmitBtn buttonText="Create List" isPending={false} />
+                    <div className="flex gap-2 justify-between">
+                        <SubmitBtn buttonText="Create List" isPending={false} />
+                    </div>
                 </form>
+                        <Button onClick={onDelete} textButton="Delete List" buttonStyle="bg-red-500 font-normal lg:font-bold"></Button>
             </section>
         </div>
     );
