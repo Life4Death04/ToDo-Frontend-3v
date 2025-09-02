@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createList, fetchListData, fetchLists, updateList } from "../api/lists.api";
+import { createList, deleteList, fetchListData, fetchLists, updateList } from "../api/lists.api";
 import type { List } from "../types";
 
 
@@ -8,13 +8,15 @@ type QueryKeys = {
     createList: string;
     fetchListData: string;
     updateList: string;
+    deleteList: string;
 }
 
 const queryKeys: QueryKeys = {
     fetchLists: 'lists',
     createList: 'createNewList',
     fetchListData: 'listData',
-    updateList: 'updateList'
+    updateList: 'updateList',
+    deleteList: 'deleteList'
 }
 
 export const useFetchLists = () => {
@@ -51,6 +53,18 @@ export const useUpdateList = (listId: number) => {
         onSuccess: () => {
             // Invalidate the fetchLists query to refetch the data
             queryClient.invalidateQueries({queryKey: [queryKeys.fetchListData]});
+        }
+    })
+}
+
+export const useDeleteList = (listId: number) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: [queryKeys.deleteList, listId],
+        mutationFn: () => deleteList(listId),
+        onSuccess: () => {
+            // Invalidate the fetchLists query to refetch the data
+            queryClient.invalidateQueries({queryKey: [queryKeys.fetchLists]});
         }
     })
 }

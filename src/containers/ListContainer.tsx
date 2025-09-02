@@ -105,7 +105,7 @@ type FormData = Partial<Task>;
 //     );
 // }
 
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useTasksManager } from "../hooks/useTaskManager";
 import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
 import { TasksTable } from "../components/TasksTable/TasksTable";
@@ -118,6 +118,7 @@ export function ListContainer(){
   const { id: listIdParam, userId: userIdParam } = useParams();
   const listId = Number(listIdParam);
   const userId = Number(userIdParam);
+  const navigate = useNavigate();
 
   const {
     listTitle, 
@@ -146,11 +147,23 @@ export function ListContainer(){
     handleChangeEditList, 
     handleSubmitList,
     handleSubmitEditedList,
+    handleDeleteList,
     toggleEditList,
     openEditListWith,
     isEditListOpen,
     listData
   } = useListManager({ listId, userId });
+
+  /* const onDeleteClick = async () => {
+    // opcional: mostrar confirmación aquí
+    const nextId = await handleDeleteList();
+    console.log(nextId)
+    if (nextId) {
+      navigate(`/accounts/${userId}/lists/${nextId}`, { replace: true });
+    } else {
+      navigate('/', { replace: true });
+    }
+  }; */
 
   return (
     <main className="py-6">
@@ -169,7 +182,7 @@ export function ListContainer(){
       {isCreateOpen && <PopupFormCreate values={form} onChange={handleChange} onSubmit={handleSubmit} onClose={toggleCreate} />}
       {isEditOpen && <PopupFormEdit values={editForm} onChange={handleChangeEdit} onSubmit={handleSubmitEdit} onClose={toggleEdit} />}
       <CreatePopupForm values={formList} onChange={handleChangeList} onSubmit={handleSubmitList} />
-      {isEditListOpen && <EditPopupForm values={editFormList!} onChange={handleChangeEditList} onSubmit={handleSubmitEditedList} onClose={toggleEditList} />}
+      {isEditListOpen && <EditPopupForm values={editFormList!} onChange={handleChangeEditList} onSubmit={handleSubmitEditedList} onClose={toggleEditList} onDelete={handleDeleteList} />}
     </main>
   );
 }
