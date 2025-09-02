@@ -57,3 +57,8 @@ export type FetchListDataResponse = {
   message: string;
   list: ListDataSummary;
 }
+
+export type UpdateListDataResponse = {
+  message: string;
+  list: ListsSummary;
+}

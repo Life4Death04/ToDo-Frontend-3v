@@ -23,6 +23,8 @@ Important:
 
 type TasksTableProps = {
     tableTitle: string;
+    isEditTable?: boolean;
+    onEditTable?: () => void;
     userTasks?: Task[];
     deleteUserTask: (taskId: number) => void;
     handleAddUserTask: () => void,
@@ -61,11 +63,16 @@ type AddTaskProps = {
  * @param handleAddUserTask - function to handle adding a user task
  * @returns JSX.Element
  */
-export function TasksTable({ tableTitle, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit }: TasksTableProps){
+export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit }: TasksTableProps){
     return(
         <section className="px-6 pt-4 mx-6 bg-white rounded-2xl">
             <header className="flex justify-between items-center mb-4">
-                <h1 className="font-bold xsm:text-xl md:text-2xl lg:text-3xl">{tableTitle}</h1>
+                <div className="flex items-center gap-2">
+                    <h1 className="font-bold xsm:text-xl md:text-2xl lg:text-3xl">{tableTitle}</h1>
+                    {isEditTable && 
+                        <ButtonIcon onClick={onEditTable} iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></ButtonIcon>
+                    }
+                </div>
                 <AddTaskButton onClick={handleAddUserTask} />
             </header>
             <header className="items-center px-4 py-2 text-gray-400 border-gray-200 border-b font-bold xsm:hidden lg:flex">

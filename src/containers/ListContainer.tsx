@@ -110,6 +110,9 @@ import { useTasksManager } from "../hooks/useTaskManager";
 import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
 import { TasksTable } from "../components/TasksTable/TasksTable";
 import PopupFormEdit from "../components/TasksPopupForms/PopupFormEdit";
+import CreatePopupForm from "../components/ListsPopupForms/CreatePopupForm";
+import { useListManager } from "../hooks/useListManager";
+import EditPopupForm from "../components/ListsPopupForms/EditPopupForm";
 
 export function ListContainer(){  
   const { id: listIdParam, userId: userIdParam } = useParams();
@@ -117,17 +120,44 @@ export function ListContainer(){
   const userId = Number(userIdParam);
 
   const {
-    listTitle, tasks, isLoading, isError, error, form,
-    isCreateOpen, toggleCreate, handleChange, handleSubmit, handleDelete,
-    isEditOpen, toggleEdit, editForm, setEditForm, handleChangeEdit, openEditWith, handleSubmitEdit
+    listTitle, 
+    tasks, 
+    isLoading, 
+    isError, 
+    error, 
+    form,
+    isCreateOpen, 
+    toggleCreate, 
+    handleChange, 
+    handleSubmit, 
+    handleDelete,
+    isEditOpen, 
+    toggleEdit, 
+    editForm, 
+    handleChangeEdit, 
+    openEditWith, 
+    handleSubmitEdit
   } = useTasksManager({ userId, listId });
 
-  console.log(editForm)
+  const { 
+    formList, 
+    editFormList,
+    handleChangeList,
+    handleChangeEditList, 
+    handleSubmitList,
+    handleSubmitEditedList,
+    toggleEditList,
+    openEditListWith,
+    isEditListOpen,
+    listData
+  } = useListManager({ listId, userId });
 
   return (
     <main className="py-6">
       <TasksTable
         tableTitle={listTitle || "My Tasks"}
+        isEditTable={true}
+        onEditTable={() => openEditListWith(listData!)}
         userTasks={tasks}
         deleteUserTask={handleDelete}
         handleAddUserTask={toggleCreate}
@@ -138,6 +168,8 @@ export function ListContainer(){
       />
       {isCreateOpen && <PopupFormCreate values={form} onChange={handleChange} onSubmit={handleSubmit} onClose={toggleCreate} />}
       {isEditOpen && <PopupFormEdit values={editForm} onChange={handleChangeEdit} onSubmit={handleSubmitEdit} onClose={toggleEdit} />}
+      <CreatePopupForm values={formList} onChange={handleChangeList} onSubmit={handleSubmitList} />
+      {isEditListOpen && <EditPopupForm values={editFormList!} onChange={handleChangeEditList} onSubmit={handleSubmitEditedList} onClose={toggleEditList} />}
     </main>
   );
 }

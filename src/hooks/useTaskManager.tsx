@@ -3,15 +3,16 @@ import { useCreateTask, useDeleteUserTask, useUpdateTask } from "./useTasks";
 import { useFetchListData } from "./useLists";
 import { useFetchUserTasks } from "./useTasks"; // assume exists: fetch all tasks for user
 import { useQueryClient } from "@tanstack/react-query";
-import type { Task } from "../types";
+import type { Task, } from "../types";
 
 type UseTasksManagerOpts = { userId: number; listId?: number };
+type TaskForm = Omit<Task, 'id'> & Partial<Pick<Task, 'dueDate' | 'description' | 'listId'>>;
 
 export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
   // popup + form state (shared)
   const [isCreateOpen, setCreateOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false); // edit popup state
-  const [form, setForm] = useState<Partial<Task>>({
+  const [form, setForm] = useState<TaskForm>({
     taskName: "",
     description: "",
     dueDate: "",
@@ -46,7 +47,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
 
   const handleChange = useCallback((e: React.ChangeEvent<any>) => {
     const { name, value } = e.target;
-    setForm((prev: Partial<Task>) => ({ ...prev, [name]: value }));
+    setForm((prev: TaskForm) => ({ ...prev, [name]: value }));
   }, []);
 
   // handle changes for the edit form
