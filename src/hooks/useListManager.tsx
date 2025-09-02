@@ -3,7 +3,6 @@ import { useModal } from '../contexts/ModalContext';
 import { useCreateList, useDeleteList, useUpdateList } from './useLists';
 import { useFetchListData } from './useLists';
 import { useNavigate } from 'react-router';
-import { useQueryClient } from '@tanstack/react-query';
 import type { List } from '../types';
 
 type ListFormType = Omit<List, 'id' | 'tasks'>
@@ -28,7 +27,6 @@ export function useListManager({ listId, userId }: UseListManagerProps){
     const updateListMutation = useUpdateList(listId || 0);
     const deleteListMutation = useDeleteList(listId || 0);
     const { closeCreateList } = useModal();
-    const queryClient = useQueryClient();
     const navigate = useNavigate();
     const toggleEditList = useCallback(() => setEditListOpen(v => !v), []);
 
@@ -84,19 +82,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         deleteListMutation.mutate(undefined,{
             onSuccess: () => {
                 setEditListOpen(false);
-
-                //After deletion - Redirecting to anoother list
-                const cachedLists = queryClient.getQueryData<any[]>(['lists', userId]) || queryClient.getQueryData<any[]>(['lists']) || queryClient.getQueryData<any[]>(['userLists', userId]) || [];
-
-                const next = (cachedLists || []).find(l => l.id !== listId) || cachedLists[0];
-
-                if (next && next.id) {
-                    // Ajusta la ruta según tu router; aquí uso /lists/:id/:userId como ejemplo
-                    navigate(`/accounts/${userId}/lists/${next.id}`, { replace: true });
-                }else{
-                    // fallback si no hay listas: ir al home
-                    navigate('/', { replace: true });
-                }
+                navigate(`/accounts/${userId}`, {replace: true})
             }
         });
     }, [deleteListMutation]);

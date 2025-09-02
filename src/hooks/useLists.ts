@@ -64,7 +64,7 @@ export const useDeleteList = (listId: number) => {
         mutationFn: () => deleteList(listId),
         onSuccess: () => {
             // Invalidate the fetchLists query to refetch the data
-            queryClient.invalidateQueries({queryKey: [queryKeys.fetchLists, queryKeys.fetchListData]});
+            queryClient.invalidateQueries({queryKey: [queryKeys.fetchLists]});
         }
     })
 }

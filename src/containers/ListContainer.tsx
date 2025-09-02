@@ -154,15 +154,16 @@ export function ListContainer(){
     listData
   } = useListManager({ listId, userId });
 
-  const onDeleteClick = async () => {
+  /* const onDeleteClick = async () => {
     // opcional: mostrar confirmación aquí
     const nextId = await handleDeleteList();
+    console.log(nextId)
     if (nextId) {
-      navigate('/', { replace: true });
-    } else {
       navigate(`/accounts/${userId}/lists/${nextId}`, { replace: true });
+    } else {
+      navigate('/', { replace: true });
     }
-  };
+  }; */
 
   return (
     <main className="py-6">
@@ -181,7 +182,7 @@ export function ListContainer(){
       {isCreateOpen && <PopupFormCreate values={form} onChange={handleChange} onSubmit={handleSubmit} onClose={toggleCreate} />}
       {isEditOpen && <PopupFormEdit values={editForm} onChange={handleChangeEdit} onSubmit={handleSubmitEdit} onClose={toggleEdit} />}
       <CreatePopupForm values={formList} onChange={handleChangeList} onSubmit={handleSubmitList} />
-      {isEditListOpen && <EditPopupForm values={editFormList!} onChange={handleChangeEditList} onSubmit={handleSubmitEditedList} onClose={toggleEditList} onDelete={onDeleteClick} />}
+      {isEditListOpen && <EditPopupForm values={editFormList!} onChange={handleChangeEditList} onSubmit={handleSubmitEditedList} onClose={toggleEditList} onDelete={handleDeleteList} />}
     </main>
   );
 }

@@ -39,9 +39,9 @@ export default function EditPopupForm({ values, onChange, onSubmit, onClose, onD
                     />
                     <div className="flex gap-2 justify-between">
                         <SubmitBtn buttonText="Create List" isPending={false} />
+                        <Button onClick={onDelete} textButton="Delete List" buttonStyle="bg-red-500 font-normal lg:font-bold"></Button>
                     </div>
                 </form>
-                        <Button onClick={onDelete} textButton="Delete List" buttonStyle="bg-red-500 font-normal lg:font-bold"></Button>
             </section>
         </div>
     );
