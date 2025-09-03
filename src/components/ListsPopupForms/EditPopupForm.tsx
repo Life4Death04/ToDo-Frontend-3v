@@ -29,7 +29,7 @@ export default function EditPopupForm({ values, onChange, onSubmit, onClose, onD
             {/* Modal overlay */}
             <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
                 {/* Modal content panel */}
-                <section className="rounded-2xl bg-white p-4 xsm:w-70 sm:w-110 lg:w-150">
+                <section className="rounded-lg bg-white p-4 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0">
                     {/* Header: title + close */}
                     <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400">
                         <h2>Create New List</h2>

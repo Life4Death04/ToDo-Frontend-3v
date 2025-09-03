@@ -26,7 +26,7 @@ export default function CreatePopupForm({ values, onChange, onSubmit }: CreatePo
 
     return(
         /* Modal overlay */
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
+        <div className="absolute top-0 left-0 right-0 flex items-center h-screen justify-center bg-black/50">
             {/* Modal content / panel */}
             <section className="rounded-lg bg-white p-4 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0">
                 {/* Header: title and close button */}
