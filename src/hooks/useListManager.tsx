@@ -61,6 +61,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         createListMutation.mutate(submitData, {
             onSuccess: () => {
                 closeCreateList();
+                setFormList({title: '', color: '#000000', authorId: userId});
             }
         })
     }, [formList, userId]);

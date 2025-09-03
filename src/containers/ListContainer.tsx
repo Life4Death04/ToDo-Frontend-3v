@@ -118,10 +118,10 @@ export function ListContainer(){
   const { id: listIdParam, userId: userIdParam } = useParams();
   const listId = Number(listIdParam);
   const userId = Number(userIdParam);
-  const navigate = useNavigate();
 
   const {
     listTitle, 
+    listArray,
     tasks, 
     isLoading, 
     isError, 
@@ -154,17 +154,6 @@ export function ListContainer(){
     listData
   } = useListManager({ listId, userId });
 
-  /* const onDeleteClick = async () => {
-    // opcional: mostrar confirmación aquí
-    const nextId = await handleDeleteList();
-    console.log(nextId)
-    if (nextId) {
-      navigate(`/accounts/${userId}/lists/${nextId}`, { replace: true });
-    } else {
-      navigate('/', { replace: true });
-    }
-  }; */
-
   return (
     <main className="py-6">
       <TasksTable
@@ -178,11 +167,40 @@ export function ListContainer(){
         isError={isError}
         error={error || null}
         handleEdit={openEditWith}
+        />
+
+      {isCreateOpen && 
+      <PopupFormCreate 
+        lists={listArray}
+        values={form} 
+        onChange={handleChange} 
+        onSubmit={handleSubmit} 
+        onClose={toggleCreate} 
+      />}
+
+      {isEditOpen && 
+      <PopupFormEdit 
+        lists={listArray}
+        values={editForm} 
+        onChange={handleChangeEdit} 
+        onSubmit={handleSubmitEdit} 
+        onClose={toggleEdit} 
+      />}
+
+      <CreatePopupForm 
+        values={formList} 
+        onChange={handleChangeList} 
+        onSubmit={handleSubmitList} 
       />
-      {isCreateOpen && <PopupFormCreate values={form} onChange={handleChange} onSubmit={handleSubmit} onClose={toggleCreate} />}
-      {isEditOpen && <PopupFormEdit values={editForm} onChange={handleChangeEdit} onSubmit={handleSubmitEdit} onClose={toggleEdit} />}
-      <CreatePopupForm values={formList} onChange={handleChangeList} onSubmit={handleSubmitList} />
-      {isEditListOpen && <EditPopupForm values={editFormList!} onChange={handleChangeEditList} onSubmit={handleSubmitEditedList} onClose={toggleEditList} onDelete={handleDeleteList} />}
+
+      {isEditListOpen && 
+      <EditPopupForm 
+        values={editFormList!} 
+        onChange={handleChangeEditList} 
+        onSubmit={handleSubmitEditedList} 
+        onClose={toggleEditList} 
+        onDelete={handleDeleteList} 
+      />}
     </main>
   );
 }
