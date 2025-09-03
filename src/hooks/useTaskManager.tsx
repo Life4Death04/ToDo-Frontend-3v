@@ -44,12 +44,26 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
   const deleteTask = useDeleteUserTask(userId);
   const updateTask = useUpdateTask();
 
-  const toggleCreate = useCallback(() => setCreateOpen(v => !v), []);
+  const toggleCreate = useCallback(() => {
+    setCreateOpen(v => !v)
+    setForm({
+      taskName: "",
+      description: "",
+      dueDate: "",
+      priority: "LOW",
+      status: "TODO",
+      listId: listId,
+      authorId: userId,
+    })
+  }, [listId]);
   const toggleEdit = useCallback(() => setEditOpen(v => !v), []);
 
   const handleChange = useCallback((e: React.ChangeEvent<any>) => {
     const { name, value } = e.target;
-    setForm((prev: TaskForm) => ({ ...prev, [name]: value }));
+    setForm((prev: TaskForm) => ({ 
+        ...prev, 
+        [name]: value 
+      }));
   }, []);
 
   // handle changes for the edit form
@@ -76,11 +90,19 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
       priority: form.priority,
       status: form.status,
       authorId: Number(userId),
-      listId: listId ? Number(listId) : form.listId ? Number(form.listId) : undefined,
+      listId: Number(form.listId) || undefined 
     };
+    console.log(form)
     createTask.mutate(payload, {
       onSuccess: () => {
         setCreateOpen(false);
+        setForm({taskName: "",
+          description: "",
+          dueDate: "",
+          priority: "LOW",
+          status: "TODO",
+          listId: listId ?? undefined,
+          authorId: userId,})
         queryClient.invalidateQueries({ queryKey: listId ? ['listData', listId] : ['tasks', userId] });
       },
     });

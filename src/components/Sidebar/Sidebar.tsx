@@ -1,8 +1,6 @@
 import { NavLink } from "react-router";
-/* import { useFetchMeData, useLogoutUser } from "../../hooks/useUsers"; */
 import { UserBadge } from "../UserBadge/UserBadge";
 import type { FetchListsResponse } from "../../types";
-/* import { useFetchLists } from "../../hooks/useLists"; */
 // -------------------- Types --------------------
 type SideBarLinkItem = {
   linkText: string,
