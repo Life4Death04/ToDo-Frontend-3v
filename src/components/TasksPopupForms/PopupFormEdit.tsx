@@ -29,7 +29,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
     return (
         <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-4 h-fit bg-black/50">
             {/* Panel */}
-            <section className="rounded-2xl bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150">
+            <section className="rounded-lg bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0">
                 {/* Header: title + close */}
                 <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400">
                     <h2>Add New Task</h2>
