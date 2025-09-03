@@ -7,6 +7,14 @@ export type FormData = {
     password: string,
 }
 
+/**
+ * LoginContainer
+ * Manages controlled login form state and submits credentials using
+ * `useLoginUser` hook. Validates the form at submit and forwards the
+ * payload to the mutation hook.
+ *
+ * @returns JSX.Element
+ */
 export function LoginContainer(){
     const { mutate, isPending, isError, error } = useLoginUser();
 

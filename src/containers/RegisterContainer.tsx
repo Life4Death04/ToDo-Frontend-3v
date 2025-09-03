@@ -15,6 +15,14 @@ type ErrorTypes = {
     password: string;
 }
 
+/**
+ * RegisterContainer
+ * Controlled registration flow. Keeps local form state and field-level
+ * validation for password confirmation, and invokes `useRegisterNewUser`
+ * to perform the registration.
+ *
+ * @returns JSX.Element
+ */
 export default function RegisterContainer(){
     const { mutate, isPending, isError, error, isSuccess } = useRegisterNewUser();
     const [fieldErrors, setFieldErrors] = useState<Partial<ErrorTypes>>({})

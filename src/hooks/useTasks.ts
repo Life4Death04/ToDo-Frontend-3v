@@ -9,6 +9,12 @@ type QueryKeys = {
 const queryKeys: QueryKeys = {
     fetchTasks: 'userTasks'
 }
+/**
+ * useFetchUserTasks
+ * Fetches all tasks for a user and returns a transformed result with
+ * tasks, totalTasks and completedTasks counts.
+ * @param {number} userId - id of the user whose tasks will be fetched
+ */
 
 export const useFetchUserTasks = (userId: number) =>{
     return useQuery({
@@ -23,6 +29,11 @@ export const useFetchUserTasks = (userId: number) =>{
     })
 }
 
+/**
+ * useCreateTask
+ * Mutation hook for creating a new task and invalidating the user's tasks
+ * cache on success.
+ */
 export const useCreateTask = () =>{
     const queryClient = useQueryClient();
 
@@ -34,6 +45,12 @@ export const useCreateTask = () =>{
     })
 }
 
+/**
+ * useDeleteUserTask
+ * Returns a mutation to delete a task for a given author and refreshes
+ * the author's task cache on success.
+ * @param {number} authorId - user id owning the task
+ */
 export const useDeleteUserTask = (authorId: number) =>{
     const queryClient = useQueryClient();
 
@@ -45,6 +62,11 @@ export const useDeleteUserTask = (authorId: number) =>{
     })
 }
 
+/**
+ * useToggleTaskArchived
+ * Toggle archived flag for a task owned by authorId.
+ * @param {number} authorId - owner id to scope cache invalidation
+ */
 export const useToggleTaskArchived = (authorId: number) => {
     const queryClient = useQueryClient();
 
@@ -56,6 +78,10 @@ export const useToggleTaskArchived = (authorId: number) => {
     })
 }
 
+/**
+ * useUpdateTask
+ * Mutation used to update a task. Invalidates tasks cache on success.
+ */
 export const useUpdateTask = () => {
     const queryClient = useQueryClient();
 
