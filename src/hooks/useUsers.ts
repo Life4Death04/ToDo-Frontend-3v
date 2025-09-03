@@ -24,6 +24,10 @@ const messages: Messages = {
 }
 // -------------------- Register Hook --------------------
 export const useRegisterNewUser = () =>{
+    /**
+     * useRegisterNewUser
+     * Mutation hook to register a new user. Calls `registerUser` API.
+     */
     return useMutation({
         mutationFn: registerUser,
         onSuccess: () => {
@@ -34,7 +38,11 @@ export const useRegisterNewUser = () =>{
 // -------------------- Login Hook --------------------
 export const useLoginUser = () =>{
     const navigate = useNavigate();
-
+    /**
+     * useLoginUser
+     * Mutation hook to authenticate a user. Stores token and navigates
+     * to the user's account on success.
+     */
     return useMutation({
         mutationFn: loginUser,
         onSuccess: (data:any) => {
@@ -48,7 +56,10 @@ export const useLoginUser = () =>{
 //Logout (just remove the token from the local storage and redirect it to the login)
 export const useLogoutUser = () =>{
     const navigate = useNavigate();
-
+    /**
+     * logout
+     * Removes authentication token and redirects to the login page.
+     */
     function logout(){
         localStorage.removeItem("token");
         navigate('/');

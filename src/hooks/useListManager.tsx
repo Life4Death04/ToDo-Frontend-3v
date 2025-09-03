@@ -11,9 +11,23 @@ type UseListManagerProps = {
     userId: number;
 }
 
+/**
+ * useListManager
+ * Hook that encapsulates list-related UI state and mutations.
+ *
+ * Responsibilities:
+ * - manage create/edit list modal state and form values
+ * - call create/update/delete list mutations and handle side-effects
+ * - expose `listData` fetched for a specific `listId` when provided
+ *
+ * @param {UseListManagerProps} params - configuration object
+ * @param {number} [params.listId] - optional list id to fetch (reads list data)
+ * @param {number} params.userId - current user id used as author for creates
+ * @returns object containing form state, handlers, modal toggles and fetched listData
+ */
 export function useListManager({ listId, userId }: UseListManagerProps){
     const [isEditListOpen, setEditListOpen] = useState(false);
-    const [editFormList, setEditFormList] = useState<any>({});
+    const [editFormList, setEditFormList] = useState<Partial<List>>({});
     const [formList, setFormList] = useState<ListFormType>({
         title: '',
         color: '#000000',
@@ -30,7 +44,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
     const navigate = useNavigate();
     const toggleEditList = useCallback(() => setEditListOpen(v => !v), []);
 
-    const openEditListWith = useCallback((listData: List) => {
+    const openEditListWith = useCallback((listData: Partial<List>) => {
         setEditFormList(listData);
         setEditListOpen(true);
     }, []);
@@ -45,7 +59,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
 
     const handleChangeEditList = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setEditFormList((prev) => ({
+        setEditFormList((prev: Partial<List>) => ({
             ...prev,
             [name]: value
         }));
@@ -72,7 +86,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
             ...editFormList
         };
         
-        updateListMutation.mutate(submitData, {
+    updateListMutation.mutate(submitData as List, {
             onSuccess: () => {
                 setEditListOpen(false);
             }

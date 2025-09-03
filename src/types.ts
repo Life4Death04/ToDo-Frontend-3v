@@ -1,7 +1,20 @@
 // Central shared types for frontend
+/**
+ * PriorityTypes
+ * Enumerates allowed priority levels for a task.
+ */
 export type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
+
+/**
+ * StatusTypes
+ * Enumerates allowed task status values.
+ */
 export type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
+/**
+ * User
+ * Lightweight user model used across the UI (some fields optional).
+ */
 export type User = {
   id?: number;
   email?: string;
@@ -11,6 +24,10 @@ export type User = {
   avatarUrl?: string | null;
 }
 
+/**
+ * List
+ * Represents a task list owned by a user containing an array of tasks.
+ */
 export type List = {
   id: number;
   title: string;
@@ -19,6 +36,10 @@ export type List = {
   tasks: Task[];
 }
 
+/**
+ * Task
+ * Core task model used in the UI and API responses.
+ */
 export type Task = {
   id: number;
   taskName: string | null;
@@ -30,39 +51,75 @@ export type Task = {
   listId?: number;
 }
 
+/**
+ * FetchTaskResponse
+ * Shape returned by the API when fetching multiple tasks.
+ */
 export type FetchTaskResponse = {
   tasks: Task[];
 }
 
+/**
+ * CreateTaskResponse
+ * Response returned after creating a new task.
+ */
 export type CreateTaskResponse = {
   message: string;
   task: Task;
 }
 
+/**
+ * ListsSummary
+ * Lightweight list info used in list-overview APIs and sidebars.
+ */
 export type ListsSummary = Pick<List, 'id' | 'title' | 'color'>;
 
+/**
+ * FetchListsResponse
+ * Response when fetching all lists for a user.
+ */
 export type FetchListsResponse = {
   message: string;
   lists: ListsSummary[];
 }
 
+/**
+ * CreateListResponse
+ * Response returned after creating a list.
+ */
 export type CreateListResponse = {
   message: string;
   list: List;
 }
 
+/**
+ * ListDataSummary
+ * Server-provided summary of a list (omits some server-only fields).
+ */
 export type ListDataSummary = Omit<List, 'authorId'>;
 
+/**
+ * FetchListDataResponse
+ * Response shape when fetching a single list and its tasks.
+ */
 export type FetchListDataResponse = {
   message: string;
   list: ListDataSummary;
 }
 
+/**
+ * UpdateListDataResponse
+ * Response returned after updating a list.
+ */
 export type UpdateListDataResponse = {
   message: string;
   list: ListsSummary;
 }
 
+/**
+ * DeleteListDataResponse
+ * Response returned after deleting a list.
+ */
 export type DeleteListDataResponse = {
   message: string;
 }

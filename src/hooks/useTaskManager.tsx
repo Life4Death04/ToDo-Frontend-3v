@@ -8,6 +8,18 @@ import type { Task, } from "../types";
 type UseTasksManagerOpts = { userId: number; listId?: number };
 type TaskForm = Omit<Task, 'id'> & Partial<Pick<Task, 'dueDate' | 'description' | 'listId'>>;
 
+/**
+ * useTasksManager
+ * Central hook to manage tasks for the dashboard or a specific list.
+ *
+ * - Manages create/edit modal visibility and form state
+ * - Fetches tasks either for a user or for a specific list
+ * - Exposes CRUD mutation handlers (create, update, delete) and invalidation
+ *
+ * @param {UseTasksManagerOpts} userId 
+ * @param {UseTasksManagerOpts} listId 
+ * @returns object with tasks, loading states, form state and handlers
+ */
 export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
   // popup + form state (shared)
   const [isCreateOpen, setCreateOpen] = useState(false);

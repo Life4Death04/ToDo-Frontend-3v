@@ -1,11 +1,11 @@
 import { ButtonIcon, Button } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
 import type { List } from "../../types";
+type ListSummary = Partial<Pick<List, 'title' | 'color'>>;
 
-type ListSummary = Pick<List, 'title' | 'color'>;
 
 type CreatePopupFormProps = {
-    values: ListSummary;
+    values: ListSummary | undefined;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: (e: React.FormEvent) => void;
     onClose: () => void;
@@ -42,7 +42,7 @@ export default function EditPopupForm({ values, onChange, onSubmit, onClose, onD
                         <Input 
                             name="title"
                             type="text" 
-                            value={values.title}
+                            value={values?.title ?? ''}
                             label="List Title"
                             placeholder="Enter list title"
                             onChange={onChange}
@@ -52,7 +52,7 @@ export default function EditPopupForm({ values, onChange, onSubmit, onClose, onD
                         <Input 
                             name="color"
                             type="color" 
-                            value={values.color}
+                            value={values?.color ?? '#000000'}
                             label="List Color"
                             dimensions="xsm:h-20 md:h-40"
                             onChange={onChange}

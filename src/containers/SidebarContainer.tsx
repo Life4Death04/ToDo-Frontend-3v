@@ -5,6 +5,14 @@ import { useFetchMeData, useLogoutUser } from "../hooks/useUsers";
 // -------------------- Types --------------------
 
 // -------------------- Sidebar Container --------------------
+/**
+ * SidebarContainer
+ * Fetches current user and lists via hooks and wires Modal controls for
+ * opening the create-list dialog. Passes fetched data and handlers to
+ * the presentational `Sidebar` component.
+ *
+ * @returns JSX.Element
+ */
 export function SidebarContainer(){
     const { openCreateList } = useModal();
     const logout = useLogoutUser();
