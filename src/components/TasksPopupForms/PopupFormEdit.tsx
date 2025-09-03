@@ -3,12 +3,20 @@ import { ButtonIcon } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
 import type { Task } from '../../types';
 
+type Lists = Array<{ id: number; title: string; color: string;  }> | undefined;
 type PopupFormProps = {
     values?: Partial<Task>;
     onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     onClose: () => void;
+    lists?: Lists;
 }
+
+/* const lists = [
+    { id: 1, title: "List 1" },
+    { id: 2, title: "List 2" },
+    { id: 3, title: "List 3" }
+] */
 
 // --------------------PopupForm  Component--------------------
 /**
@@ -17,9 +25,9 @@ type PopupFormProps = {
  * @param {number} userId - ID of the user
  * @returns JSX.Element
  */
-export default function PopupFormEdit({values, onChange, onSubmit, onClose}: PopupFormProps) {
+export default function PopupFormEdit({values, onChange, onSubmit, onClose, lists}: PopupFormProps) {
     return (
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-4 h-fit bg-black/50">
             <section className="rounded-2xl bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150">
                 <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400">
                     <h2>Add New Task</h2>
@@ -60,6 +68,25 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose}: Pop
                             <option value="LOW">Low</option>
                             <option value="MEDIUM">Medium</option>
                             <option value="HIGH">High</option>
+                        </select>
+                    </div>
+                    {/* List Select - Make a component */}
+                    <div className="text-left flex-grow mb-5">
+                        <label className="block font-bold mb-2 capitalize">
+                            List
+                        </label>
+                        <select
+                            className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
+                            name="listId"
+                            value={values?.listId}
+                            onChange={onChange}
+                        >
+                            <option value="null">None</option>
+                            {lists?.map((list) => (
+                                <option key={list.id} value={list.id}>
+                                    {list.title}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     {/* Description Textarea - Make a component */}

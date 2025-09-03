@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useCreateTask, useDeleteUserTask, useUpdateTask } from "./useTasks";
-import { useFetchListData } from "./useLists";
+import { useFetchListData, useFetchLists } from "./useLists";
 import { useFetchUserTasks } from "./useTasks"; // assume exists: fetch all tasks for user
 import { useQueryClient } from "@tanstack/react-query";
 import type { Task, } from "../types";
@@ -29,6 +29,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
 
   // fetch tasks depending on listId presence
   const listQuery = listId ? useFetchListData(listId) : null;
+  const lists = useFetchLists();
   const allTasksQuery = !listId ? useFetchUserTasks(userId) : null;
 
   const listTitle = listId ? listQuery?.data?.list?.title : "My Tasks";
@@ -36,6 +37,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
   const isLoading = listId ? listQuery?.isLoading : allTasksQuery?.isLoading;
   const isError = listId ? listQuery?.isError : allTasksQuery?.isError;
   const error = listId ? listQuery?.error : allTasksQuery?.error;
+  const listArray = lists.data?.lists;
 
   // mutations
   const createTask = useCreateTask();
@@ -110,6 +112,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
   return {
     tasks,
     listTitle,
+    listArray,
     isLoading,
     isError,
     error,
