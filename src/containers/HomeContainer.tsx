@@ -66,7 +66,7 @@ export default function HomeContainer(){
 
     // ---------------------- Render -----------------------------
     return(
-        <section className="relative">
+        <section className="relative xsm:p-2 sm:p-4 md:p-6">
             {/* summary panels */}
             <IndicatorPanels 
                 totalTasks={totalTasks} 

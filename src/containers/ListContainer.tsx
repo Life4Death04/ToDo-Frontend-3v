@@ -60,7 +60,7 @@ export function ListContainer(){
   } = useListManager({ listId, userId });
 
   return (
-    <main className="py-6">
+    <main className="xsm:p-2 sm:p-4 md:p-6">
       <TasksTable
         tableTitle={listTitle || "My Tasks"}
         isEditTable={true}
