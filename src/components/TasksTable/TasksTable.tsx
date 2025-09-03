@@ -2,25 +2,7 @@ import { ButtonIcon } from "../Common/CommonComponents";
 import { getPriorityColor, getStatusColor, formatDueDate, getCheckIcon, getStatusBadge } from '../../utils/taskHelpers';
 import type { PriorityTypes, StatusTypes, Task } from '../../types';
 
-/**
-TasksTable
-Page-level UI for rendering a user's task list and simple task actions.
-Responsibilities:
-    Render a header and an add-task button.
-    Render tasks (via TaskItem) or a "no tasks" message.
-    Expose loading / error states for the caller.
-
-Data flow:
-    Receives userTasks, isLoading, isError, error and handlers from parent.
-    Delegates presentation logic to helpers from utils/taskHelpers.
-
-Important:
-    Child components expect safely-typed props (e.g., userTasks defaulted to [] in the parent).
-    Keep this file focused on layout; presentation helpers live in utils/taskHelpers. 
-*/
-
-// ...existing code uses centralized Task type from `src/types.ts`
-
+// -------------------- Types --------------------
 type TasksTableProps = {
     tableTitle: string;
     isEditTable?: boolean;
@@ -55,17 +37,23 @@ type AddTaskProps = {
 // -------------------- Main Table Component --------------------
 /**
  * TasksTable: page-level container for tasks list
- * @param userTasks - array of user's tasks
- * @param deleteUserTask - function to delete a user task
- * @param isLoading - boolean indicating loading state
- * @param isError - boolean indicating error state
- * @param error - error object
- * @param handleAddUserTask - function to handle adding a user task
+ *
+ * @param {string} tableTitle - visible title for the table
+ * @param {boolean} [isEditTable] - whether edit controls should be shown
+ * @param {() => void} [onEditTable] - callback for edit-table action
+ * @param {Task[]|undefined} [userTasks] - array of tasks to render
+ * @param {(taskId:number) => void} deleteUserTask - function to remove a task
+ * @param {() => void} handleAddUserTask - callback to show create task UI
+ * @param {(taskId:number) => void} handleEdit - callback to edit a task
+ * @param {boolean} [isLoading] - loading flag
+ * @param {boolean} [isError] - error flag
+ * @param {Error|null} error - error object
  * @returns JSX.Element
  */
 export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit }: TasksTableProps){
     return(
         <section className="px-6 pt-4 mx-6 bg-white rounded-2xl">
+            {/* Header: title + actions */}
             <header className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-2">
                     <h1 className="font-bold xsm:text-xl md:text-2xl lg:text-3xl">{tableTitle}</h1>
@@ -75,6 +63,7 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
                 </div>
                 <AddTaskButton onClick={handleAddUserTask} />
             </header>
+            {/* Table header (labels) */}
             <header className="items-center px-4 py-2 text-gray-400 border-gray-200 border-b font-bold xsm:hidden lg:flex">
                 <span className="flex-2">Task Name</span> {/* //flex-[2] */}
                 <span className="flex-1">Due Date</span>
@@ -83,6 +72,7 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
                 <span className="w-20 text-right">Actions</span>
             </header>
 
+            {/* Task list */}
             <ul className="flex flex-col gap-3 lg:gap-0 lg:divide-y lg:divide-gray-200">
                 {!userTasks?.length && (
                     <NoTaskMessage isError={isError ?? false} isLoading={isLoading ?? false} handleAddUserTask={handleAddUserTask} />
@@ -105,11 +95,13 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
 // -------------------- Task Item Component --------------------
 /**
  * TaskItem: displays a single task item
- * @param taskName - name of the task
- * @param dueDate - due date of the task
- * @param priority - priority level of the task
- * @param status - current status of the task
- * @param onDelete - function to call when deleting the task
+ *
+ * @param {string} taskName - name of the task
+ * @param {string|undefined} dueDate - ISO date string for due date
+ * @param {PriorityTypes} priority - priority level
+ * @param {StatusTypes} status - current status
+ * @param {() => void} onDelete - delete callback
+ * @param {() => void} onEdit - edit callback
  * @returns JSX.Element
  */
 function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit}: TaskItemProps){
@@ -118,33 +110,50 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit}: TaskI
     // - Priority & status classes come from helpers to keep styles consistent.
     return(
         <li className="lg:flex lg:gap-3 bg-white lg:border-b lg:border-gray-200 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none">
+            {/* Left: completion toggle, title, edit (mobile delete shown below) */}
             <div className="flex gap-3 items-center flex-[2]">
+                {/* Completion toggle */}
                 <button>
                     {getCheckIcon(status === 'DONE') /*Not Ready*/}
                 </button>
+
+                {/* Task title */}
                 <span className="font-bold xsm:text-sm md:text-base lg:text-lg overflow break-words">
                     {taskName}
                 </span>
+
+                {/* Edit button */}
                 <ButtonIcon onClick={onEdit} iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></ButtonIcon>
+
+                {/* Mobile: inline delete */}
                 <div className="flex justify-center ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
                     <ButtonIcon onClick={onDelete} iconStyle="fa-regular fa-trash-can"></ButtonIcon>
                 </div>
             </div>
+
+            {/* Middle: due date, priority, status */}
             <div className="flex xsm:flex-col lg:flex-row lg:items-center xsm:gap-3 xsm:mt-2 lg:mt-0 flex-[3]">
+                {/* Due Date */}
                 <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1 text-gray-600 font-semibold">
                     {formatDueDate(dueDate)}
                 </span>
+
+                {/* Priority */}
                 <span className={`font-bold xsm:text-xs md:text-sm lg:text-base lg:flex-1`}>
                     <span className={`px-2 py-1 rounded-2xl ${getPriorityColor(priority)}`}>
                     {priority}
                     </span>
                 </span>
+
+                {/* Status badge */}
                 <div className="lg:flex-1"> 
                     <span className={`xsm:text-xs md:text-sm lg:text-base xsm:w-fit px-2 py-1 rounded-xl font-bold ${getStatusColor(status)}`}>
                         {getStatusBadge(status)}
                     </span>
                 </div>
             </div>
+
+            {/* Right: desktop actions (delete) */}
             <div className="gap-1 xsm:hidden lg:flex">
                 <ButtonIcon onClick={onDelete} iconStyle="fa-regular fa-trash-can"></ButtonIcon>
             </div>
@@ -152,15 +161,27 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit}: TaskI
     );
 }
 // -------------------- No Task Message Component --------------------
+/**
+ * NoTaskMessage component to display when there are no tasks
+ * @param {function} handleAddUserTask - Function to call when adding a new user task
+ * @param {boolean} isError - Flag indicating if there was an error
+ * @param {boolean} isLoading - Flag indicating if data is loading
+ * @returns JSX.Element
+ */
 function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessageProps){
     return(
         <li className="mx-auto w-full text-center py-12 border-b border-gray-300">
+            {/* Empty / loading / error state */}
             <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl">
             {isLoading && "Loading..."}
             {isError && `Error: Oops! We couldn't fetch your tasks :c`}
             {!isLoading && !isError && "No tasks yet"}
             </span>
+
+            {/* Supporting text */}
             <p className="pt-3 pb-5 text-gray-400 xsm:text-xs md:text-sm lg:text-base">Looks like you're all caught up!</p>
+
+            {/* Call to action */}
             {!isError && !isLoading && <AddTaskButton onClick={handleAddUserTask} />}
         </li>
     );
@@ -174,7 +195,7 @@ function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessagePro
 function AddTaskButton({onClick}: AddTaskProps){
     return(
         <button onClick={onClick} className="bg-orange ml-auto text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl">
-            + Add Task
+            {'+ Add Task'}
         </button>
     );
 }

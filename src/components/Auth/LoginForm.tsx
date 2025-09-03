@@ -49,6 +49,23 @@ const errorMessages: ErrorTypes = {
 }
 
 // -------------------- Main Login Component --------------------
+/**
+ * LoginForm
+ *
+ * Controlled login form component. The parent container should own form state
+ * and provide handlers for input changes and form submission.
+ *
+ * Props:
+ * @param onSubmit - form submit handler (receives the native FormEvent)
+ * @param onChange - input change handler for controlled inputs
+ * @param values - controlled form values object (expects `email` and `password`)
+ * @param isPending - set to true while submit is in progress (used by SubmitBtn)
+ * @param isError - boolean flag indicating an error state (not used directly here)
+ * @param error - optional Error object used to show field-level errors
+ *
+ * Usage example:
+ * <LoginForm values={values} onChange={handleChange} onSubmit={handleSubmit} isPending={isSubmitting} error={error} />
+ */
 export default function LoginForm({onSubmit, onChange, values, isPending, error}: LoginFormProps) {
     return(
         <main className="h-screen flex items-center justify-center border-2 bg-white">

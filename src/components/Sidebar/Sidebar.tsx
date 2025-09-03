@@ -29,10 +29,21 @@ type SidebarProps = {
 }
 
 // -------------------- Sidebar Component --------------------
+/**
+ * Sidebar
+ * Primary navigation sidebar that shows global links and the user's lists.
+ * Props include callbacks and query results for user and lists.
+ *
+ * @param {() => void} onLogout - logout callback
+ * @param {any} meData - current user data
+ * @param {boolean} isMeDataLoading - loading flag for user data
+ * @param {boolean} isMeDataError - error flag for user data
+ * @param {FetchListsResponse | undefined} listsData - lists query data
+ * @param {boolean} isListsLoading - loading flag for lists
+ * @param {boolean} isListsError - error flag for lists
+ * @param {() => void} onCreateList - callback to open create list modal
+ */
 export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, listsData, isListsLoading, isListsError, onCreateList }: SidebarProps){
-  /* const logout = useLogoutUser();
-  const { data: meData, isError, isLoading } = useFetchMeData();
-  const { data: listsData, isError: isListsError, isLoading: isListsLoading } = useFetchLists(); */
   return(
     <nav className="fixed top-0 left-0 h-screen w-12 py-3 sm:w-20 lg:w-64 lg:px-2 bg-white flex flex-col">
       {/* Logo & Title */}
@@ -50,12 +61,15 @@ export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, list
 
       <hr className="mt-2 mb-3"/>
 
+      {/* Lists header */}
       <header className="flex justify-center items-center px-3 py-2 lg:justify-between">
         <span className="text-sm text-gray-500 font-semibold xsm:hidden lg:flex">MY LISTS</span>
         <button onClick={onCreateList} className="group hover:cursor-pointer hover:text-gray-700">
           <i className="fa-solid fa-plus text-gray-500 group-hover:text-gray-700 xsm:text-lg sm:text-2xl lg:text-lg"></i>
         </button>
       </header>
+
+      {/* Lists: loading / error / items */}
       <ul className="flex flex-col h-full w-full gap-3 xsm:items-center lg:items-start overflow-auto">
         {isListsLoading && 
           <div className="flex gap-3 w-full justify-center xsm:items-center lg:items-start">
@@ -79,7 +93,6 @@ export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, list
       <footer className="w-full lg:px-2 pb-2">
         <section className="flex flex-col gap-2 lg:items-start">
           <SidebarLinkItem linkText="Settings" linkUrl="/settings" classIcon="fa-solid fa-gear" hoverEffect={true}></SidebarLinkItem>
-          {/* <SidebarLinkItem linkText="Log Out" linkUrl="/logout" classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true}></SidebarLinkItem> */}
           <SideBarButton linkText="Log Out" classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true} onClick={onLogout}/>
         </section>
       </footer>
@@ -94,7 +107,8 @@ function SidebarLinkItem({linkText, linkUrl, classIcon, hoverEffect, indexListCo
         `flex justify-center items-center gap-4 w-full py-2 lg:justify-start lg:px-4
          ${isActive ? 'rounded-xl bg-gray-200 text-black' : 'text-gray-600'}
          ${hoverEffect ? 'hover:rounded-xl hover:bg-gray-200 hover:text-black' : ''}`
-      }/* {`flex justify-center items-center gap-4 w-full py-2 text-gray-600 lg:justify-start lg:px-4 active:rounded-xl active:bg-gray-200 active:text-black ${hoverEffect && 'hover:rounded-xl hover:bg-gray-200 hover:text-black'}`} */ >
+      }
+    >
         <i className={`${classIcon} sm:text-2xl md:text-2xl`} aria-hidden={true} style={{ backgroundColor: indexListColor }}></i>
         <span className="xsm:hidden lg:inline">{linkText}</span>
     </NavLink>

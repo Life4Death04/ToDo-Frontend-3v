@@ -12,37 +12,60 @@ type CreatePopupFormProps = {
     onDelete: () => void;
 }
 
+/**
+ * EditPopupForm
+ * Modal for editing an existing list. Receives an `onDelete` callback
+ * for removing the list (caller handles navigation or side-effects).
+ *
+ * @param {ListSummary} values - controlled values for the form
+ * @param {(e: React.ChangeEvent<HTMLInputElement>) => void} onChange - input change handler
+ * @param {(e: React.FormEvent) => void} onSubmit - form submit handler
+ * @param {() => void} onClose - callback to close the modal
+ * @param {() => void} onDelete - callback to delete the list
+ */
 export default function EditPopupForm({ values, onChange, onSubmit, onClose, onDelete }: CreatePopupFormProps){
-    return(
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
-            <section className="rounded-2xl bg-white p-4 xsm:w-70 sm:w-110 lg:w-150">
-                <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400">
-                    <h2>Create New List</h2>
-                    <ButtonIcon iconStyle="fa-solid fa-x" onClick={onClose}/>
-                </div>
-                <form className="mt-4 text-center" onSubmit={onSubmit}>
-                    <Input 
-                        name="title"
-                        type="text" 
-                        value={values.title}
-                        label="List Title"
-                        placeholder="Enter list title"
-                        onChange={onChange}
-                    />
-                    <Input 
-                        name="color"
-                        type="color" 
-                        value={values.color}
-                        label="List Color"
-                        dimensions="xsm:h-20 md:h-40"
-                        onChange={onChange}
-                    />
-                    <div className="flex gap-2 justify-between">
-                        <SubmitBtn buttonText="Create List" isPending={false} />
-                        <Button onClick={onDelete} textButton="Delete List" buttonStyle="bg-red-500 font-normal lg:font-bold"></Button>
+    return (
+        <>
+            {/* Modal overlay */}
+            <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
+                {/* Modal content panel */}
+                <section className="rounded-2xl bg-white p-4 xsm:w-70 sm:w-110 lg:w-150">
+                    {/* Header: title + close */}
+                    <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400">
+                        <h2>Create New List</h2>
+                        <ButtonIcon iconStyle="fa-solid fa-x" onClick={onClose}/>
                     </div>
-                </form>
-            </section>
-        </div>
+
+                    {/* Form: inputs and actions */}
+                    <form className="mt-4 text-center" onSubmit={onSubmit}>
+                        {/* Title input */}
+                        <Input 
+                            name="title"
+                            type="text" 
+                            value={values.title}
+                            label="List Title"
+                            placeholder="Enter list title"
+                            onChange={onChange}
+                        />
+
+                        {/* Color input */}
+                        <Input 
+                            name="color"
+                            type="color" 
+                            value={values.color}
+                            label="List Color"
+                            dimensions="xsm:h-20 md:h-40"
+                            onChange={onChange}
+                        />
+
+                        {/* Actions: save + delete */}
+                        <div className="flex gap-2 justify-between">
+                            <SubmitBtn buttonText="Create List" isPending={false} />
+                            <Button onClick={onDelete} textButton="Delete List" buttonStyle="bg-red-500 font-normal lg:font-bold"></Button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </>
     );
 }

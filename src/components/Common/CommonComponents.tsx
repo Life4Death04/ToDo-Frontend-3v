@@ -38,12 +38,29 @@ type ButtonProps = {
 }
 
 // -------------------- Input Component --------------------
+/**
+ * Input
+ * Controlled input component used across auth and forms.
+ * @param {string} type - input type (text, email, date, etc.)
+ * @param {string} value - controlled value
+ * @param {string} name - input name attribute
+ * @param {string} label - visible label text
+ * @param {boolean} required - whether the input is required
+ * @param {string} placeholder - placeholder text
+ * @param {string} dimensions - optional extra dimension classes
+ * @param {Error|null} error - optional field error to show
+ * @param {(e: ChangeEvent<HTMLInputElement>) => void} onChange - change handler
+ * @returns JSX.Element
+ */
 export function Input({ type, value, name, label, required, placeholder, onChange, error, dimensions }:InputCompTypes){
     return(
         <div className="text-left flex-grow mb-5">
+            {/* Label */}
             <label className="block font-bold mb-2 capitalize xsm:text-xs md:text-sm">
                 {label}
             </label>
+
+            {/* Control */}
             <input 
                 className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md ${error ? 'border-red-500' : ''} ${dimensions}`}
                 type={type} 
@@ -53,16 +70,27 @@ export function Input({ type, value, name, label, required, placeholder, onChang
                 name={name} 
                 placeholder={placeholder}
             />
+
+            {/* Error */}
             {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
         </div>
     );
 }
 
 // -------------------- Header Component --------------------
+/**
+ * Header
+ * Simple header used on auth pages (logo + titles).
+ * @param {string} textH2 - main heading
+ * @param {string} label - sub-label text
+ */
 export function Header({textH2, label}: HeaderProps){
     return(
         <header className="mb-6">
+            {/* Logo */}
             <img className="mx-auto xsm:w-20 md:w-25" src="../icon-main.png"></img>
+
+            {/* Titles */}
             <h1 className="xsm:text-2xl md:text-4xl font-bold">TaskMaster</h1>
             <h2 className="text-gray-700 xsm:text-xl md:text-2xl font-bold mt-2 mb-1">{textH2}</h2>
             <label className="text-gray-500 xsm:text-base md:text-xl">{label}</label>
@@ -71,10 +99,20 @@ export function Header({textH2, label}: HeaderProps){
 }
 
 // -------------------- Footer Component --------------------
+/**
+ * Footer
+ * Small footer with a prompt and navigation button (used in auth forms).
+ * @param {string} label - prompt text
+ * @param {string} buttonUrl - navigation URL
+ * @param {string} buttonText - button label
+ */
 export function Footer({label, buttonUrl, buttonText}: FooterProps){
     return(
         <footer className="mt-4">
+            {/* Prompt */}
             <label className="xsm:text-xs md:text-sm lg:text-base">{label}</label>
+
+            {/* Action */}
             <Link to={`${buttonUrl}`}>
                 <button className="text-orange font-bold hover:cursor-pointer xsm:text-xs md:text-sm lg:text-base">{buttonText}</button>
             </Link>
@@ -83,6 +121,12 @@ export function Footer({label, buttonUrl, buttonText}: FooterProps){
 }
 
 // -------------------- Submit Button Component --------------------
+/**
+ * SubmitBtn
+ * Standard submit button; toggles text when `isPending`.
+ * @param {string} buttonText - text to show when not pending
+ * @param {boolean} isPending - show loading text when true
+ */
 export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
     return(
         <button type="submit" className="bg-orange text-white rounded-xl xsm:p-2 xsm:text-sm md:text-base xsm:text-semibold lg:p-3 lg:font-bold lg:text-lg hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
@@ -90,6 +134,13 @@ export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
 }
 
 // -------------------- Reusable Button Component --------------------
+/**
+ * Button
+ * Reusable button with optional click handler and custom classes.
+ * @param {() => void} onClick - click handler
+ * @param {string} textButton - button text
+ * @param {string} buttonStyle - extra classes
+ */
 export function Button({ onClick, textButton, buttonStyle }: ButtonProps){
     return(
         <button className={`bg-orange text-white font-bold xsm:p-2 xsm:text-sm md:text-base lg:text-lg sm:p-3 lg:p-4 rounded-xl hover:cursor-pointer hover:bg-orange-strong ${buttonStyle}`} onClick={onClick}>
@@ -97,8 +148,15 @@ export function Button({ onClick, textButton, buttonStyle }: ButtonProps){
         </button>
     );
 }
-
 // -------------------- Reusable Button Icon Component --------------------
+/**
+ * ButtonIcon
+ * Icon-only button used for small controls (close, edit, etc.).
+ * @param {() => void} onClick - click handler
+ * @param {string} iconStyle - icon class names
+ * @param {string} textButton - optional text inside the icon
+ * @param {string} buttonStyle - extra classes
+ */
 export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: ButtonProps){
     return(
         <button className={`hover:cursor-pointer xsm:px-2 sm:px-3 py-2 ${buttonStyle}`} onClick={onClick}>
