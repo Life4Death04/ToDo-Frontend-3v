@@ -52,7 +52,7 @@ type AddTaskProps = {
  */
 export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit }: TasksTableProps){
     return(
-        <section className="px-6 pt-4 mx-6 bg-white rounded-2xl">
+        <section className="px-6 py-4 bg-white rounded-2xl">
             {/* Header: title + actions */}
             <header className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-2">
@@ -139,8 +139,8 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit}: TaskI
                 </span>
 
                 {/* Priority */}
-                <span className={`font-bold xsm:text-xs md:text-sm lg:text-base lg:flex-1`}>
-                    <span className={`px-2 py-1 rounded-2xl ${getPriorityColor(priority)}`}>
+                <span className={`font-bold lg:flex-1`}>
+                    <span className={`px-2 py-1 rounded-2xl xsm:text-xs md:text-sm lg:text-base ${getPriorityColor(priority)}`}>
                     {priority}
                     </span>
                 </span>

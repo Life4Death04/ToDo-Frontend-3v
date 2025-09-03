@@ -129,7 +129,7 @@ export function Footer({label, buttonUrl, buttonText}: FooterProps){
  */
 export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
     return(
-        <button type="submit" className="bg-orange text-white rounded-xl xsm:p-2 xsm:text-sm md:text-base xsm:text-semibold lg:p-3 lg:font-bold lg:text-lg hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
+        <button type="submit" className="bg-orange text-white rounded-lg xsm:p-2 xsm:text-sm md:text-base xsm:text-semibold lg:p-3 lg:font-bold lg:text-lg hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
     );
 }
 
@@ -143,7 +143,7 @@ export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
  */
 export function Button({ onClick, textButton, buttonStyle }: ButtonProps){
     return(
-        <button className={`bg-orange text-white font-bold xsm:p-2 xsm:text-sm md:text-base lg:text-lg sm:p-3 lg:p-4 rounded-xl hover:cursor-pointer hover:bg-orange-strong ${buttonStyle}`} onClick={onClick}>
+        <button className={`bg-orange text-white font-bold xsm:p-2 xsm:text-sm md:text-base lg:text-lg sm:p-3 lg:p-4 rounded-lg hover:cursor-pointer hover:bg-orange-strong ${buttonStyle}`} onClick={onClick}>
             {textButton}
         </button>
     );
