@@ -12,27 +12,30 @@ type PopupFormProps = {
     lists?: Lists;
 }
 
-/* const lists = [
-    { id: 1, title: "List 1" },
-    { id: 2, title: "List 2" },
-    { id: 3, title: "List 3" }
-] */
-
 // --------------------PopupForm  Component--------------------
 /**
- * PopupForm component for adding a new task
- * @param {function} handleClose - Function to close the popup
- * @param {number} userId - ID of the user
- * @returns JSX.Element
+ * PopupFormEdit
+ * Modal used to edit an existing task. Parent provides controlled `values` and
+ * handlers. `lists` can be used to populate a list selector.
+ *
+ * Props:
+ * @param {Partial<Task>|undefined} values - controlled values or undefined
+ * @param {(e: React.ChangeEvent<any>) => void} onChange - change handler
+ * @param {(e: React.FormEvent) => void} onSubmit - submit handler
+ * @param {() => void} onClose - close handler
+ * @param {Lists|undefined} lists - optional lists for selection
  */
 export default function PopupFormEdit({values, onChange, onSubmit, onClose, lists}: PopupFormProps) {
     return (
         <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-4 h-fit bg-black/50">
+            {/* Panel */}
             <section className="rounded-2xl bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150">
+                {/* Header: title + close */}
                 <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400">
                     <h2>Add New Task</h2>
                     <ButtonIcon iconStyle="fa-solid fa-x" onClick={onClose}/>
                 </div>
+                {/* Form */}
                 <form onSubmit={(e) => {
                     onSubmit(e);
                 }} className="my-4 text-center">
@@ -54,7 +57,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                         placeholder="mm/dd/yyyy"
                         onChange={onChange} 
                     />
-                    {/* Priority Select - Make a component */}
+                    {/* Priority Select */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Priority
@@ -70,7 +73,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                             <option value="HIGH">High</option>
                         </select>
                     </div>
-                    {/* List Select - Make a component */}
+                    {/* List Select */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             List
@@ -89,7 +92,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                             ))}
                         </select>
                     </div>
-                    {/* Description Textarea - Make a component */}
+                    {/* Description Textarea */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Description
@@ -102,7 +105,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                         onChange={onChange}
                         ></textarea>
                     </div>
-                    {/* Status Select - Make a component*/}
+                    {/* Status Select */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Status
@@ -118,7 +121,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                             <option value="DONE">Done</option>
                         </select>
                     </div>
-                    {/* Submit Button */}
+                    {/* Actions */}
                     <SubmitBtn buttonText={'Update Task'} isPending={false}/>
                 </form>
             </section>

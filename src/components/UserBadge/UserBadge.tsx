@@ -7,15 +7,15 @@ type UserBadgeProps = {
 }
 
 // -------------------- User Info Component (self-contained) --------------------
+/**
+ * UserBadge
+ * Displays a user avatar and basic user info inside the sidebar.
+ * @param {User} userData - user object with firstName, lastName, email, avatarUrl
+ * @param {boolean} isLoading - whether user data is loading
+ * @param {boolean} isError - whether there was an error fetching user data
+ */
 export function UserBadge({userData, isLoading, isError}: UserBadgeProps){
     const { firstName, lastName, email, avatarUrl } = userData;
-
-    /* // Data present
-    const firstName = user?.firstName ?? '';
-    const lastName = user?.lastName ?? '';
-    const email = user?.email ?? '';
-    const avatarUrl = user?.profileImage ?? null; // optional property if exists */
-
     const fullName = `${firstName} ${lastName}`;
 
     // Fallback initials when no avatar
@@ -23,6 +23,7 @@ export function UserBadge({userData, isLoading, isError}: UserBadgeProps){
 
     return(
         <BadgeShell isError={isError} isLoading={isLoading} fullName={fullName} email={email}>
+            {/* Avatar slot */}
             <Avatar avatarUrl={avatarUrl} initials={initials} isError={isError}/>
         </BadgeShell>
     );
@@ -36,6 +37,16 @@ type BadgeShellProps = {
     fullName?: string;
 }
 
+/**
+ * BadgeShell
+ * Shell wrapper that renders user details and optional loading/error states.
+ *
+ * @param {boolean} [isLoading] - whether the badge should show a loading state
+ * @param {boolean} [isError] - whether the badge should show an error state
+ * @param {React.ReactNode} [children] - avatar or custom content to render inside the shell
+ * @param {string} [email] - user email to display
+ * @param {string} [fullName] - user's full name used for title/labels
+ */
 export function BadgeShell({ isLoading, isError, children, email, fullName }: BadgeShellProps){
     const busy = isLoading;
     return (
@@ -47,10 +58,12 @@ export function BadgeShell({ isLoading, isError, children, email, fullName }: Ba
             aria-label={fullName || ''}
         >
             <div className="flex items-center gap-3 xsm:justify-center lg:justify-start">
+                {/* Avatar container */}
                 <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-500 flex-shrink-0">
                     {children}
                 </div>
 
+                {/* Details (hidden on small screens) */}
                 <div className="hidden lg:flex flex-col overflow-hidden">
                     {isError && <p className="text-xs font-bold">Unknown user</p>}
                     {isLoading && 
@@ -72,6 +85,10 @@ type AvatarProps = {
     isError: boolean;
 }
 
+/**
+ * Avatar
+ * Renders user's avatar image or fallback initials.
+ */
 export function Avatar({ avatarUrl, initials, isError }: AvatarProps){
     if(avatarUrl){
         return (

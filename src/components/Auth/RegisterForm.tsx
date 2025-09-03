@@ -1,5 +1,4 @@
 import type { ChangeEvent, FormEvent } from "react";
-
 import type { FormData } from "../../containers/RegisterContainer";
 import { 
     Input, 
@@ -51,6 +50,25 @@ const errorMessages:ErrorTypes = {
 }
 
 // -------------------- Main Register Component --------------------
+/**
+ * RegisterForm
+ *
+ * Controlled registration form. The parent container must supply all input
+ * values and handlers. This component shows a success message when `isSuccess`
+ * is true and maps `fieldErrors` to specific inputs.
+ *
+ * Props:
+ * @param values - controlled values for firstName, lastName, email, password, confirmPassword
+ * @param onChange - input change handler
+ * @param onSubmit - form submit handler
+ * @param isPending - whether registration request is in progress
+ * @param error - optional server error object
+ * @param isSuccess - whether registration succeeded (used to show a message)
+ * @param fieldErrors - optional per-field error messages
+ *
+ * Usage example:
+ * <RegisterForm values={values} onChange={handleChange} onSubmit={handleSubmit} isPending={loading} isSuccess={created} fieldErrors={fieldErrors} />
+ */
 export default function RegisterForm({ values, onChange, onSubmit, isPending, error, isSuccess, fieldErrors }: RegisterFormProps){
     return(
         <main className="flex items-center justify-center">

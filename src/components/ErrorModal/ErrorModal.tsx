@@ -7,6 +7,13 @@ type ErrorModalProps = {
 const errorType:string = 'Error registering user';
 const errorMessage:string = 'User already exists';
 
+/**
+ * ErrorModal
+ * Small inline error modal used to display quick error notifications.
+ *
+ * @param {string} [errorType] - Short title or type of the error
+ * @param {string} [errorMessage] - Human readable error message
+ */
 export function ErrorModal(/* { errorType, errorMessage }: ErrorModalProps */){
 
     return(

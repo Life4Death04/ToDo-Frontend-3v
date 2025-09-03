@@ -24,6 +24,12 @@ type RadialIndicatorProps = {
  * @param {number} completedTasks - Number of completed tasks
  * @returns JSX.Element
  */
+/**
+ * IndicatorPanels
+ * Panel with multiple indicators (radial + text cards) showing task metrics.
+ * @param {number} totalTasks - total tasks in the current view
+ * @param {number} completedTasks - number of tasks completed
+ */
 export function IndicatorPanels({totalTasks, completedTasks}: IndicatorPanelProps){
     return (
         <section className="flex items-center flex-wrap justify-center p-6 gap-8 rounded-lg w-full mx-auto">
@@ -39,6 +45,10 @@ export function IndicatorPanels({totalTasks, completedTasks}: IndicatorPanelProp
  * IndicatorCard component for wrapping indicator content
  * @param {React.ReactNode} children - The content to display inside the card
  * @returns JSX.Element
+ */
+/**
+ * IndicatorCard
+ * Small visual card wrapper used by indicators for consistent styling.
  */
 function IndicatorCard({children}: {children: React.ReactNode}){
   return(
@@ -57,17 +67,24 @@ function IndicatorCard({children}: {children: React.ReactNode}){
  * @param {string} iconIndicator - The icon class for the indicator
  * @returns JSX.Element
  */
+/**
+ * TextIndicator
+ * Small card that shows a text label, an icon and a number.
+ */
 function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicatorProps){
     return(
       <IndicatorCard>
+        {/* Icon */}
         <div className="relative flex items-center justify-center bg-white xsm:p-4 md:p-6 lg:p-8 rounded-full">
           <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl text-gray-600 bg-gray-200 p-4 rounded-full`} aria-hidden={true}></i>
         </div>
 
+        {/* Label */}
         <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600">
           {textIndicator}
         </h2>
 
+        {/* Value */}
         <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange font-bold">
           {totalItems}
         </p>
@@ -82,6 +99,10 @@ function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicator
  * @param {number} totalTasks - The total number of tasks for the indicator
  * @param {number} completedTasks - The number of completed tasks for the indicator
  * @returns JSX.Element
+ */
+/**
+ * RadialIndicator
+ * Circular progress indicator showing percentage of completed tasks.
  */
 export function RadialIndicator({textIndicator, totalTasks, completedTasks}:RadialIndicatorProps) {
   const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0; //Safeguard in case totaltask equals 0
