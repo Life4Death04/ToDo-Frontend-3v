@@ -199,170 +199,60 @@
 import { IndicatorPanels } from "../components/Indicators/Indicators";
 import { TasksTable } from "../components/TasksTable/TasksTable";
 import { useParams } from "react-router";
-import { useFetchUserTasks, useDeleteUserTask, useCreateTask, useUpdateTask } from "../hooks/useTasks";
+/* import { useFetchUserTasks, useDeleteUserTask, useCreateTask, useUpdateTask } from "../hooks/useTasks";
 import { use, useState } from "react";
-import type { PriorityTypes, Task, List } from "../types";
+import type { PriorityTypes, Task, List } from "../types"; */
 import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
 import PopupFormEdit from "../components/TasksPopupForms/PopupFormEdit";
 import CreatePopupForm from "../components/ListsPopupForms/CreatePopupForm";
-import { useCreateList } from "../hooks/useLists";
+/* import { useCreateList } from "../hooks/useLists";
 import { useModal } from "../contexts/ModalContext";
-type FormData = Partial<Task>;
+type FormData = Partial<Task>; */
 
 import { useTasksManager } from "../hooks/useTaskManager";
 import { useListManager } from "../hooks/useListManager";
 
 export default function HomeContainer(){
-    // // ---------------------- Local UI State ----------------------
-    // const [formCreateData, setFormCreateData] = useState<FormData>({
-    //     taskName: '',
-    //     description: '',
-    //     dueDate: '',
-    //     priority: 'LOW',
-    //     status: 'TODO',
-    //     authorId: undefined,
-    // });
-    // const [formEditData, setFormEditData] = useState<Partial<FormData>>({})
-    
-    // const [isPopupCreateOpen, setIsPopupCreateOpen] = useState<boolean>(false);
-    // const [isPopupEditOpen, setIsPopupEditOpen] = useState<boolean>(false);
-
-    // // ---------------------- Route Params ------------------------
-    // // read and validate userId from route params
+    //---------------------- Route Params ------------------------
+    //read and validate userId from route params
     const { userId: userIdParam } = useParams();
     const userId = Number(userIdParam);
 
-    // simple validation
+    //simple validation
     if(!userIdParam || Number.isNaN(userId)){
         return <div>Invalid User ID</div>;
     }
 
-    // // ---------------------- Data Hooks -------------------------
-    // // fetch user's tasks (the hook is expected to return a shaped `data`)
-    // const { closeCreateList } = useModal();
-    // const createTaskMutation = useCreateTask();
-    // const updateTaskMutation = useUpdateTask();
-    // const createListMutation = useCreateList();
-    // const { data, isLoading, isError, error } = useFetchUserTasks(userId);
-
-
-    // // mutation for deleting a user task (scoped to this userId)
-    // const deleteUserTask = useDeleteUserTask(userId);
-
-    // // ---------------------- Event Handlers ---------------------
-    // const handleChangeCreate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
-    //     const {name, value} = e.target;
-    //     setFormCreateData((prev) => ({
-    //         ...prev,
-    //         [name]: value
-    //     }));
-    // }
-
-    // const handleChangeEdit = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
-    //     const {name, value} = e.target;
-    //     setFormEditData((prev) => ({
-    //         ...prev,
-    //         [name]: value
-    //     }));
-    // }
-
-    // const handleSubmitData = (e: React.FormEvent<HTMLFormElement>) =>{
-    //     e.preventDefault();
-    //     const submitData = {
-    //         taskName: formCreateData.taskName || '',
-    //         description: formCreateData.description || '',
-    //         dueDate: formCreateData.dueDate ? new Date(formCreateData.dueDate).toISOString() : undefined,
-    //         priority: formCreateData.priority as PriorityTypes,
-    //         status: formCreateData.status || 'TODO',
-    //         authorId: Number(userId),
-    //         listId: undefined,
-    //     }
-
-    //     createTaskMutation.mutate(submitData, {
-    //         onSuccess: () => {
-    //             setIsPopupCreateOpen(false);
-    //         }
-    //     });
-    // }
-
-    // const handleSubmitEditedData = (e: React.FormEvent<HTMLFormElement>) =>{
-    //     const submitData = {
-    //         ...formEditData,
-    //         dueDate: formEditData.dueDate ? new Date(formEditData.dueDate).toISOString() : undefined
-    //     }
-    //     console.log(submitData)
-    //     updateTaskMutation.mutate(submitData, {
-    //         onSuccess: () => {
-    //             setIsPopupEditOpen(false);
-    //         }
-    //     });
-    // }
-
-    // // handler passed down to `TasksTable` to delete a task by id
-    // const handleDelete = (taskId: number) => {
-    //     deleteUserTask.mutate(taskId); // mutation expects taskId parameter
-    // }
-
-    // // toggle popup for creating a new task
-    // const handlePopupForm = () => {
-    //     setIsPopupCreateOpen(prev => !prev);
-    // }
-
-    // const handlePopupFormEdit = () => {
-    //     setIsPopupEditOpen(prev => !prev);
-    // }
-
-    // const handleAdd = () =>{
-    //     handlePopupForm();
-    // }
-
-    // const handleUpdate = (taskId: number) => {
-    //     const taskToUpdate = data?.tasks?.find(task => task.id === taskId);
-    //     setFormEditData(taskToUpdate!);
-    //     handlePopupFormEdit();
-    // }
-
-    // const [formListData, setFormListData] = useState<Pick<List,'title' | 'color'>>({
-    //     title: '',
-    //     color: '#000000'
-    // })
-
+    //---------------------- Custom Hooks ----------------------
     const {
-        listTitle, tasks, isLoading, isError, error, form,
-        isCreateOpen, toggleCreate, handleChange, handleSubmit, handleDelete,
-        isEditOpen, toggleEdit, editForm, setEditForm, handleChangeEdit, openEditWith, handleSubmitEdit
-        } = useTasksManager({ userId });    
-    
-    const { formList, handleChangeList, handleSubmitList } = useListManager({ listId: 0, userId });
+        tasks, 
+        listArray,
+        isLoading, 
+        isError, 
+        error, 
+        form,
+        isCreateOpen, 
+        toggleCreate, 
+        handleChange, 
+        handleSubmit, 
+        handleDelete,
+        isEditOpen, 
+        toggleEdit, 
+        editForm,
+        handleChangeEdit, 
+        openEditWith, 
+        handleSubmitEdit
+        } = useTasksManager({ userId });        
 
+    const { 
+        formList, 
+        handleChangeList, 
+        handleSubmitList 
+    } = useListManager({ listId: 0, userId });
 
     // -------------------- Data Filtered-------------------------
     const totalTasks = tasks.length;
     const completedTasks = tasks.filter(task => task.status === 'DONE').length;
-
-    // const handleChangeList = (e: React.ChangeEvent<HTMLInputElement>) =>{
-    //     const {name, value} = e.target;
-    //     setFormListData((prev) => ({
-    //         ...prev,
-    //         [name]: value
-    //     }));
-    // }
-
-    // const handleSubmitList = (e: React.FormEvent) =>{
-    //     e.preventDefault();
-    //     const submitData = {
-    //         title: formListData.title || '',
-    //         color: formListData.color || '#000000',
-    //         authorId: userId,
-    //     }
-
-    //     /* createListMutation.mutate(submitData, {
-    //         onSuccess: () => {
-    //             closeCreateList();
-    //         }
-    //     });
-    //     console.log(submitData) */
-    // }
 
     // ---------------------- Render -----------------------------
     return(
@@ -386,9 +276,29 @@ export default function HomeContainer(){
             />
 
             {/* popup form to create a new task (conditionally rendered) */}
-            {isCreateOpen && <PopupFormCreate values={form} onChange={handleChange} onSubmit={handleSubmit} onClose={toggleCreate} />}
-            {isEditOpen && <PopupFormEdit values={editForm} onChange={handleChangeEdit} onSubmit={handleSubmitEdit} onClose={toggleEdit} />}
-            <CreatePopupForm values={formList} onChange={handleChangeList} onSubmit={handleSubmitList} />
+            {isCreateOpen && 
+                <PopupFormCreate 
+                    values={form} 
+                    onChange={handleChange} 
+                    onSubmit={handleSubmit} 
+                    lists={listArray} 
+                    onClose={toggleCreate} 
+            />}
+
+            {isEditOpen && 
+            <PopupFormEdit 
+                values={editForm} 
+                onChange={handleChangeEdit} 
+                onSubmit={handleSubmitEdit} 
+                lists={listArray}
+                onClose={toggleEdit} 
+            />}
+
+            <CreatePopupForm 
+                values={formList} 
+                onChange={handleChangeList} 
+                onSubmit={handleSubmitList} 
+            />
         </section>
     );
 }
