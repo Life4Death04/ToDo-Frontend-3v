@@ -1,4 +1,5 @@
 import type { User } from "../../types";
+import { NavLink } from "react-router";
 
 type UserBadgeProps = {
     userData: User;
@@ -50,8 +51,10 @@ type BadgeShellProps = {
 export function BadgeShell({ isLoading, isError, children, email, fullName }: BadgeShellProps){
     const busy = isLoading;
     return (
-        <div 
-            className="relative w-full p-1 rounded-2xl mb-4"
+        <NavLink 
+            to={"profile"}
+            className={({ isActive }) =>
+            `relative w-full p-1 rounded-2xl mb-4 hover:bg-gray-200 ${isActive && 'bg-gray-200'}`}
             aria-busy={busy}
             aria-live="polite"
             title={fullName || 'No name'}
@@ -75,7 +78,7 @@ export function BadgeShell({ isLoading, isError, children, email, fullName }: Ba
                     <p className="text-xs text-gray-700 truncate max-w-[160px]">{email}</p>
                 </div>
             </div>
-        </div>
+        </NavLink>
     );
 }
 

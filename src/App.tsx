@@ -2,11 +2,13 @@ import './App.css'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import UserProfilePage from './pages/UserProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 import AppPage from './pages/AppPage';
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ListPage } from './pages/ListPage';
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +33,9 @@ const router = createBrowserRouter([
       {
         path: 'lists/:id',
         element: <ListPage />
+      },{
+        path: 'profile',
+        element: <UserProfilePage />
       }
     ]
   },{

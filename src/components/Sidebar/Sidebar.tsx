@@ -87,12 +87,12 @@ export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, list
       </ul>
 
       {/* User Info */}
-      <UserBadge userData={meData || {}} isLoading={isMeDataLoading} isError={isMeDataError} />
+        <UserBadge userData={meData || {}} isLoading={isMeDataLoading} isError={isMeDataError} />
 
       {/* Footer Links */}
       <footer className="w-full lg:px-2 pb-2">
         <section className="flex flex-col gap-2 lg:items-start">
-          <SidebarLinkItem linkText="Settings" linkUrl="/settings" classIcon="fa-solid fa-gear" hoverEffect={true}></SidebarLinkItem>
+          <SidebarLinkItem linkText="Settings" linkUrl="settings" classIcon="fa-solid fa-gear" hoverEffect={true}></SidebarLinkItem>
           <SideBarButton linkText="Log Out" classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true} onClick={onLogout}/>
         </section>
       </footer>
@@ -106,7 +106,7 @@ function SidebarLinkItem({linkText, linkUrl, classIcon, hoverEffect, indexListCo
     <NavLink to={linkUrl} end={true} className={({ isActive }) =>
         `flex justify-center items-center gap-4 w-full py-2 lg:justify-start lg:px-4
          ${isActive ? 'rounded-xl bg-gray-200 text-black' : 'text-gray-600'}
-         ${hoverEffect ? 'hover:rounded-xl hover:bg-gray-200 hover:text-black' : ''}`
+         ${hoverEffect && 'hover:rounded-xl hover:bg-gray-200 hover:text-black'}`
       }
     >
         <i className={`${classIcon} sm:text-2xl md:text-2xl`} aria-hidden={true} style={{ backgroundColor: indexListColor }}></i>

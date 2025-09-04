@@ -11,7 +11,8 @@ type InputCompTypes = {
     placeholder?: string,
     dimensions?: string,
     error?: Error | null ,
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+    disabled?: boolean,
 };
 
 export type HeaderProps = {
@@ -52,7 +53,7 @@ type ButtonProps = {
  * @param {(e: ChangeEvent<HTMLInputElement>) => void} onChange - change handler
  * @returns JSX.Element
  */
-export function Input({ type, value, name, label, required, placeholder, onChange, error, dimensions }:InputCompTypes){
+export function Input({ type, value, name, label, required, placeholder, onChange, error, dimensions, disabled }:InputCompTypes){
     return(
         <div className="text-left flex-grow mb-5">
             {/* Label */}
@@ -62,13 +63,14 @@ export function Input({ type, value, name, label, required, placeholder, onChang
 
             {/* Control */}
             <input 
-                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md ${error ? 'border-red-500' : ''} ${dimensions}`}
+                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md ${error ? 'border-red-500' : ''} ${dimensions} ${disabled && 'bg-gray-200 cursor-not-allowed'}`}
                 type={type} 
                 value={value} 
                 onChange={onChange} 
                 required={required} 
                 name={name} 
                 placeholder={placeholder}
+                disabled={disabled}
             />
 
             {/* Error */}
@@ -129,7 +131,7 @@ export function Footer({label, buttonUrl, buttonText}: FooterProps){
  */
 export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
     return(
-        <button type="submit" className="bg-orange text-white rounded-lg xsm:p-2 xsm:text-sm md:text-base xsm:text-semibold lg:p-3 lg:font-bold lg:text-lg hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
+        <button type="submit" className="bg-orange text-white rounded-lg shadow-md xsm:p-2 xsm:text-sm xsm:font-bold md:text-base lg:px-3 lg:py-2 hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
     );
 }
 
@@ -143,7 +145,7 @@ export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
  */
 export function Button({ onClick, textButton, buttonStyle }: ButtonProps){
     return(
-        <button className={`bg-orange text-white font-bold xsm:p-2 xsm:text-sm md:text-base lg:text-lg sm:p-3 lg:p-4 rounded-lg hover:cursor-pointer hover:bg-orange-strong ${buttonStyle}`} onClick={onClick}>
+        <button className={`xsm:p-2 xsm:text-sm md:text-base lg:text-base lg:px-3 lg:py-2 rounded-lg hover:cursor-pointer hover:bg-orange-strong bg-orange text-white font-bold  ${buttonStyle}`} onClick={onClick}>
             {textButton}
         </button>
     );
