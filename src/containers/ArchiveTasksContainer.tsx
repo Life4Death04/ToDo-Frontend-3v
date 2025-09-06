@@ -29,7 +29,7 @@ export function ArchiveTasksContainer(){
         openEditWith, 
         handleSubmitEdit,
         handleArchive
-    } = useTasksManager({ userId });   
+    } = useTasksManager({ userId, isArchivedView: true });   
     
     const {
         formList, 

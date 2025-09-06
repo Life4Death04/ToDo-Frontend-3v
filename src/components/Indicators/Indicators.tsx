@@ -2,8 +2,9 @@ import type React from "react";
 
 // -------------------- Types --------------------
 type IndicatorPanelProps = {
-  totalTasks?: number;
-  completedTasks?: number;
+  totalTasks: number;
+  completedTasks: number;
+  archivedTasks: number;
 }
 
 type TextIndicatorProps = {
@@ -30,12 +31,12 @@ type RadialIndicatorProps = {
  * @param {number} totalTasks - total tasks in the current view
  * @param {number} completedTasks - number of tasks completed
  */
-export function IndicatorPanels({totalTasks, completedTasks}: IndicatorPanelProps){
+export function IndicatorPanels({totalTasks, completedTasks, archivedTasks}: IndicatorPanelProps){
     return (
         <section className="flex items-center flex-wrap justify-center gap-8 rounded-lg w-full mx-auto xsm:mb-3 xsm:gap-3 md:mb-6 md:gap-6">
-          <RadialIndicator textIndicator="Tasks Completed" totalTasks={totalTasks ?? 0} completedTasks={completedTasks ?? 0}/>
+          <RadialIndicator textIndicator="Tasks Completed" totalTasks={totalTasks} completedTasks={completedTasks}/>
           <TextIndicator textIndicator="Reminder" totalItems={3} iconIndicator="fa-solid fa-clock"/>
-          <TextIndicator textIndicator="Archived Tasks" totalItems={3} iconIndicator="fa-solid fa-archive"/>
+          <TextIndicator textIndicator="Archived Tasks" totalItems={archivedTasks} iconIndicator="fa-solid fa-archive"/>
         </section>
     );
 }

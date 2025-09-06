@@ -5,7 +5,7 @@ import { useFetchUserTasks } from "./useTasks"; // assume exists: fetch all task
 import { useQueryClient } from "@tanstack/react-query";
 import type { Task, } from "../types";
 
-type UseTasksManagerOpts = { userId: number; listId?: number };
+type UseTasksManagerOpts = { userId: number; listId?: number, isArchivedView?: boolean };
 type TaskForm = Omit<Task, 'id'> & Partial<Pick<Task, 'dueDate' | 'description' | 'listId' | 'archived'>>;
 
 /**
@@ -20,7 +20,7 @@ type TaskForm = Omit<Task, 'id'> & Partial<Pick<Task, 'dueDate' | 'description' 
  * @param {UseTasksManagerOpts} listId 
  * @returns object with tasks, loading states, form state and handlers
  */
-export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
+export function useTasksManager({ userId, listId, isArchivedView }: UseTasksManagerOpts) {
   // popup + form state (shared)
   const [isCreateOpen, setCreateOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false); // edit popup state
@@ -49,6 +49,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
   const listTitle = listId ? listQuery?.data?.title : "My Tasks";
   const tasks = listId ? listQuery?.data?.unarchivedTasks ?? [] : allTasksQuery?.data?.unarchivedTasks ?? [];
   const archivedTasks = /* listId ? listQuery?.data?.unarchivedTasks ?? [] :  */allTasksQuery?.data?.archivedTasks ?? [];
+  const archivedTasksCount = archivedTasks.length;
   const isLoading = listId ? listQuery?.isLoading : allTasksQuery?.isLoading;
   const isError = listId ? listQuery?.isError : allTasksQuery?.isError;
   const error = listId ? listQuery?.error : allTasksQuery?.error;
@@ -69,6 +70,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
       status: "TODO",
       listId: listId,
       authorId: userId,
+      archived: isArchivedView ? true : undefined,
     })
   }, [listId, userId]);
   const toggleEdit = useCallback(() => setEditOpen(v => !v), []);
@@ -79,7 +81,6 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
         ...prev, 
         [name]: value 
       }));
-    console.log(form)
   }, []);
 
   // handle changes for the edit form
@@ -91,9 +92,14 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
   // open edit modal prefilled with task values
   const openEditWith = useCallback((taskId: number) => {
     const task = tasks.find(t => t.id === taskId);
+    const archivedTask = archivedTasks.find(t => t.id === taskId);
+    if (!task && archivedTask) {
+      setEditForm(archivedTask);
+      setEditOpen(prev => !prev);
+    }
     if (task) {
       setEditForm(task);
-      setEditOpen(true);
+      setEditOpen(prev => !prev);
     }
   }, [tasks]);
 
@@ -123,6 +129,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
           archived: undefined,
         })
         queryClient.invalidateQueries({ queryKey: listId ? ['listData', listId] : ['tasks', userId] });
+        console.log(payload)
       },
     });
   }, [form, createTask, userId, listId, queryClient]);
@@ -157,6 +164,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
 
   return {
     archivedTasks,
+    archivedTasksCount,
     tasks,
     listTitle,
     listArray,

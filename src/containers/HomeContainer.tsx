@@ -35,6 +35,7 @@ export default function HomeContainer(){
 
     //---------------------- Custom Hooks ----------------------
     const {
+        archivedTasksCount,
         tasks, 
         listArray,
         isLoading, 
@@ -63,6 +64,7 @@ export default function HomeContainer(){
     // -------------------- Data Filtered-------------------------
     const totalTasks = tasks.length;
     const completedTasks = tasks.filter(task => task.status === 'DONE').length;
+    const archivedTasks = archivedTasksCount;
 
     // ---------------------- Render -----------------------------
     return(
@@ -71,6 +73,7 @@ export default function HomeContainer(){
             <IndicatorPanels 
                 totalTasks={totalTasks} 
                 completedTasks={completedTasks} 
+                archivedTasks={archivedTasks}
             />
 
             {/* tasks list + actions */}
