@@ -36,7 +36,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
 
     const listQuery = listId ? useFetchListData(listId) : null;
 
-    const listData = listId ? listQuery?.data?.list : null;
+    const listData = listId ? listQuery?.data?.listData : null;
     const createListMutation = useCreateList();
     const updateListMutation = useUpdateList(listId || 0);
     const deleteListMutation = useDeleteList(listId || 0);

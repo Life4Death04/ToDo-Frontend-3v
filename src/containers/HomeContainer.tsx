@@ -51,15 +51,15 @@ export default function HomeContainer(){
         editForm,
         handleChangeEdit, 
         openEditWith, 
-        handleSubmitEdit
+        handleSubmitEdit,
+        handleArchive
         } = useTasksManager({ userId });        
 
     const { 
         formList, 
         handleChangeList, 
         handleSubmitList 
-    } = useListManager({ listId: 0, userId });
-
+    } = useListManager({ userId });
     // -------------------- Data Filtered-------------------------
     const totalTasks = tasks.length;
     const completedTasks = tasks.filter(task => task.status === 'DONE').length;
@@ -83,6 +83,7 @@ export default function HomeContainer(){
                 isError={isError} 
                 error={error || null} 
                 handleEdit={openEditWith} 
+                handleArchive={handleArchive}
             />
 
             {/* popup form to create a new task (conditionally rendered) */}
@@ -96,13 +97,14 @@ export default function HomeContainer(){
             />}
 
             {isEditOpen && 
-            <PopupFormEdit 
-                values={editForm} 
-                onChange={handleChangeEdit} 
-                onSubmit={handleSubmitEdit} 
-                lists={listArray}
-                onClose={toggleEdit} 
-            />}
+                <PopupFormEdit 
+                    values={editForm} 
+                    onChange={handleChangeEdit} 
+                    onSubmit={handleSubmitEdit} 
+                    lists={listArray}
+                    onClose={toggleEdit} 
+                />
+            }
 
             <CreatePopupForm 
                 values={formList} 

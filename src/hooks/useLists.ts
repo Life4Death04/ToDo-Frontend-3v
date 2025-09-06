@@ -55,7 +55,12 @@ export const useCreateList = () => {
 export const useFetchListData = (listId: number) => {
     return useQuery({
         queryKey: [queryKeys.fetchListData, listId],
-        queryFn: () => fetchListData(listId)
+        queryFn: () => fetchListData(listId),
+        select: (data) => ({
+            title: data?.list.title,
+            listData: data?.list,
+            unarchivedTasks: data?.list.tasks.filter(task => !task.archived) ?? [], //Could be an empty array if no tasks found
+        }) // return only the list object
     })
 }
 

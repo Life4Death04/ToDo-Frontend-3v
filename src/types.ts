@@ -17,11 +17,15 @@ export type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
  */
 export type User = {
   id?: number;
-  email?: string;
-  name?: string;
   firstName?: string;
   lastName?: string;
+  email?: string;
   avatarUrl?: string | null;
+}
+
+export type UpdateUserResponse = {
+  message: string;
+  userUpdated: User;
 }
 
 /**
@@ -49,6 +53,7 @@ export type Task = {
   status: StatusTypes;
   authorId: number;
   listId?: number;
+  archived?: boolean;
 }
 
 /**

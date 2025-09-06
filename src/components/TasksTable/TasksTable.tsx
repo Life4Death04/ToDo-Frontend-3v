@@ -9,11 +9,12 @@ type TasksTableProps = {
     onEditTable?: () => void;
     userTasks?: Task[];
     deleteUserTask: (taskId: number) => void;
-    handleAddUserTask: () => void,
-    handleEdit: (taskId: number) => void,
+    handleAddUserTask: () => void;
+    handleEdit: (taskId: number) => void;
     isLoading?: boolean;
     isError?: boolean;
     error: Error | null;
+    handleArchive: (taskId: number) => void;
 }
 
 type TaskItemProps = {
@@ -23,6 +24,7 @@ type TaskItemProps = {
     status: StatusTypes,
     onDelete: () => void,
     onEdit: () => void,
+    onArchive: () => void,
 }
 
 type NoTaskMessageProps = {
@@ -50,7 +52,7 @@ type AddTaskProps = {
  * @param {Error|null} error - error object
  * @returns JSX.Element
  */
-export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit }: TasksTableProps){
+export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit, handleArchive }: TasksTableProps){
     return(
         <section className="px-6 py-4 bg-white rounded-2xl">
             {/* Header: title + actions */}
@@ -86,6 +88,7 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
                         status={task.status}
                         onDelete={() => deleteUserTask(task.id)}
                         onEdit={() => handleEdit(task.id)}
+                        onArchive={() => handleArchive(task.id)} // Be aware: not implemented yet
                     />
                 ))}
             </ul>
@@ -104,7 +107,7 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
  * @param {() => void} onEdit - edit callback
  * @returns JSX.Element
  */
-function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit}: TaskItemProps){
+function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArchive}: TaskItemProps){
     // - `getCheckIcon` renders the done/undone icon.
     // - Date formatting delegated to `formatDueDate` (consistent locale rules).
     // - Priority & status classes come from helpers to keep styles consistent.
@@ -155,6 +158,7 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit}: TaskI
 
             {/* Right: desktop actions (delete) */}
             <div className="gap-1 xsm:hidden lg:flex">
+                <ButtonIcon onClick={onArchive} iconStyle="fa-solid fa-box-archive"></ButtonIcon>
                 <ButtonIcon onClick={onDelete} iconStyle="fa-regular fa-trash-can"></ButtonIcon>
             </div>
         </li>

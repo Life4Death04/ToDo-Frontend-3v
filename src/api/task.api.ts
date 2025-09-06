@@ -62,7 +62,7 @@ export const deleteUserTask = async(authorId: number, taskId: number): Promise<v
     }
 }
 
-export const toggleUserTaskArchived = async(authorId: number, taskId: number): Promise<ToggleArchivedTask> =>{
+export const toggleTaskArchived = async(authorId: number, taskId: number): Promise<ToggleArchivedTask> =>{
     try{
         const res = await api.patch(BACKEND_ROUTES.TOGGLE_ARCHIVED(authorId, taskId))
         return res.data

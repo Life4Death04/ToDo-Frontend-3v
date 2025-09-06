@@ -8,6 +8,7 @@ import AppPage from './pages/AppPage';
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ListPage } from './pages/ListPage';
+import ArchiveTasksPage from './pages/ArchiveTasksPage';
 
 
 const queryClient = new QueryClient({
@@ -36,6 +37,9 @@ const router = createBrowserRouter([
       },{
         path: 'profile',
         element: <UserProfilePage />
+      },{
+        path: 'archive',
+        element: <ArchiveTasksPage />
       }
     ]
   },{

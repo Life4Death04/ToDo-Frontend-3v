@@ -13,6 +13,8 @@ type InputCompTypes = {
     error?: Error | null ,
     onChange: (e: ChangeEvent<HTMLInputElement>) => void,
     disabled?: boolean,
+    isLoading?: boolean,
+    isError?: boolean,
 };
 
 export type HeaderProps = {
@@ -53,7 +55,7 @@ type ButtonProps = {
  * @param {(e: ChangeEvent<HTMLInputElement>) => void} onChange - change handler
  * @returns JSX.Element
  */
-export function Input({ type, value, name, label, required, placeholder, onChange, error, dimensions, disabled }:InputCompTypes){
+export function Input({ type, value, name, label, required, placeholder, onChange, error, dimensions, disabled, isLoading, isError }:InputCompTypes){
     return(
         <div className="text-left flex-grow mb-5">
             {/* Label */}
@@ -61,7 +63,13 @@ export function Input({ type, value, name, label, required, placeholder, onChang
                 {label}
             </label>
 
+            {/* Show generic error if isError is true */}
+            {isError && <p className="text-red-500 text-sm mt-1">Oops, we couldn't fetch the data :c</p>}
+
             {/* Control */}
+            {isLoading ? (
+                <div className="animate-pulse h-10 bg-gray-200 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md"></div>
+            ) : (
             <input 
                 className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md ${error ? 'border-red-500' : ''} ${dimensions} ${disabled && 'bg-gray-200 cursor-not-allowed'}`}
                 type={type} 
@@ -72,6 +80,7 @@ export function Input({ type, value, name, label, required, placeholder, onChang
                 placeholder={placeholder}
                 disabled={disabled}
             />
+            )}
 
             {/* Error */}
             {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
@@ -145,7 +154,7 @@ export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
  */
 export function Button({ onClick, textButton, buttonStyle }: ButtonProps){
     return(
-        <button className={`xsm:p-2 xsm:text-sm md:text-base lg:text-base lg:px-3 lg:py-2 rounded-lg hover:cursor-pointer hover:bg-orange-strong bg-orange text-white font-bold  ${buttonStyle}`} onClick={onClick}>
+        <button className={`xsm:p-2 xsm:text-sm md:text-base lg:text-base lg:px-3 lg:py-2 rounded-lg hover:cursor-pointer ${buttonStyle ? buttonStyle : 'hover:bg-orange-strong bg-orange text-white font-bold'}`} onClick={onClick}>
             {textButton}
         </button>
     );

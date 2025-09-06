@@ -1,10 +1,12 @@
 import axios from 'axios'
 import api from './axios';
+import type { UpdateUserResponse, User } from '../types';
 // -------------------- Types --------------------
 type BACKEND_ROUTES_USERS = {
     REGISTER: string;
     LOGIN: string;
     FETCH: (userId: number) => string;
+    UPDATE: (user: User) => string;
 }
 
 type NewUser = {
@@ -42,7 +44,8 @@ type Credentials = {
 const BACKEND_ROUTES: BACKEND_ROUTES_USERS = {
     REGISTER: '/user/register',
     LOGIN: '/user/login',
-    FETCH: (userId: number) => `/user/find/${userId}`
+    FETCH: (userId: number) => `/user/find/${userId}`,
+    UPDATE: (user: User) => `/user/update/${user.id}`,
 }
 
 //Protected Routes
@@ -98,5 +101,17 @@ export const fetchMeData = async(): Promise<FetchUserDataResponse> =>{
             throw new Error(error.response?.data?.message || `Error fetching user data`)
         }
         throw new Error(`Unexpected error fetching user data`)
+    }
+}
+
+export const updateUserData = async(dataToUpdate: User): Promise<UpdateUserResponse> =>{
+    try{
+        const response = await api.put(BACKEND_ROUTES.UPDATE(dataToUpdate), dataToUpdate);
+        return response.data;
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error updating user data`)
+        }
+        throw new Error(`Unexpected error updating user data`)
     }
 }

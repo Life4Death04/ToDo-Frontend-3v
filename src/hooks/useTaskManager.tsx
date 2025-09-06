@@ -1,12 +1,12 @@
 import { useState, useCallback } from "react";
-import { useCreateTask, useDeleteUserTask, useUpdateTask } from "./useTasks";
+import { useCreateTask, useDeleteUserTask, useUpdateTask, useToggleTaskArchived } from "./useTasks";
 import { useFetchListData, useFetchLists } from "./useLists";
 import { useFetchUserTasks } from "./useTasks"; // assume exists: fetch all tasks for user
 import { useQueryClient } from "@tanstack/react-query";
 import type { Task, } from "../types";
 
 type UseTasksManagerOpts = { userId: number; listId?: number };
-type TaskForm = Omit<Task, 'id'> & Partial<Pick<Task, 'dueDate' | 'description' | 'listId'>>;
+type TaskForm = Omit<Task, 'id'> & Partial<Pick<Task, 'dueDate' | 'description' | 'listId' | 'archived'>>;
 
 /**
  * useTasksManager
@@ -32,6 +32,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
     status: "TODO",
     listId: listId ?? undefined,
     authorId: userId,
+    archived: undefined,
   });
 
   // edit form holds the current task being edited
@@ -42,10 +43,12 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
   // fetch tasks depending on listId presence
   const listQuery = listId ? useFetchListData(listId) : null;
   const lists = useFetchLists();
-  const allTasksQuery = !listId ? useFetchUserTasks(userId) : null;
+  const allTasksQuery = !listId ? useFetchUserTasks(userId) : null; // fetch non-archived tasks
+  const toggleArchive = useToggleTaskArchived(userId);
 
-  const listTitle = listId ? listQuery?.data?.list?.title : "My Tasks";
-  const tasks = listId ? listQuery?.data?.list?.tasks ?? [] : allTasksQuery?.data?.tasks ?? [];
+  const listTitle = listId ? listQuery?.data?.title : "My Tasks";
+  const tasks = listId ? listQuery?.data?.unarchivedTasks ?? [] : allTasksQuery?.data?.unarchivedTasks ?? [];
+  const archivedTasks = /* listId ? listQuery?.data?.unarchivedTasks ?? [] :  */allTasksQuery?.data?.archivedTasks ?? [];
   const isLoading = listId ? listQuery?.isLoading : allTasksQuery?.isLoading;
   const isError = listId ? listQuery?.isError : allTasksQuery?.isError;
   const error = listId ? listQuery?.error : allTasksQuery?.error;
@@ -67,7 +70,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
       listId: listId,
       authorId: userId,
     })
-  }, [listId]);
+  }, [listId, userId]);
   const toggleEdit = useCallback(() => setEditOpen(v => !v), []);
 
   const handleChange = useCallback((e: React.ChangeEvent<any>) => {
@@ -76,6 +79,7 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
         ...prev, 
         [name]: value 
       }));
+    console.log(form)
   }, []);
 
   // handle changes for the edit form
@@ -102,19 +106,22 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
       priority: form.priority,
       status: form.status,
       authorId: Number(userId),
-      listId: Number(form.listId) || undefined 
+      listId: Number(form.listId) || undefined,
+      archived: form.archived
     };
-    console.log(form)
     createTask.mutate(payload, {
       onSuccess: () => {
-        setCreateOpen(false);
-        setForm({taskName: "",
+        setCreateOpen(prev => !prev);
+        setForm({
+          taskName: "",
           description: "",
           dueDate: "",
           priority: "LOW",
           status: "TODO",
           listId: listId ?? undefined,
-          authorId: userId,})
+          authorId: userId,
+          archived: undefined,
+        })
         queryClient.invalidateQueries({ queryKey: listId ? ['listData', listId] : ['tasks', userId] });
       },
     });
@@ -143,7 +150,13 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
     });
   }, [deleteTask, listId, userId, queryClient]);
 
+  const handleArchive = useCallback((taskId: number) => {
+    toggleArchive.mutate(taskId);
+  }, [toggleArchive]);
+
+
   return {
+    archivedTasks,
     tasks,
     listTitle,
     listArray,
@@ -164,5 +177,6 @@ export function useTasksManager({ userId, listId }: UseTasksManagerOpts) {
     openEditWith,
     handleSubmitEdit,
     handleDelete,
+    handleArchive
   };
 }
