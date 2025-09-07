@@ -1,5 +1,6 @@
 import type { ChangeEvent } from "react";
 import { Link } from "react-router";
+import type { ListsSummary } from "../../types";
 
 // -------------------- Types --------------------
 type InputCompTypes = {
@@ -173,5 +174,77 @@ export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: Butt
         <button className={`hover:cursor-pointer xsm:px-2 sm:px-3 py-2 ${buttonStyle}`} onClick={onClick}>
             <i className={`${iconStyle} text-gray-500 xsm:text-base lg:text-lg hover:text-orange`} aria-hidden={true}>{textButton}</i>
         </button>
+    );
+}
+// --------------------------- Select Component ---------------------------
+/**
+ * Type: Priority, List, Status
+ * Style: Default or custom
+ * options + values: Priority, List, Status, Customs
+ */
+type OptionValuesType = {
+    value: string | number | undefined,
+    label: string,
+    id?: number,
+    title?: string,
+}
+
+const priorityOptions: OptionValuesType[] = [
+    { value: 'LOW', label: 'Low' },
+    { value: 'MEDIUM', label: 'Medium' },
+    { value: 'HIGH', label: 'High' },
+];
+
+const statusOptions: OptionValuesType[] = [
+    { value: 'TODO', label: 'To Do' },
+    { value: 'IN_PROGRESS', label: 'In Progress' },
+    { value: 'DONE', label: 'Done' },
+];
+
+const dateFormatOptions: OptionValuesType[] = [
+    { value: 'MM/DD/YYYY', label: 'MM/DD/YYYY' },
+    { value: 'DD/MM/YYYY', label: 'DD/MM/YYYY' },
+    { value: 'YYYY/MM/DD', label: 'YYYY/MM/DD' },
+]
+
+type OptionTypes = OptionValuesType[] | ListsSummary[];
+
+export const options = [
+    {priority: priorityOptions},
+    {status: statusOptions},
+    {dateFormat: dateFormatOptions}
+];
+
+type SelectProps  = {
+    type: 'priority' | 'listId' | 'status' | 'dateFormat',
+    options:  OptionTypes | undefined,
+    currentValue: string | number | undefined,
+    onChange: (e: ChangeEvent<HTMLSelectElement>) => void,
+}
+
+export function Select({onChange, options, currentValue, type}: SelectProps){
+    return(
+        <div className="text-left flex-grow mb-5">
+            <label className="block font-bold mb-2 capitalize">
+                {type === 'priority' && 'Priority'}
+                {type === 'listId' && 'List'}
+                {type === 'status' && 'Status'}
+                {type === 'dateFormat' && 'Date Format'}
+            </label>
+            <select 
+                className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
+                name={type}
+                value={currentValue}
+                onChange={onChange}
+            >
+                {type === 'listId' && <option value="null">None</option>}
+                {options?.map((option) => (
+                    <option key={option.id || option.value} value={option.value || option.id}>
+                        {(type === 'priority' || type === 'status' || type === 'dateFormat') && option.label}
+                        {type === 'listId' && option.title}
+                    </option>
+                ))}
+            </select>
+        </div>
     );
 }

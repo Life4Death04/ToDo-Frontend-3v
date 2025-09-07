@@ -129,7 +129,8 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
                 <ButtonIcon onClick={onEdit} iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></ButtonIcon>
 
                 {/* Mobile: inline delete */}
-                <div className="flex justify-center ml-auto mt-auto text-center w-20 lg:self-center lg:hidden">
+                <div className="flex ml-auto mt-auto text-center w-20 xsm:flex-col sm:flex-row lg:self-center lg:hidden">
+                    <ButtonIcon onClick={onArchive} iconStyle="fa-solid fa-box-archive"></ButtonIcon>
                     <ButtonIcon onClick={onDelete} iconStyle="fa-regular fa-trash-can"></ButtonIcon>
                 </div>
             </div>
