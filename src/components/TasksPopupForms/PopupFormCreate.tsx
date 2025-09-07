@@ -1,10 +1,11 @@
 //------------------ENHANCED VERSION BY CHAT GPT (AGENT MODE)-----------------------------------
-import { ButtonIcon } from "../Common/CommonComponents";
+import { ButtonIcon, Select, options } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
-import type { Task } from '../../types';
+import type { Task, ListsSummary } from '../../types';
 
 type FormData = Partial<Task>;
-type Lists = Array<{ id: number; title: string; color: string;  }> | undefined;
+/* type Lists = Array<{ id: number; title: string; color: string;  }> | undefined; */
+type Lists = ListsSummary[];
 type PopupFormProps = {
     values: FormData;
     onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
@@ -60,7 +61,7 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                     />
 
                     {/* Priority Select */}
-                    <div className="text-left flex-grow mb-5">
+                    {/* <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">Priority</label>
                         <select
                             className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
@@ -68,15 +69,21 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                             value={values.priority}
                             onChange={onChange}
                         >
-                            {/* priority options */}
+
                             <option value="LOW">Low</option>
                             <option value="MEDIUM">Medium</option>
                             <option value="HIGH">High</option>
                         </select>
-                    </div>
-
+                    </div> */}
+                    <Select 
+                        type="priority"
+                        options={options[0].priority}
+                        currentValue={values.priority}
+                        onChange={onChange}
+                    />
+                    
                     {/* List Select (optional) */}
-                    {lists && 
+                    {/* {lists && 
                         <div className="text-left flex-grow mb-5">
                             <label className="block font-bold mb-2 capitalize">List</label>
                             <select
@@ -93,7 +100,13 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                                 ))}
                             </select>
                         </div>
-                    }
+                    } */}
+                    <Select 
+                        type="listId"
+                        options={lists}
+                        onChange={onChange}
+                        currentValue={values.listId}
+                    />
 
                     {/* Description Textarea */}
                     <div className="text-left flex-grow mb-5">
@@ -108,7 +121,7 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                     </div>
 
                     {/* Additional controls (status, assignee, etc.) */}
-                    <div className="text-left flex-grow mb-5">
+                    {/* <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">Status</label>
                         <select
                             className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
@@ -120,7 +133,19 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                             <option value="IN_PROGRESS">In Progress</option>
                             <option value="DONE">Done</option>
                         </select>
-                    </div>
+                    </div> */}
+                    <Select 
+                        type="status"
+                        options={options[1].status}
+                        currentValue={values.status}
+                        onChange={onChange}
+                    />
+                    <Select 
+                        type="dateFormat"
+                        options={options[2].dateFormat}
+                        currentValue={values.status}
+                        onChange={onChange}
+                    />
 
                     <SubmitBtn buttonText={'Add Task'} isPending={false}/>
                 </form>

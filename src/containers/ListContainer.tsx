@@ -42,7 +42,8 @@ export function ListContainer(){
     editForm, 
     handleChangeEdit, 
     openEditWith, 
-    handleSubmitEdit
+    handleSubmitEdit,
+    handleArchive
   } = useTasksManager({ userId, listId });
 
   const { 
@@ -58,7 +59,7 @@ export function ListContainer(){
     isEditListOpen,
     listData
   } = useListManager({ listId, userId });
-
+  console.log("listData in ListContainer: ", listData);
   return (
     <main className="xsm:p-2 sm:p-4 md:p-6">
       <TasksTable
@@ -72,6 +73,7 @@ export function ListContainer(){
         isError={isError}
         error={error || null}
         handleEdit={openEditWith}
+        handleArchive={handleArchive}
         />
 
       {isCreateOpen && 

@@ -1,5 +1,6 @@
 //------------------ENHANCED VERSION BY CHAT GPT (AGENT MODE)-----------------------------------
-import { ButtonIcon } from "../Common/CommonComponents";
+import { ButtonIcon, Select } from "../Common/CommonComponents";
+import { options } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
 import type { Task } from '../../types';
 
@@ -58,7 +59,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                         onChange={onChange} 
                     />
                     {/* Priority Select */}
-                    <div className="text-left flex-grow mb-5">
+                    {/* <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Priority
                         </label>
@@ -72,9 +73,15 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                             <option value="MEDIUM">Medium</option>
                             <option value="HIGH">High</option>
                         </select>
-                    </div>
+                    </div> */}
+                    <Select 
+                        type="priority"
+                        options={options[0].priority}
+                        currentValue={values?.priority}
+                        onChange={onChange}
+                    />
                     {/* List Select */}
-                    <div className="text-left flex-grow mb-5">
+                    {/* <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             List
                         </label>
@@ -91,7 +98,13 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
+                    <Select 
+                        type="listId"
+                        options={lists}
+                        onChange={onChange}
+                        currentValue={values?.listId}
+                    />
                     {/* Description Textarea */}
                     <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
@@ -106,7 +119,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                         ></textarea>
                     </div>
                     {/* Status Select */}
-                    <div className="text-left flex-grow mb-5">
+                    {/* <div className="text-left flex-grow mb-5">
                         <label className="block font-bold mb-2 capitalize">
                             Status
                         </label>
@@ -120,7 +133,13 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                             <option value="IN_PROGRESS">In Progress</option>
                             <option value="DONE">Done</option>
                         </select>
-                    </div>
+                    </div> */}
+                    <Select 
+                        type="status"
+                        options={options[1].status}
+                        currentValue={values?.status}
+                        onChange={onChange}
+                    />
                     {/* Actions */}
                     <SubmitBtn buttonText={'Update Task'} isPending={false}/>
                 </form>
