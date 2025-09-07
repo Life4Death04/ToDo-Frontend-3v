@@ -142,7 +142,7 @@ export const fetchUserSettings = async(): Promise<Settings> =>{
 }
 
 // --------------------- Update User Settings --------------------
-export const updateUserSettings = async(dataToUpdate: Settings): Promise<UpdateSettingsResponse> =>{
+export const updateUserSettings = async(dataToUpdate: Partial<Settings>): Promise<UpdateSettingsResponse> =>{
     try{
         const response = await api.put(SETTINGS_ROUTES.UPDATE, dataToUpdate);
         return response.data;

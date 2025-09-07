@@ -210,6 +210,10 @@ type SelectProps  = {
     currentValue: string | number | undefined,
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void,
     label: string,
+    disabled?: boolean,
+    inputName?: string,
+    isLoading?: boolean,
+    isError?: boolean,
 }
 
 export const priorityOptions: OptionValuesType[] = [
@@ -225,9 +229,9 @@ export const statusOptions: OptionValuesType[] = [
 ];
 
 export const dateFormatOptions: OptionValuesType[] = [
-    { value: 'MM/DD/YYYY', label: 'MM/DD/YYYY' },
-    { value: 'DD/MM/YYYY', label: 'DD/MM/YYYY' },
-    { value: 'YYYY/MM/DD', label: 'YYYY/MM/DD' },
+    { value: 'MM_DD_YYYY', label: 'MM/DD/YYYY' },
+    { value: 'DD_MM_YYYY', label: 'DD/MM/YYYY' },
+    { value: 'YYYY_MM_DD', label: 'YYYY/MM/DD' },
 ]
 
 export const languageOptions: OptionValuesType[] = [
@@ -242,23 +246,21 @@ export const options = [
     {language: languageOptions}
 ];
 
-export function Select({onChange, options, currentValue, type, label}: SelectProps){
+export function Select({onChange, options, currentValue, type, label, disabled, inputName, isLoading, isError}: SelectProps){
     return(
         <div className="text-left flex-grow mb-5">
             <label className="block font-bold mb-2 capitalize">
-                {/* {type === 'priority' && 'Priority'}
-                {type === 'listId' && 'List'}
-                {type === 'status' && 'Status'}
-                {type === 'dateFormat' && 'Date Format'}
-                {type === 'language' && 'Language'} */}
                 {label}
             </label>
             <select 
                 className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
-                name={type}
+                name={inputName ? inputName : type}
                 value={currentValue}
                 onChange={onChange}
+                disabled={disabled}
             >
+                {isLoading && <option>Loading...</option>}
+                {isError && <option>Oops, we couldn't fetch the data :c</option>}
                 {type === 'listId' && <option value="null">None</option>}
                 {options?.map((option) => (
                     <option key={option.id || option.value} value={option.value || option.id}>

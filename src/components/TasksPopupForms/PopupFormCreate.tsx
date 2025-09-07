@@ -76,7 +76,7 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                         </select>
                     </div> */}
                     <Select 
-
+                        label="Priority"
                         type="priority"
                         options={options[0].priority}
                         currentValue={values.priority}

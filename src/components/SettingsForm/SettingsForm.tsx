@@ -4,16 +4,20 @@ import type { Settings } from "../../types";
 
 type SettingsFormProps = {
     values?: Omit<Settings, 'id' | 'authorId'>;
-    isEditting: boolean;
+    isEditing: boolean;
     onEdit: () => void;
     isSubmitLoading: boolean;
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    onThemeChange: (value: Settings['theme']) => void;
+    onSubmit: (e: React.FormEvent) => void;
+    isDataLoading?: boolean;
+    isError?: boolean;
 }
 
-export function SettingsForm({ values, isEditting, onEdit, isSubmitLoading, onChange }: SettingsFormProps){
+export function SettingsForm({ values, isEditing, onEdit, isSubmitLoading, onChange, onThemeChange, onSubmit, isDataLoading, isError }: SettingsFormProps){
     return(
         <PageMockup header="Settings">
-            <form className="w-full">
+            <form className="w-full" onSubmit={onSubmit}>
                 <div className="flex xsm:flex-col md:flex-row md:gap-8">
                     <Select 
                         label="Date Format"
@@ -21,6 +25,9 @@ export function SettingsForm({ values, isEditting, onEdit, isSubmitLoading, onCh
                         options={dateFormatOptions}
                         currentValue={values?.dateFormat || ``}
                         onChange={onChange}
+                        disabled={!isEditing}
+                        isLoading={isDataLoading}
+                        isError={isError}
                     />
                     <Select 
                         label="Language"
@@ -28,43 +35,84 @@ export function SettingsForm({ values, isEditting, onEdit, isSubmitLoading, onCh
                         options={languageOptions}
                         currentValue={values?.language || ``}
                         onChange={onChange}
+                        disabled={!isEditing}
+                        isLoading={isDataLoading}
+                        isError={isError}
                     />
                 </div>
                 <div className="flex xsm:flex-col md:flex-row md:gap-8">
                     <Select
+                        inputName="defaultPriority"
                         label="Default Priority"
                         type="priority"
                         options={priorityOptions}
                         currentValue={values?.defaultPriority || ``}
                         onChange={onChange}
+                        disabled={!isEditing}
+                        isLoading={isDataLoading}
+                        isError={isError}
                     />
                     <Select
+                        inputName="defaultStatus"
                         label="Default Status"
                         type="status"
                         options={statusOptions}
                         currentValue={values?.defaultStatus || ``}
                         onChange={onChange}
+                        disabled={!isEditing}
+                        isLoading={isDataLoading}
+                        isError={isError}
                     />
                 </div>
-                <div className="text-left flex-grow mb-5 gap-5">
-                    <label className="block font-bold mb-2 capitalize">
-                        Theme
-                    </label>
-                    <div className="flex gap-2">
-                        <Button 
-                            iconStyle="fa-solid fa-sun"
-                            textButton="Light"
-                            buttonStyle="border border-black/20 bg-gray-200 xsm:flex-grow xsm:py-2 xsm:text-base md:text-base lg:text-base rounded-lg hover:cursor-pointer hover:bg-orange hover:text-white"
-                        />
-                        <Button 
-                            iconStyle="fa-solid fa-moon"
-                            textButton="Dark"
-                            buttonStyle="border border-black/20 bg-gray-200 xsm:flex-grow xsm:py-2 xsm:text-base md:text-base lg:text-base rounded-lg hover:cursor-pointer hover:bg-orange hover:text-white"
-                        />
-                    </div>
-                </div>
-                <ToggleButtons isEditting={isEditting} onEdit={onEdit} isSubmitLoading={isSubmitLoading}/>
+                <ThemeToggle value={values?.theme} onChange={onThemeChange} disabled={!isEditing}></ThemeToggle>
+                <ToggleButtons isEditting={isEditing} onEdit={onEdit} isSubmitLoading={isSubmitLoading}/>
             </form>
         </PageMockup>
     );
+}
+
+type ThemeValue = "LIGHT" | "DARK";
+type ThemeToggleProps = {
+    value?: ThemeValue;
+    onChange: (value: ThemeValue) => void;
+    disabled?: boolean;
+}
+
+function ThemeToggle({value, onChange, disabled}: ThemeToggleProps){
+    const btnBase = "border border-black/20 bg-gray-200 xsm:flex-grow xsm:py-2 xsm:text-base md:text-base lg:text-base rounded-lg font-bold flex items-center justify-center gap-2 cursor-pointer";
+    const lightActive = "bg-orange text-white";
+    const darkActive = "bg-gray-800 text-white";
+    const inactiveBtn = "border border-black/20 bg-gray-200 xsm:flex-grow xsm:py-2 xsm:text-base md:text-base lg:text-base rounded-lg font-bold flex items-center justify-center gap-2 opacity-50";
+
+    return(
+        <div className="text-left flex-grow mb-5 gap-5">
+            <label className="block font-bold mb-2 capitalize">
+                Theme
+            </label>
+            <div className="flex gap-2">
+                <button
+                    name="theme"
+                    className={`${disabled ? inactiveBtn : btnBase} ${value === 'LIGHT' ? lightActive : inactiveBtn}`}
+                    type="button"
+                    aria-pressed={value === 'LIGHT'}
+                    onClick={() => !disabled && onChange("LIGHT")}
+                    disabled={disabled}
+                >
+                    <i className="fa-solid fa-sun"></i> 
+                    Light
+                </button>
+                <button
+                    name="theme"
+                    className={`${disabled ? inactiveBtn : btnBase} ${value === 'DARK' && darkActive}`}
+                    type="button"
+                    aria-pressed={value === 'DARK'}
+                    onClick={() => !disabled && onChange("DARK")}
+                    disabled={disabled}
+                >
+                    <i className="fa-solid fa-moon"></i> 
+                    Dark
+                </button>
+            </div>
+        </div>
+    )
 }
