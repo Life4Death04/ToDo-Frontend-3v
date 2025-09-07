@@ -48,7 +48,7 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
 
   const listTitle = listId ? listQuery?.data?.title : "My Tasks";
   const tasks = listId ? listQuery?.data?.unarchivedTasks ?? [] : allTasksQuery?.data?.unarchivedTasks ?? [];
-  const archivedTasks = /* listId ? listQuery?.data?.unarchivedTasks ?? [] :  */allTasksQuery?.data?.archivedTasks ?? [];
+  const archivedTasks = allTasksQuery?.data?.archivedTasks ?? [];
   const archivedTasksCount = archivedTasks.length;
   const isLoading = listId ? listQuery?.isLoading : allTasksQuery?.isLoading;
   const isError = listId ? listQuery?.isError : allTasksQuery?.isError;

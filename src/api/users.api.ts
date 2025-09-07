@@ -1,12 +1,17 @@
 import axios from 'axios'
 import api from './axios';
-import type { UpdateUserResponse, User } from '../types';
+import type { Settings, UpdateSettingsResponse, UpdateUserResponse, User } from '../types';
 // -------------------- Types --------------------
 type BACKEND_ROUTES_USERS = {
     REGISTER: string;
     LOGIN: string;
     FETCH: (userId: number) => string;
     UPDATE: (user: User) => string;
+}
+
+type BACKEND_ROUTES_SETTINGS = {
+    FETCH: string;
+    UPDATE: string;
 }
 
 type NewUser = {
@@ -46,6 +51,11 @@ const BACKEND_ROUTES: BACKEND_ROUTES_USERS = {
     LOGIN: '/user/login',
     FETCH: (userId: number) => `/user/find/${userId}`,
     UPDATE: (user: User) => `/user/update/${user.id}`,
+}
+
+const SETTINGS_ROUTES: BACKEND_ROUTES_SETTINGS = {
+    FETCH: '/settings/',
+    UPDATE: '/settings/'
 }
 
 //Protected Routes
@@ -104,6 +114,7 @@ export const fetchMeData = async(): Promise<FetchUserDataResponse> =>{
     }
 }
 
+// -------------------- Update User Data --------------------
 export const updateUserData = async(dataToUpdate: User): Promise<UpdateUserResponse> =>{
     try{
         const response = await api.put(BACKEND_ROUTES.UPDATE(dataToUpdate), dataToUpdate);
@@ -113,5 +124,32 @@ export const updateUserData = async(dataToUpdate: User): Promise<UpdateUserRespo
             throw new Error(error.response?.data?.message || `Error updating user data`)
         }
         throw new Error(`Unexpected error updating user data`)
+    }
+}
+
+// -------------------------------------------------------- Settings -------------------------------------------------
+// --------------------- Fetch User Settings --------------------
+export const fetchUserSettings = async(): Promise<Settings> =>{
+    try{
+        const res = await api.get(SETTINGS_ROUTES.FETCH);
+        return res.data;
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error fetching user settings`)
+        }
+        throw new Error(`Unexpected error fetching user settings`)
+    }
+}
+
+// --------------------- Update User Settings --------------------
+export const updateUserSettings = async(dataToUpdate: Partial<Settings>): Promise<UpdateSettingsResponse> =>{
+    try{
+        const response = await api.put(SETTINGS_ROUTES.UPDATE, dataToUpdate);
+        return response.data;
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error updating user settings`)
+        }
+        throw new Error(`Unexpected error updating user settings`)
     }
 }

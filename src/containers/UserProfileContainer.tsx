@@ -13,7 +13,6 @@ export function UserProfileContainer(){
 
     const toggleEdit = () => {
         setIsEditing(prev => !prev);
-        console.log(initials)
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

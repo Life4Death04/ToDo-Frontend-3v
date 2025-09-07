@@ -75,6 +75,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                         </select>
                     </div> */}
                     <Select 
+                        label="Priority"
                         type="priority"
                         options={options[0].priority}
                         currentValue={values?.priority}
@@ -99,7 +100,8 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                             ))}
                         </select>
                     </div> */}
-                    <Select 
+                    <Select
+                        label="List"
                         type="listId"
                         options={lists}
                         onChange={onChange}
@@ -135,6 +137,7 @@ export default function PopupFormEdit({values, onChange, onSubmit, onClose, list
                         </select>
                     </div> */}
                     <Select 
+                        label="Status"
                         type="status"
                         options={options[1].status}
                         currentValue={values?.status}
