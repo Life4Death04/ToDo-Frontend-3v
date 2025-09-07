@@ -200,7 +200,7 @@ function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessagePro
 function AddTaskButton({onClick}: AddTaskProps){
     return(
         <button onClick={onClick} className="bg-orange ml-auto text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl">
-            {'+ Add Task'}
+            {`+ Add Task`}
         </button>
     );
 }

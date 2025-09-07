@@ -189,6 +189,15 @@ type OptionValuesType = {
     title?: string,
 }
 
+type OptionTypes = OptionValuesType[] | ListsSummary[];
+
+type SelectProps  = {
+    type: 'priority' | 'listId' | 'status' | 'dateFormat',
+    options:  OptionTypes | undefined,
+    currentValue: string | number | undefined,
+    onChange: (e: ChangeEvent<HTMLSelectElement>) => void,
+}
+
 const priorityOptions: OptionValuesType[] = [
     { value: 'LOW', label: 'Low' },
     { value: 'MEDIUM', label: 'Medium' },
@@ -207,20 +216,11 @@ const dateFormatOptions: OptionValuesType[] = [
     { value: 'YYYY/MM/DD', label: 'YYYY/MM/DD' },
 ]
 
-type OptionTypes = OptionValuesType[] | ListsSummary[];
-
 export const options = [
     {priority: priorityOptions},
     {status: statusOptions},
     {dateFormat: dateFormatOptions}
 ];
-
-type SelectProps  = {
-    type: 'priority' | 'listId' | 'status' | 'dateFormat',
-    options:  OptionTypes | undefined,
-    currentValue: string | number | undefined,
-    onChange: (e: ChangeEvent<HTMLSelectElement>) => void,
-}
 
 export function Select({onChange, options, currentValue, type}: SelectProps){
     return(
