@@ -41,6 +41,18 @@ type ButtonProps = {
     buttonStyle?: string,
 }
 
+type PageMockupProps = {
+    header: string;
+    children: React.ReactNode;
+    leftSlot?: React.ReactNode;
+}
+
+type ToggleButtonsProps = {
+    isEditting: boolean;
+    onEdit: () => void;
+    isSubmitLoading: boolean;
+}
+
 // -------------------- Input Component --------------------
 /**
  * Input
@@ -153,9 +165,10 @@ export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
  * @param {string} textButton - button text
  * @param {string} buttonStyle - extra classes
  */
-export function Button({ onClick, textButton, buttonStyle }: ButtonProps){
+export function Button({ onClick, textButton, buttonStyle, iconStyle }: ButtonProps){
     return(
         <button className={`xsm:p-2 xsm:text-sm md:text-base lg:text-base lg:px-3 lg:py-2 rounded-lg hover:cursor-pointer ${buttonStyle ? buttonStyle : 'hover:bg-orange-strong bg-orange text-white font-bold'}`} onClick={onClick}>
+            {iconStyle && <i className={`${iconStyle} mr-2`}></i>}
             {textButton}
         </button>
     );
@@ -176,7 +189,7 @@ export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: Butt
         </button>
     );
 }
-// --------------------------- Select Component ---------------------------
+// --------------------------- Reusable Select Component ---------------------------
 /**
  * Type: Priority, List, Status
  * Style: Default or custom
@@ -192,44 +205,53 @@ type OptionValuesType = {
 type OptionTypes = OptionValuesType[] | ListsSummary[];
 
 type SelectProps  = {
-    type: 'priority' | 'listId' | 'status' | 'dateFormat',
+    type: 'priority' | 'listId' | 'status' | 'dateFormat' | 'language',
     options:  OptionTypes | undefined,
     currentValue: string | number | undefined,
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void,
+    label: string,
 }
 
-const priorityOptions: OptionValuesType[] = [
+export const priorityOptions: OptionValuesType[] = [
     { value: 'LOW', label: 'Low' },
     { value: 'MEDIUM', label: 'Medium' },
     { value: 'HIGH', label: 'High' },
 ];
 
-const statusOptions: OptionValuesType[] = [
+export const statusOptions: OptionValuesType[] = [
     { value: 'TODO', label: 'To Do' },
     { value: 'IN_PROGRESS', label: 'In Progress' },
     { value: 'DONE', label: 'Done' },
 ];
 
-const dateFormatOptions: OptionValuesType[] = [
+export const dateFormatOptions: OptionValuesType[] = [
     { value: 'MM/DD/YYYY', label: 'MM/DD/YYYY' },
     { value: 'DD/MM/YYYY', label: 'DD/MM/YYYY' },
     { value: 'YYYY/MM/DD', label: 'YYYY/MM/DD' },
 ]
 
+export const languageOptions: OptionValuesType[] = [
+    { value: 'EN', label: 'English' },
+    { value: 'ES', label: 'Spanish' },
+]
+
 export const options = [
     {priority: priorityOptions},
     {status: statusOptions},
-    {dateFormat: dateFormatOptions}
+    {dateFormat: dateFormatOptions},
+    {language: languageOptions}
 ];
 
-export function Select({onChange, options, currentValue, type}: SelectProps){
+export function Select({onChange, options, currentValue, type, label}: SelectProps){
     return(
         <div className="text-left flex-grow mb-5">
             <label className="block font-bold mb-2 capitalize">
-                {type === 'priority' && 'Priority'}
+                {/* {type === 'priority' && 'Priority'}
                 {type === 'listId' && 'List'}
                 {type === 'status' && 'Status'}
                 {type === 'dateFormat' && 'Date Format'}
+                {type === 'language' && 'Language'} */}
+                {label}
             </label>
             <select 
                 className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
@@ -240,11 +262,51 @@ export function Select({onChange, options, currentValue, type}: SelectProps){
                 {type === 'listId' && <option value="null">None</option>}
                 {options?.map((option) => (
                     <option key={option.id || option.value} value={option.value || option.id}>
-                        {(type === 'priority' || type === 'status' || type === 'dateFormat') && option.label}
+                        {(type === 'priority' || type === 'status' || type === 'dateFormat' || type === 'language') && option.label}
                         {type === 'listId' && option.title}
                     </option>
                 ))}
             </select>
         </div>
     );
+}
+
+// -------------------- Page Mockup Component --------------------
+export function PageMockup({header, children, leftSlot}: PageMockupProps){
+    return(
+        <section className="bg-white shadow-2xl rounded-lg xsm:p-4 md:p-8">
+            <h2 className="text-xl font-bold">{header}</h2>
+            {leftSlot}
+            <div className="flex items-center my-6 mb-8 xsm:justify-center xsm:gap-4 lg:justify-start lg:gap-8">
+                {children}
+            </div>
+        </section>
+    );
+}
+
+// -------------------- Profile Image Component --------------------
+export function ProfileImage({initials}: {initials: string}){
+    return(
+        <div className="flex items-center my-6 mb-8 xsm:justify-center xsm:gap-4 lg:justify-start lg:gap-8">
+            <div className="flex items-center justify-center font-bold text-white bg-orange text-4xl xsm:w-24 rounded-full xsm:h-24 xsm:text-4xl sm:text-5xl sm:w-28 sm:h-28 lg:w-32 lg:h-32 lg:">
+                {initials}
+            </div>
+        </div>
+    )
+}
+
+// -------------------- Toggle Buttons --------------------
+export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButtonsProps){
+    return(
+        <div className="mt-8 lg:flex md:justify-center lg:border-t lg:border-gray-400 lg:pt-4 lg:justify-end">
+            {isEditting ? 
+                <div className="flex gap-4 xsm:flex-col-reverse sm:flex-row sm:justify-center">
+                    <Button textButton="Cancel" buttonStyle="bg-gray-200 font-bold text-black hover:bg-gray-300" onClick={onEdit}/>
+                    <SubmitBtn buttonText="Save Changes" isPending={isSubmitLoading} />
+                </div>
+                : 
+                <Button textButton="Edit" buttonStyle="xsm:w-full sm:w-auto sm:px-6 lg:px-8 bg-orange hover:bg-orange-strong text-white font-bold" onClick={onEdit}></Button>
+            }
+        </div>
+    )
 }

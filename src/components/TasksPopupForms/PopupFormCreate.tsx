@@ -76,6 +76,7 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                         </select>
                     </div> */}
                     <Select 
+
                         type="priority"
                         options={options[0].priority}
                         currentValue={values.priority}
@@ -102,6 +103,7 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                         </div>
                     } */}
                     <Select 
+                        label="List"
                         type="listId"
                         options={lists}
                         onChange={onChange}
@@ -135,18 +137,12 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                         </select>
                     </div> */}
                     <Select 
+                        label="Status"
                         type="status"
                         options={options[1].status}
                         currentValue={values.status}
                         onChange={onChange}
                     />
-                    <Select 
-                        type="dateFormat"
-                        options={options[2].dateFormat}
-                        currentValue={values.status}
-                        onChange={onChange}
-                    />
-
                     <SubmitBtn buttonText={'Add Task'} isPending={false}/>
                 </form>
             </section>

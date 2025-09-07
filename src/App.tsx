@@ -10,6 +10,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ListPage } from './pages/ListPage';
 import ArchiveTasksPage from './pages/ArchiveTasksPage';
 
+import { SettingsForm } from './components/SettingsForm/SettingsForm';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,9 @@ const router = createBrowserRouter([
       },{
         path: 'archive',
         element: <ArchiveTasksPage />
+      },{
+        path: 'settings',
+        element: <SettingsForm />
       }
     ]
   },{
