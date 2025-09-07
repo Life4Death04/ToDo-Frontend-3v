@@ -12,6 +12,13 @@ export type PriorityTypes = 'LOW' | 'MEDIUM' | 'HIGH';
 export type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
 /**
+ * ThemeTypes, DateFormatTypes, LanguageTypes
+ */
+export type ThemeTypes = 'light' | 'dark';
+export type DateFormatTypes = 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'YYYY/MM/DD';
+export type LanguageTypes = 'en' | 'es';
+
+/**
  * User
  * Lightweight user model used across the UI (some fields optional).
  */
@@ -54,6 +61,25 @@ export type Task = {
   authorId: number;
   listId?: number;
   archived?: boolean;
+}
+
+/**
+ * Settings
+ * User settings/preferences model.
+ */
+export type Settings = {
+  id: number;
+  theme: ThemeTypes;
+  dateFormat: DateFormatTypes;
+  language: LanguageTypes;
+  defaultPriority: PriorityTypes;
+  defaultStatus: StatusTypes;
+  userId: number;
+}
+
+export type UpdateSettingsResponse = {
+  message: string;
+  settingsUpdated: Settings;
 }
 
 /**

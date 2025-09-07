@@ -1,15 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createTodo, deleteUserTask, fetchUserTasks, toggleTaskArchived, updateTask } from "../api/task.api";
 import type { Task } from '../types'
+import { fetchUserSettings, updateUserSettings } from "../api/users.api";
 
 type QueryKeys = {
     fetchTasks: string
     fetchListData: string
+    fetchUserSettings: string
 }
 
 const queryKeys: QueryKeys = {
     fetchTasks: 'userTasks',
-    fetchListData: 'listData'
+    fetchListData: 'listData',
+    fetchUserSettings: 'userSettings'
 }
 /**
  * useFetchUserTasks
@@ -91,6 +94,34 @@ export const useUpdateTask = () => {
         mutationFn: (taskToUpdate: Partial<Task>) => updateTask(taskToUpdate),
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: [queryKeys.fetchTasks]})
+        }
+    })
+}
+
+// -------------------- Settings Hooks --------------------
+/**
+ * useFetchUserSettings
+ * Fetches settings for the current user.
+ */
+export const useFetchUserSettings = () =>{
+    return useQuery({
+        queryKey: [queryKeys.fetchUserSettings],
+        queryFn: fetchUserSettings
+    })
+}
+
+/**
+ * useUpdateUserSettings
+ * Mutation hook to update user settings and invalidate the settings
+ * cache on success.
+ */
+export const useUpdateUserSettings = () =>{
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: updateUserSettings,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: [queryKeys.fetchUserSettings]})
         }
     })
 }
