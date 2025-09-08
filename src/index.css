@@ -1,14 +1,32 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
+    /*General Styles*/
     --color-text: #24343e;
     --color-light-text: #6f7785;
     --color-action-buttons: #000;
     --color-orange: #fb933d;
     --color-orange-strong: #f88120;
+    --color-background-body: #ebebeb;
 
-    --container-max-auth: 600px;
-    --container-max: 650px;
+    /*Dark Mode Styles*/
+    --color-background-dark: #2c3648;
+    --color-background-body-dark: #1b202d;
+    --color-text-dark: #919dad;
+    --color-text-dark-hover: #364153;
+    --color-text-dark-white: #e3e9f0;
+    --color-priority-low-background: #a7f3d0;
+    --color-priority-low-text: #176e55;
+    --color-priority-medium-background: #fde78b;
+    --color-priority-medium-text: #9f531d;
+    --color-priority-high-background: #ffcbca;
+    --color-priority-high-text: #a32a2b;
+    --color-sidebar-links: #434B57;
+    --color-dark-gray: #2c3648; /* Inputs and buttons*/
+    --color-light-gray: #3a4154; /* Inputs and buttons*/
+
 
     /*ToDo Styles*/
     --color-background: #fff;
@@ -23,6 +41,13 @@
     --color-gray-checked-tasks: #908e8e;
 
     --font-sans: 'Inter', sans-serif;
+
+    /* Container max widths */
+    --container-max-auth: 600px;
+    --container-max: 650px;
+
+    /* Breakpoints */
+    --breakpoint-xsm: 320px;
 }
 
 .checkTask-btn-false::before{
@@ -56,5 +81,10 @@
 
     body{
         background-color: #ebebeb;
+    }
+
+    .dark body,
+    :where(.dark) body {
+        background-color: var(--color-background-body-dark);
     }
 }

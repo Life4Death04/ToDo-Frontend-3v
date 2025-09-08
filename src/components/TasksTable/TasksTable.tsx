@@ -55,11 +55,11 @@ type AddTaskProps = {
  */
 export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit, handleArchive }: TasksTableProps){
     return(
-        <section className="px-6 py-4 bg-white rounded-2xl">
+        <section className="px-6 py-4 bg-white rounded-2xl dark:bg-background-dark">
             {/* Header: title + actions */}
             <header className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-2">
-                    <h1 className="font-bold xsm:text-xl md:text-2xl lg:text-3xl">{tableTitle}</h1>
+                    <h1 className="font-bold xsm:text-xl md:text-2xl lg:text-3xl dark:text-text-dark-white">{tableTitle}</h1>
                     {isEditTable && 
                         <ButtonIcon onClick={onEditTable} iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></ButtonIcon>
                     }
@@ -67,7 +67,7 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
                 <AddTaskButton onClick={handleAddUserTask} />
             </header>
             {/* Table header (labels) */}
-            <header className="items-center px-4 py-2 text-gray-400 border-gray-200 border-b font-bold xsm:hidden lg:flex">
+            <header className="items-center px-4 py-2 text-gray-400 border-gray-200 border-b font-bold xsm:hidden lg:flex dark:border-none">
                 <span className="flex-2">Task Name</span> {/* //flex-[2] */}
                 <span className="flex-1">Due Date</span>
                 <span className="flex-1">Priority</span>
@@ -115,7 +115,7 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
     // - Date formatting delegated to `formatDueDate` (consistent locale rules).
     // - Priority & status classes come from helpers to keep styles consistent.
     return(
-        <li className="lg:flex lg:gap-3 bg-white lg:border-b lg:border-gray-200 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none">
+        <li className="lg:flex lg:gap-3 bg-white lg:border-b lg:border-gray-200 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none dark:bg-background-body-dark dark:border-gray-500">
             {/* Left: completion toggle, title, edit (mobile delete shown below) */}
             <div className="flex gap-3 items-center flex-[2]">
                 {/* Completion toggle */}
@@ -124,7 +124,7 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
                 </button>
 
                 {/* Task title */}
-                <span className="font-bold xsm:text-sm md:text-base lg:text-lg overflow break-words">
+                <span className="font-bold xsm:text-sm md:text-base lg:text-lg overflow break-words dark:text-text-dark-white">
                     {taskName}
                 </span>
 
@@ -141,7 +141,7 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
             {/* Middle: due date, priority, status */}
             <div className="flex xsm:flex-col lg:flex-row lg:items-center xsm:gap-3 xsm:mt-2 lg:mt-0 flex-[3]">
                 {/* Due Date */}
-                <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1 text-gray-600 font-semibold">
+                <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1 text-gray-600 font-semibold dark:text-text-dark">
                     {formatDueDate(dateFormat, dueDate)}
                 </span>
 
@@ -180,7 +180,7 @@ function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessagePro
     return(
         <li className="mx-auto w-full text-center py-12 border-b border-gray-300">
             {/* Empty / loading / error state */}
-            <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl">
+            <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl dark:text-text-dark-white">
             {isLoading && "Loading..."}
             {isError && `Error: Oops! We couldn't fetch your tasks :c`}
             {!isLoading && !isError && "No tasks yet"}
@@ -202,7 +202,7 @@ function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessagePro
  */
 function AddTaskButton({onClick}: AddTaskProps){
     return(
-        <button onClick={onClick} className="bg-orange ml-auto text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl">
+        <button onClick={onClick} className="bg-orange ml-auto text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl dark:bg-text-dark-hover dark:hover:bg-orange-buttons">
             {`+ Add Task`}
         </button>
     );

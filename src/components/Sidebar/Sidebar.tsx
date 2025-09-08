@@ -45,9 +45,9 @@ type SidebarProps = {
  */
 export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, listsData, isListsLoading, isListsError, onCreateList }: SidebarProps){
   return(
-    <nav className="fixed top-0 left-0 h-screen w-12 py-3 sm:w-20 lg:w-64 lg:px-2 bg-white flex flex-col">
+    <nav className="fixed top-0 left-0 h-screen w-12 py-3 sm:w-20 lg:w-64 lg:px-2 bg-white flex flex-col dark:bg-background-dark">
       {/* Logo & Title */}
-      <header className="flex gap-4 px-3 py-2 xsm:mb-4 xsm:justify-center">
+      <header className="flex gap-4 px-3 py-2 xsm:mb-4 xsm:justify-center dark:text-text-dark-white">
         <i className="fa-solid fa-list-check xsm:text-2xl md:text-3xl lg:text-3xl" aria-hidden={true}></i>
         <h1 className="font-bold xsm:hidden lg:inline lg:text-2xl">TaskMaster</h1>
       </header>
@@ -63,9 +63,9 @@ export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, list
 
       {/* Lists header */}
       <header className="flex justify-center items-center px-3 py-2 lg:justify-between">
-        <span className="text-sm text-gray-500 font-semibold xsm:hidden lg:flex">MY LISTS</span>
-        <button onClick={onCreateList} className="group hover:cursor-pointer hover:text-gray-700">
-          <i className="fa-solid fa-plus text-gray-500 group-hover:text-gray-700 xsm:text-lg sm:text-2xl lg:text-lg"></i>
+        <span className="text-sm text-gray-500 font-semibold xsm:hidden lg:flex dark:text-text-dark">MY LISTS</span>
+        <button onClick={onCreateList} className="group hover:cursor-pointer ">
+          <i className="fa-solid fa-plus text-gray-500 group-hover:text-gray-700 xsm:text-lg sm:text-2xl lg:text-lg dark:hover:text-text-dark-white"></i>
         </button>
       </header>
 
@@ -102,15 +102,19 @@ export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, list
 
 // -------------------- Sidebar Link Item Component --------------------
 function SidebarLinkItem({linkText, linkUrl, classIcon, hoverEffect, indexListColor}: SideBarLinkItem){
+  const base = `flex justify-center items-center gap-4 w-full py-2 lg:justify-start lg:px-4`;
+  const active = `rounded-xl bg-gray-200 text-black dark:bg-sidebar-links`;
+  const inactive = `text-gray-600`;
+  const hover = `hover:rounded-xl hover:bg-gray-200 hover:text-black dark:hover:bg-sidebar-links`;
   return(
     <NavLink to={linkUrl} end={true} className={({ isActive }) =>
-        `flex justify-center items-center gap-4 w-full py-2 lg:justify-start lg:px-4
-         ${isActive ? 'rounded-xl bg-gray-200 text-black' : 'text-gray-600'}
-         ${hoverEffect && 'hover:rounded-xl hover:bg-gray-200 hover:text-black'}`
+        `${base}
+         ${isActive ? active : inactive}
+         ${hoverEffect && hover}`
       }
     >
-        <i className={`${classIcon} sm:text-2xl md:text-2xl`} aria-hidden={true} style={{ backgroundColor: indexListColor }}></i>
-        <span className="xsm:hidden lg:inline">{linkText}</span>
+        <i className={`${classIcon} sm:text-2xl md:text-2xl dark:text-text-dark`} aria-hidden={true} style={{ backgroundColor: indexListColor }}></i>
+        <span className={"xsm:hidden lg:inline dark:text-text-dark"}>{linkText}</span>
     </NavLink>
   );
 }
@@ -118,9 +122,9 @@ function SidebarLinkItem({linkText, linkUrl, classIcon, hoverEffect, indexListCo
 // -------------------- Sidebar Button Component --------------------
 function SideBarButton({onClick, linkText, classIcon, hoverEffect}: SideBarButtonProps){
   return(
-    <button onClick={onClick} className={`flex justify-center gap-2 w-full py-2 text-gray-600 lg:justify-start lg:px-4 ${hoverEffect && 'hover:cursor-pointer hover:rounded-xl hover:bg-gray-200 hover:text-black'}`}>
-      <i className={`${classIcon} sm:text-2xl md:text-2xl`} aria-hidden={true}></i>
-        <span className="xsm:hidden lg:inline">{linkText}</span>
+    <button onClick={onClick} className={`flex justify-center gap-2 w-full py-2 text-gray-600 lg:justify-start lg:px-4 ${hoverEffect && 'hover:cursor-pointer hover:rounded-xl hover:bg-gray-200 hover:text-black dark:hover:bg-sidebar-links'}`}>
+      <i className={`${classIcon} sm:text-2xl md:text-2xl dark:text-text-dark`} aria-hidden={true}></i>
+        <span className="xsm:hidden lg:inline dark:text-text-dark">{linkText}</span>
     </button>
   );
 }

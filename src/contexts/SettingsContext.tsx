@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useMemo, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { Settings } from '../types';
 import { useFetchUserSettings, useUpdateUserSettings } from '../hooks/useTasks';
@@ -17,6 +17,13 @@ const SettingsContext = createContext<SettingsContextValue | undefined>(undefine
 export function SettingsProvider({ children }: { children: ReactNode }){
   const { data, isLoading, isError } = useFetchUserSettings();
   const updater = useUpdateUserSettings();
+
+  useEffect(() => {
+    const themeRaw = data?.theme;
+    const theme = themeRaw?.toLowerCase();
+    if(theme === 'dark') document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  }, [data?.theme]);
 
   const updateSettings = async (payload: Partial<Settings>) => {
     try{

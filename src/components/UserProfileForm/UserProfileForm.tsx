@@ -50,7 +50,7 @@ export function UserProfileForm({ values, isEditting, onChange, onSubmit, onEdit
                     isError={isError}
                 />
                 <div>
-                    <span className="xsm:text-sm md:text-base font-bold">Password</span>
+                    <span className="xsm:text-sm md:text-base font-bold dark:text-text-dark-white">Password</span>
                     <a href="#" className="text-blue-500 underline block mt-2  xsm:text-sm md:text-base">Change Password</a>
                 </div>
                 <ToggleButtons isEditting={isEditting} onEdit={onEdit} isSubmitLoading={isSubmitLoading}/>
