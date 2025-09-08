@@ -1,4 +1,4 @@
-import type { PriorityTypes, StatusTypes } from '../types';
+import type { DateFormatTypes, PriorityTypes, StatusTypes } from '../types';
 
 // -------------------- Priority Color --------------------
 /**
@@ -36,14 +36,53 @@ export function getStatusColor(status: StatusTypes){
             return 'text-gray-500';
     }
 }
+// -------------------- Due Date Placeholder --------------------
+/**
+ * Get the placeholder text for the due date input based on date format
+ * @param dateFormat - The user's preferred date format
+ * @returns The corresponding placeholder text
+ */
+export function getDueDatePlaceholder(dateFormat: DateFormatTypes): string {
+    switch (dateFormat) {
+        case 'MM_DD_YYYY':
+            return 'MM/DD/YYYY';
+        case 'DD_MM_YYYY':
+            return 'DD/MM/YYYY';
+        case 'YYYY_MM_DD':
+            return 'YYYY/MM/DD';
+        default:
+            return 'MM/DD/YYYY';
+    }
+}
+
 // -------------------- Due Date Formatter --------------------
 /**
  * Format the due date to a more readable string
  * @param dueDate - The due date string to format
  * @returns The formatted due date string
  */
-export function formatDueDate(dueDate?: string){
-    return dueDate ? new Date(dueDate).toLocaleDateString() : '';
+
+export function formatDueDate(dateFormat: DateFormatTypes, dueDate?: string){
+    /* return dueDate ? new Date(dueDate).toLocaleDateString() : ''; */
+
+    if (!dueDate) return '';
+    const d = new Date(dueDate);
+    if (Number.isNaN(d.getTime())) return '';
+
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const year = d.getFullYear();
+    const month = pad(d.getMonth() + 1); // months are 0-based
+    const day = pad(d.getDate());
+
+    switch (dateFormat) {
+        case 'DD_MM_YYYY':
+        return `${day}/${month}/${year}`;
+        case 'YYYY_MM_DD':
+        return `${year}/${month}/${day}`;
+        case 'MM_DD_YYYY':
+        default:
+        return `${month}/${day}/${year}`;
+    }
 }
 // -------------------- Check Icon --------------------
 /**

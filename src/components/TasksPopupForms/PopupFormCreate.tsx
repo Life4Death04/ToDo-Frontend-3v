@@ -1,7 +1,9 @@
 //------------------ENHANCED VERSION BY CHAT GPT (AGENT MODE)-----------------------------------
 import { ButtonIcon, Select, options } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
+import { useSettings } from "../../contexts/SettingsContext";
 import type { Task, ListsSummary } from '../../types';
+import { getDueDatePlaceholder } from "../../utils/taskHelpers";
 
 type FormData = Partial<Task>;
 /* type Lists = Array<{ id: number; title: string; color: string;  }> | undefined; */
@@ -26,6 +28,10 @@ type PopupFormProps = {
  * @returns JSX.Element
  */
 export default function PopupForm({values, onChange, onSubmit, onClose, lists}: PopupFormProps) {
+    const { settings } = useSettings();
+    // Use the internal DateFormat union value (e.g. "MM_DD_YYYY"), not a display string.
+    const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
+    console.log(getDueDatePlaceholder(dateFormat))
     return (
         <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-fit py-4 bg-black/50">
             {/* Panel */}
@@ -55,26 +61,11 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                         name="dueDate" 
                         type="date"
                         value={values.dueDate ? new Date(values.dueDate).toISOString().split('T')[0] : ''}
-                        label="Due Date"
-                        placeholder="mm/dd/yyyy"
+                        label={`Due Date (${getDueDatePlaceholder(dateFormat)})`}
                         onChange={onChange} 
                     />
 
                     {/* Priority Select */}
-                    {/* <div className="text-left flex-grow mb-5">
-                        <label className="block font-bold mb-2 capitalize">Priority</label>
-                        <select
-                            className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
-                            name="priority"
-                            value={values.priority}
-                            onChange={onChange}
-                        >
-
-                            <option value="LOW">Low</option>
-                            <option value="MEDIUM">Medium</option>
-                            <option value="HIGH">High</option>
-                        </select>
-                    </div> */}
                     <Select 
                         label="Priority"
                         type="priority"
@@ -84,24 +75,6 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                     />
                     
                     {/* List Select (optional) */}
-                    {/* {lists && 
-                        <div className="text-left flex-grow mb-5">
-                            <label className="block font-bold mb-2 capitalize">List</label>
-                            <select
-                                className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
-                                name="listId"
-                                value={values.listId}
-                                onChange={onChange}
-                            >
-                                <option value="null">None</option>
-                                {lists?.map((list) => (
-                                    <option key={list.id} value={list.id}>
-                                        {list.title}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    } */}
                     <Select 
                         label="List"
                         type="listId"
@@ -123,19 +96,6 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
                     </div>
 
                     {/* Additional controls (status, assignee, etc.) */}
-                    {/* <div className="text-left flex-grow mb-5">
-                        <label className="block font-bold mb-2 capitalize">Status</label>
-                        <select
-                            className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
-                            name="status"
-                            value={values.status}
-                            onChange={onChange}
-                        >
-                            <option value="TODO">To do</option>
-                            <option value="IN_PROGRESS">In Progress</option>
-                            <option value="DONE">Done</option>
-                        </select>
-                    </div> */}
                     <Select 
                         label="Status"
                         type="status"

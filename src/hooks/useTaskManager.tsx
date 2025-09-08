@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useCreateTask, useDeleteUserTask, useUpdateTask, useToggleTaskArchived } from "./useTasks";
 import { useFetchListData, useFetchLists } from "./useLists";
 import { useFetchUserTasks } from "./useTasks"; // assume exists: fetch all tasks for user
+import { useSettings } from "../contexts/SettingsContext";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Task, } from "../types";
 
@@ -22,14 +23,15 @@ type TaskForm = Omit<Task, 'id'> & Partial<Pick<Task, 'dueDate' | 'description' 
  */
 export function useTasksManager({ userId, listId, isArchivedView }: UseTasksManagerOpts) {
   // popup + form state (shared)
+  const { settings } = useSettings();
   const [isCreateOpen, setCreateOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false); // edit popup state
   const [form, setForm] = useState<TaskForm>({
     taskName: "",
     description: "",
     dueDate: "",
-    priority: "LOW",
-    status: "TODO",
+    priority: settings?.defaultPriority ?? "LOW",
+    status: settings?.defaultStatus ?? "TODO",
     listId: listId ?? undefined,
     authorId: userId,
     archived: undefined,
@@ -66,8 +68,8 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
       taskName: "",
       description: "",
       dueDate: "",
-      priority: "LOW",
-      status: "TODO",
+      priority: settings?.defaultPriority ?? "LOW",
+      status: settings?.defaultStatus ?? "TODO",
       listId: listId,
       authorId: userId,
       archived: isArchivedView ? true : undefined,

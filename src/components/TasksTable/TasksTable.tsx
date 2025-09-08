@@ -1,9 +1,7 @@
 import { ButtonIcon } from "../Common/CommonComponents";
 import { getPriorityColor, getStatusColor, formatDueDate, getCheckIcon, getStatusBadge } from '../../utils/taskHelpers';
-import type { PriorityTypes, StatusTypes, Task } from '../../types';
-
 import { useSettings } from "../../contexts/SettingsContext";
-import { useFetchUserSettings } from "../../hooks/useTasks";
+import type { PriorityTypes, StatusTypes, Task } from '../../types';
 
 // -------------------- Types --------------------
 type TasksTableProps = {
@@ -111,6 +109,8 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
  * @returns JSX.Element
  */
 function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArchive}: TaskItemProps){
+    const { settings } = useSettings();
+    const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
     // - `getCheckIcon` renders the done/undone icon.
     // - Date formatting delegated to `formatDueDate` (consistent locale rules).
     // - Priority & status classes come from helpers to keep styles consistent.
@@ -142,7 +142,7 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
             <div className="flex xsm:flex-col lg:flex-row lg:items-center xsm:gap-3 xsm:mt-2 lg:mt-0 flex-[3]">
                 {/* Due Date */}
                 <span className="xsm:text-xs md:text-sm lg:text-base lg:flex-1 text-gray-600 font-semibold">
-                    {formatDueDate(dueDate)}
+                    {formatDueDate(dateFormat, dueDate)}
                 </span>
 
                 {/* Priority */}
