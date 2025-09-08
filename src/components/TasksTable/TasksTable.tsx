@@ -2,6 +2,9 @@ import { ButtonIcon } from "../Common/CommonComponents";
 import { getPriorityColor, getStatusColor, formatDueDate, getCheckIcon, getStatusBadge } from '../../utils/taskHelpers';
 import type { PriorityTypes, StatusTypes, Task } from '../../types';
 
+import { useSettings } from "../../contexts/SettingsContext";
+import { useFetchUserSettings } from "../../hooks/useTasks";
+
 // -------------------- Types --------------------
 type TasksTableProps = {
     tableTitle: string;

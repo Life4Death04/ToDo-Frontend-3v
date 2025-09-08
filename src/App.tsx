@@ -7,6 +7,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import AppPage from './pages/AppPage';
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import { SettingsProvider } from './contexts/SettingsContext';
 import { ListPage } from './pages/ListPage';
 import ArchiveTasksPage from './pages/ArchiveTasksPage';
 
@@ -54,7 +55,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router}></RouterProvider>
+      <SettingsProvider>
+        <RouterProvider router={router}></RouterProvider>
+      </SettingsProvider>
     </QueryClientProvider>
   )
 }
