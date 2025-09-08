@@ -35,10 +35,10 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
     return (
         <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-fit py-4 bg-black/50">
             {/* Panel */}
-            <section className="rounded-lg bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0">
+            <section className="rounded-lg bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
                 {/* Header: title + close */}
-                <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400">
-                    <h2>Add New Task</h2>
+                <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400 dark:border-gray-600">
+                    <h2 className="dark:text-text-dark-white">Add New Task</h2>
                     <ButtonIcon iconStyle="fa-solid fa-x" onClick={onClose}/>
                 </div>
 
@@ -85,9 +85,9 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
 
                     {/* Description Textarea */}
                     <div className="text-left flex-grow mb-5">
-                        <label className="block font-bold mb-2 capitalize">Description</label>
+                        <label className="block font-bold mb-2 capitalize dark:text-text-dark-white">Description</label>
                         <textarea
-                        className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
+                        className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:text-text-dark-white"
                         name="description" 
                         value={values.description || ""}
                         placeholder="Enter task content"

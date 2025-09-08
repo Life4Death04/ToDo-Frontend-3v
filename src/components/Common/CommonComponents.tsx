@@ -72,7 +72,7 @@ export function Input({ type, value, name, label, required, placeholder, onChang
     return(
         <div className="text-left flex-grow mb-5">
             {/* Label */}
-            <label className="block font-bold mb-2 capitalize xsm:text-xs md:text-sm">
+            <label className="block font-bold mb-2 capitalize xsm:text-xs md:text-sm dark:text-text-dark-white">
                 {label}
             </label>
 
@@ -84,7 +84,7 @@ export function Input({ type, value, name, label, required, placeholder, onChang
                 <div className="animate-pulse h-10 bg-gray-200 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md"></div>
             ) : (
             <input 
-                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md ${error ? 'border-red-500' : ''} ${dimensions} ${disabled && 'bg-gray-200 cursor-not-allowed'}`}
+                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md dark:text-text-dark-white  ${error &&'border-red-500'} ${dimensions} ${disabled ? 'bg-gray-200 cursor-not-allowed dark:bg-dark-gray' : 'bg-gray-100 dark:bg-dark-gray'}`}
                 type={type} 
                 value={value} 
                 onChange={onChange} 
@@ -185,7 +185,7 @@ export function Button({ onClick, textButton, buttonStyle, iconStyle }: ButtonPr
 export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: ButtonProps){
     return(
         <button className={`hover:cursor-pointer xsm:px-2 sm:px-3 py-2 ${buttonStyle}`} onClick={onClick}>
-            <i className={`${iconStyle} text-gray-500 xsm:text-base lg:text-lg hover:text-orange`} aria-hidden={true}>{textButton}</i>
+            <i className={`${iconStyle} text-gray-500 xsm:text-base lg:text-lg hover:text-orange dark:text-text-dark`} aria-hidden={true}>{textButton}</i>
         </button>
     );
 }
@@ -249,11 +249,11 @@ export const options = [
 export function Select({onChange, options, currentValue, type, label, disabled, inputName, isLoading, isError}: SelectProps){
     return(
         <div className="text-left flex-grow mb-5">
-            <label className="block font-bold mb-2 capitalize">
+            <label className="block font-bold mb-2 capitalize dark:text-text-dark-white">
                 {label}
             </label>
             <select 
-                className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base"
+                className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:bg-dark-gray dark:text-text-dark-white"
                 name={inputName ? inputName : type}
                 value={currentValue}
                 onChange={onChange}
@@ -276,8 +276,8 @@ export function Select({onChange, options, currentValue, type, label, disabled, 
 // -------------------- Page Mockup Component --------------------
 export function PageMockup({header, children, leftSlot}: PageMockupProps){
     return(
-        <section className="bg-white shadow-2xl rounded-lg xsm:p-4 md:p-8">
-            <h2 className="text-xl font-bold">{header}</h2>
+        <section className="bg-white shadow-2xl rounded-lg xsm:p-4 md:p-8 dark:bg-background-dark">
+            <h2 className="text-xl font-bold dark:text-text-dark-white">{header}</h2>
             {leftSlot}
             <div className="flex items-center my-6 mb-8 xsm:justify-center xsm:gap-4 lg:justify-start lg:gap-8">
                 {children}
@@ -303,7 +303,7 @@ export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButto
         <div className="mt-8 lg:flex md:justify-center lg:border-t lg:border-gray-400 lg:pt-4 lg:justify-end">
             {isEditting ? 
                 <div className="flex gap-4 xsm:flex-col-reverse sm:flex-row sm:justify-center">
-                    <Button textButton="Cancel" buttonStyle="bg-gray-200 font-bold text-black hover:bg-gray-300" onClick={onEdit}/>
+                    <Button textButton="Cancel" buttonStyle="bg-gray-200 font-bold text-black hover:bg-gray-300 dark:bg-light-gray dark:text-text-dark-white" onClick={onEdit}/>
                     <SubmitBtn buttonText="Save Changes" isPending={isSubmitLoading} />
                 </div>
                 : 

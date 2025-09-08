@@ -54,7 +54,7 @@ export function BadgeShell({ isLoading, isError, children, email, fullName }: Ba
         <NavLink 
             to={"profile"}
             className={({ isActive }) =>
-            `relative w-full p-1 rounded-2xl mb-4 hover:bg-gray-200 ${isActive && 'bg-gray-200'}`}
+            `relative w-full p-1 rounded-2xl mb-4 hover:bg-gray-200 dark:hover:bg-sidebar-links ${isActive && 'bg-gray-200 dark:bg-sidebar-links'}`}
             aria-busy={busy}
             aria-live="polite"
             title={fullName || 'No name'}
@@ -74,8 +74,8 @@ export function BadgeShell({ isLoading, isError, children, email, fullName }: Ba
                             <div className="w-32 h-3 bg-gray-300 rounded" />
                             <div className="w-48 h-3 bg-gray-300 rounded" />
                         </div>}
-                    <p className="text-sm font-bold capitalize truncate max-w-[160px]">{fullName}</p>
-                    <p className="text-xs text-gray-700 truncate max-w-[160px]">{email}</p>
+                    <p className="text-sm font-bold capitalize truncate max-w-[160px] dark:text-text-dark-white">{fullName}</p>
+                    <p className="text-xs text-gray-700 truncate max-w-[160px] dark:text-text-dark">{email}</p>
                 </div>
             </div>
         </NavLink>

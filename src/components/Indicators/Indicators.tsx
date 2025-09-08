@@ -54,7 +54,7 @@ export function IndicatorPanels({totalTasks, completedTasks, archivedTasks}: Ind
 function IndicatorCard({children}: {children: React.ReactNode}){
   return(
     <div className="flex flex-col flex-1 items-center justify-center bg-white rounded-2xl 
-    w-44 h-44 xsm:p-8 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60">
+    w-44 h-44 xsm:p-8 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60 dark:bg-background-dark">
       {children}
     </div>
   )
@@ -76,17 +76,17 @@ function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicator
     return(
       <IndicatorCard>
         {/* Icon */}
-        <div className="relative flex items-center justify-center bg-white xsm:p-4 md:p-6 lg:p-8 rounded-full">
-          <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl text-gray-600 bg-gray-200 p-4 rounded-full`} aria-hidden={true}></i>
+        <div className="relative flex items-center justify-center bg-white xsm:p-4 md:p-6 lg:p-8 rounded-full dark:bg-transparent">
+          <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl text-gray-600 bg-gray-200 p-4 rounded-full dark:text-text-dark dark:bg-text-dark-hover`} aria-hidden={true}></i>
         </div>
 
         {/* Label */}
-        <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600">
+        <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600 dark:text-text-dark-white">
           {textIndicator}
         </h2>
 
         {/* Value */}
-        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange font-bold">
+        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange font-bold dark:text-text-dark-white">
           {totalItems}
         </p>
       </IndicatorCard>
@@ -124,7 +124,7 @@ export function RadialIndicator({textIndicator, totalTasks, completedTasks}:Radi
         >
           {/* Background Circle */}
           <circle
-            className="text-gray-300"
+            className="text-gray-300 dark:text-text-dark-hover"
             stroke="currentColor"
             strokeWidth={stroke}
             fill="transparent"
@@ -148,16 +148,16 @@ export function RadialIndicator({textIndicator, totalTasks, completedTasks}:Radi
         </svg>
 
         {/* Text inside circle */}
-        <span className="absolute text-sm sm:text-base md:text-lg lg:text-xl font-bold text-black">
+        <span className="absolute text-sm sm:text-base md:text-lg lg:text-xl font-bold text-black dark:text-text-dark-white">
           {completedTasks}/{totalTasks}
         </span>
       </div>
 
       {/* Labels */}
-      <h2 className="m-2 text-sm text-center sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600">
+      <h2 className="m-2 text-sm text-center sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600 dark:text-text-dark-white">
         {textIndicator} 
       </h2>
-      <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600">
+      <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 dark:text-text-dark-white">
         {percentage}%
       </p>
     </IndicatorCard>

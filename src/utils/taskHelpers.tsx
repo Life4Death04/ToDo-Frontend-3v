@@ -9,11 +9,11 @@ import type { DateFormatTypes, PriorityTypes, StatusTypes } from '../types';
 export function getPriorityColor(priority: PriorityTypes){
     switch(priority){
         case 'LOW':
-            return 'bg-green-100 text-green-500';
+            return 'bg-green-100 text-green-500 dark:bg-priority-low-background dark:text-priority-low-text';
         case 'MEDIUM':
-            return 'bg-yellow-100 text-yellow-500';
+            return 'bg-yellow-100 text-yellow-500 dark:bg-priority-medium-background dark:text-priority-medium-text';
         case 'HIGH':
-            return 'bg-red-100 text-red-500';
+            return 'bg-red-100 text-red-500 dark:bg-priority-high-background dark:text-priority-high-text';
         default:
             return 'bg-gray-100 text-gray-500';
     }
@@ -27,11 +27,11 @@ export function getPriorityColor(priority: PriorityTypes){
 export function getStatusColor(status: StatusTypes){
     switch(status){
         case 'TODO':
-            return 'bg-amber-100 text-amber-500';
+            return 'bg-amber-100 text-amber-500 dark:bg-priority-medium-background dark:text-priority-medium-text';
         case 'IN_PROGRESS':
-            return 'bg-blue-100 text-blue-500';
+            return 'bg-blue-100 text-blue-500 dark:bg-priority-high-background dark:text-priority-high-text';
         case 'DONE':
-            return 'bg-green-100 text-green-500';
+            return 'bg-green-100 text-green-500 dark:bg-priority-low-background dark:text-priority-low-text';
         default:
             return 'text-gray-500';
     }
@@ -94,7 +94,7 @@ export function getCheckIcon(isChecked: boolean){
     return isChecked ? (
         <i className="fa-solid fa-square-check text-orange xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden="true"></i>
     ) : (
-        <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer" aria-hidden="true"></i>
+        <i className="fa-regular fa-square xsm:text-base lg:text-lg hover:text-orange hover:cursor-pointer dark:text-text-dark" aria-hidden="true"></i>
     );
 }
 // -------------------- Status Badge --------------------
