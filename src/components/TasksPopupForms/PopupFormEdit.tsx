@@ -3,6 +3,7 @@ import { ButtonIcon, Select } from "../Common/CommonComponents";
 import { options } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
 import type { Task } from '../../types';
+import React, { useEffect, useRef } from 'react';
 
 type Lists = Array<{ id: number; title: string; color: string;  }> | undefined;
 type PopupFormProps = {
@@ -27,8 +28,12 @@ type PopupFormProps = {
  * @param {Lists|undefined} lists - optional lists for selection
  */
 export default function PopupFormEdit({values, onChange, onSubmit, onClose, lists}: PopupFormProps) {
+    useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }, []); // runs on mount
+
     return (
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-4 h-fit bg-black/50">
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-4 h-fit">
             {/* Panel */}
             <section className="rounded-lg bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
                 {/* Header: title + close */}

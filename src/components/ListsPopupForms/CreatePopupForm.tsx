@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from 'react';
 import { useModal } from "../../contexts/ModalContext";
 import { ButtonIcon } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
@@ -22,13 +23,17 @@ type CreatePopupFormProps = {
 export default function CreatePopupForm({ values, onChange, onSubmit }: CreatePopupFormProps){
     const { isCreateListOpen, closeCreateList } = useModal();
 
+    useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }, []); // runs on mount
+
     if(!isCreateListOpen) return null;
 
     return(
         /* Modal overlay */
-        <div className="absolute top-0 left-0 right-0 flex items-center h-screen justify-center bg-black/50">
+        <div className="absolute top-0 left-0 right-0 flex items-center h-screen justify-center">
             {/* Modal content / panel */}
-            <section className="rounded-lg bg-white p-4 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
+            <section  className="rounded-lg bg-white p-4 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
                 {/* Header: title and close button */}
                 <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400 dark:text-text-dark-white">
                     <h2>Create New List</h2>

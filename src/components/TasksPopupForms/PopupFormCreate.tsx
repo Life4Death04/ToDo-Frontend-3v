@@ -4,6 +4,7 @@ import { Input, SubmitBtn } from "../Common/CommonComponents";
 import { useSettings } from "../../contexts/SettingsContext";
 import type { Task, ListsSummary } from '../../types';
 import { getDueDatePlaceholder } from "../../utils/taskHelpers";
+import React, { useEffect, useRef } from 'react';
 
 type FormData = Partial<Task>;
 /* type Lists = Array<{ id: number; title: string; color: string;  }> | undefined; */
@@ -31,8 +32,13 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
     const { settings } = useSettings();
     // Use the internal DateFormat union value (e.g. "MM_DD_YYYY"), not a display string.
     const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
+
+    useEffect(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }, []); // runs on mount
+
     return (
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-fit py-4 bg-black/50">
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-fit py-4">
             {/* Panel */}
             <section className="rounded-lg bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
                 {/* Header: title + close */}

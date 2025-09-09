@@ -27,7 +27,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   // Stable callback to open the modal. useCallback keeps the function identity
   // stable across renders which is useful when passing it down to memoized
   // components or into dependency arrays.
-  const openCreateList = useCallback(() => setCreateListOpen(true), []);
+  const openCreateList = useCallback(() => {setCreateListOpen(true); window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });}, []);
 
   // Stable callback to close the modal.
   const closeCreateList = useCallback(() => setCreateListOpen(false), []);
