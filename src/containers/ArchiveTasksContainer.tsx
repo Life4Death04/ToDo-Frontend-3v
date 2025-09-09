@@ -28,7 +28,8 @@ export function ArchiveTasksContainer(){
         handleChangeEdit, 
         openEditWith, 
         handleSubmitEdit,
-        handleArchive
+        handleArchive,
+        handleToggleStatus
     } = useTasksManager({ userId, isArchivedView: true });   
     
     const {
@@ -49,6 +50,7 @@ export function ArchiveTasksContainer(){
                 error={error || null}
                 handleEdit={openEditWith}
                 handleArchive={handleArchive}
+                handleToggleStatus={handleToggleStatus} // reusing handleArchive to unarchive
             />
             
             {isCreateOpen && 

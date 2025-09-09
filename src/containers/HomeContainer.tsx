@@ -53,7 +53,8 @@ export default function HomeContainer(){
         handleChangeEdit, 
         openEditWith, 
         handleSubmitEdit,
-        handleArchive
+        handleArchive,
+        handleToggleStatus
         } = useTasksManager({ userId });        
 
     const { 
@@ -87,6 +88,7 @@ export default function HomeContainer(){
                 error={error || null} 
                 handleEdit={openEditWith} 
                 handleArchive={handleArchive}
+                handleToggleStatus={handleToggleStatus}
             />
 
             {/* popup form to create a new task (conditionally rendered) */}

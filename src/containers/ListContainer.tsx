@@ -43,7 +43,8 @@ export function ListContainer(){
     handleChangeEdit, 
     openEditWith, 
     handleSubmitEdit,
-    handleArchive
+    handleArchive,
+    handleToggleStatus
   } = useTasksManager({ userId, listId });
 
   const { 
@@ -73,6 +74,7 @@ export function ListContainer(){
         error={error || null}
         handleEdit={openEditWith}
         handleArchive={handleArchive}
+        handleToggleStatus={handleToggleStatus}
         />
 
       {isCreateOpen && 

@@ -3,7 +3,7 @@ import { ButtonIcon, Select } from "../Common/CommonComponents";
 import { options } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
 import type { Task } from '../../types';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 type Lists = Array<{ id: number; title: string; color: string;  }> | undefined;
 type PopupFormProps = {
