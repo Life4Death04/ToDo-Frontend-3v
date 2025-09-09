@@ -100,6 +100,7 @@ export default function HomeContainer(){
             {/* popup form to create a new task (conditionally rendered) */}
             {isCreateOpen && 
                 <TaskPopupForm 
+                    isOpen={isCreateOpen}
                     header="Add New Task"
                     submitText="Create Task"
                     values={form} 
@@ -112,6 +113,7 @@ export default function HomeContainer(){
 
             {isEditOpen && 
                 <TaskPopupForm 
+                    isOpen={isEditOpen}
                     header="Edit Task"
                     submitText="Save Changes"
                     values={editForm} 

@@ -1,6 +1,7 @@
 import type { ChangeEvent } from "react";
 import { Link } from "react-router";
 import type { ListsSummary } from "../../types";
+import FullScreenModal from "../Common/FullScreenModal";
 
 // -------------------- Types --------------------
 type InputCompTypes = {
@@ -54,12 +55,13 @@ type ToggleButtonsProps = {
 }
 
 type FormMockupProps = {
-    header: string,
     children: React.ReactNode,
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
-    onClose: () => void,
     isSubmitLoading: boolean,
     submitText: string,
+    isOpen: boolean,
+    onClose: () => void,
+    header: string,
 }
 
 // -------------------- Input Component --------------------
@@ -344,14 +346,10 @@ export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButto
 }
 
 // -------------------- FormMockup Component --------------------
-export function FormMockup({header, children, onSubmit, onClose, isSubmitLoading, submitText}: FormMockupProps){
+export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isOpen, onClose, header}: FormMockupProps){
     return(
-        <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center">
-            <section className="rounded-lg bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
-                <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400 dark:border-gray-600">
-                    <h2 className="dark:text-text-dark-white">{header}</h2>
-                    <ButtonIcon iconStyle="fa-solid fa-x" onClick={onClose}/>
-                </div>
+        <FullScreenModal isOpen={isOpen} onClose={onClose} title={header}>
+            <section className="rounded-lg mx-auto bg-white px-3 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     onSubmit(e);
@@ -360,6 +358,6 @@ export function FormMockup({header, children, onSubmit, onClose, isSubmitLoading
                     <SubmitBtn buttonText={submitText} isPending={isSubmitLoading} />
                 </form>
             </section>
-        </div>
+        </FullScreenModal>
     );
 }

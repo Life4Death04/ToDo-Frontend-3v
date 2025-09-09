@@ -68,31 +68,30 @@ export function ArchiveTasksContainer(){
                 handleToggleStatus={handleToggleStatus} // reusing handleArchive to unarchive
             />
             
-            {isCreateOpen && 
-                <TaskPopupForm 
-                    header="Add New Task"
-                    submitText="Create Task"
-                    values={form}
-                    lists={listArray}
-                    onChange={handleChange}
-                    onSubmit={handleSubmit}
-                    onClose={toggleCreate}
-                    dueDatePlaceholder={dueDatePlaceholder}
-                />
-            }
+            <TaskPopupForm 
+                isOpen={isCreateOpen}
+                header="Add New Task"
+                submitText="Create Task"
+                values={form}
+                lists={listArray}
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+                onClose={toggleCreate}
+                dueDatePlaceholder={dueDatePlaceholder}
+            />
             
-            {isEditOpen && 
-                <TaskPopupForm 
-                    header="Edit Task"
-                    submitText="Save Changes"
-                    lists={listArray}
-                    values={editForm}
-                    onChange={handleChangeEdit}
-                    onSubmit={handleSubmitEdit}
-                    onClose={toggleEdit}
-                    dueDatePlaceholder={dueDatePlaceholder}
-                />
-            }           
+            <TaskPopupForm 
+                isOpen={isEditOpen}
+                header="Edit Task"
+                submitText="Save Changes"
+                lists={listArray}
+                values={editForm}
+                onChange={handleChangeEdit}
+                onSubmit={handleSubmitEdit}
+                onClose={toggleEdit}
+                dueDatePlaceholder={dueDatePlaceholder}
+            />
+               
 
             <ListPopupForm
                 header="Create New List"

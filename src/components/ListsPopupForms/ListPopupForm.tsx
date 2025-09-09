@@ -33,6 +33,7 @@ export default function ListPopupForm({ values, onChange, onSubmit, header, subm
 
     return(
         <FormMockup
+            isOpen={isCreateListOpen}
             header={header}
             onClose={closeCreateList}
             onSubmit={onSubmit}

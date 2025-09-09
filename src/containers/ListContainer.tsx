@@ -85,8 +85,8 @@ export function ListContainer(){
         handleToggleStatus={handleToggleStatus}
         />
 
-      {isCreateOpen && 
       <TaskPopupForm 
+        isOpen={isCreateOpen}
         header="Add New Task"
         submitText="Create Task"
         lists={listArray}
@@ -95,10 +95,11 @@ export function ListContainer(){
         onSubmit={handleSubmit} 
         onClose={toggleCreate} 
         dueDatePlaceholder={dueDatePlaceholder}
-      />}
+      />
 
-      {isEditOpen && 
+      
       <TaskPopupForm 
+        isOpen={isEditOpen}
         header="Edit Task"
         submitText="Save Changes" 
         lists={listArray}
@@ -107,7 +108,7 @@ export function ListContainer(){
         onSubmit={handleSubmitEdit} 
         onClose={toggleEdit} 
         dueDatePlaceholder={dueDatePlaceholder}
-      />}
+      />
 
       <ListPopupForm 
         header="Create New List"

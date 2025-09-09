@@ -2,7 +2,7 @@
 import { Select, SelectArea, options, FormMockup } from "../Common/CommonComponents";
 import { Input } from "../Common/CommonComponents";
 import type { Task, ListsSummary } from '../../types';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 type FormData = Partial<Task>;
 /* type Lists = Array<{ id: number; title: string; color: string;  }> | undefined; */
@@ -16,6 +16,7 @@ type PopupFormProps = {
     dueDatePlaceholder: string;
     header: string;
     submitText: string;
+    isOpen: boolean;
 };
 
 // --------------------PopupForm  Component--------------------
@@ -29,14 +30,15 @@ type PopupFormProps = {
  * @param {Lists|undefined} lists - optional lists to populate the list selector
  * @returns JSX.Element
  */
-export default function TaskPopupForm({values, onChange, onSubmit, onClose, lists, dueDatePlaceholder, header, submitText}: PopupFormProps) {
+export default function TaskPopupForm({values, onChange, onSubmit, onClose, lists, dueDatePlaceholder, header, submitText, isOpen}: PopupFormProps) {
 
-    useEffect(() => {
+    /* useEffect(() => {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    }, []); // runs on mount
+    }, []); // runs on mount */
 
     return (
         <FormMockup
+            isOpen={isOpen}
             header={header}
             onClose={onClose}
             onSubmit={onSubmit}
