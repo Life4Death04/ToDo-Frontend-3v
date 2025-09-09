@@ -35,7 +35,6 @@ export function IndicatorPanels({totalTasks, completedTasks, archivedTasks}: Ind
     return (
         <section className="flex items-center flex-wrap justify-center gap-8 rounded-lg w-full mx-auto xsm:mb-3 xsm:gap-3 md:mb-6 md:gap-6">
           <RadialIndicator textIndicator="Tasks Completed" totalTasks={totalTasks} completedTasks={completedTasks}/>
-          <TextIndicator textIndicator="Reminder" totalItems={3} iconIndicator="fa-solid fa-clock"/>
           <TextIndicator textIndicator="Archived Tasks" totalItems={archivedTasks} iconIndicator="fa-solid fa-archive"/>
         </section>
     );
