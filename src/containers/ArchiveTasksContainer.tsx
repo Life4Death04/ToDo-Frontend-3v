@@ -1,7 +1,7 @@
 import { TasksTable } from "../components/TasksTable/TasksTable";
-import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
-import PopupFormEdit from "../components/TasksPopupForms/PopupFormEdit";
-import CreatePopupForm from "../components/ListsPopupForms/CreatePopupForm";
+import PopupFormCreate from "../components/TasksPopupForm/TaskPopupForm";
+import PopupFormEdit from "../components/TasksPopupForm/PopupFormEdit";
+import CreatePopupForm from "../components/ListsPopupForms/ListPopupForm";
 import { useParams } from "react-router";
 import { useTasksManager } from "../hooks/useTaskManager";
 import { useListManager } from "../hooks/useListManager";

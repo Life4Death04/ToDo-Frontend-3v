@@ -53,6 +53,15 @@ type ToggleButtonsProps = {
     isSubmitLoading: boolean;
 }
 
+type FormMockupProps = {
+    header: string,
+    children: React.ReactNode,
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
+    onClose: () => void,
+    isSubmitLoading: boolean,
+    submitText: string,
+}
+
 // -------------------- Input Component --------------------
 /**
  * Input
@@ -272,6 +281,27 @@ export function Select({onChange, options, currentValue, type, label, disabled, 
         </div>
     );
 }
+// -------------------- Select Area Component --------------------
+type SelectAreaProps = {
+    label: string,
+    value: string,
+    onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void,
+}
+
+export function SelectArea({label, value, onChange}: SelectAreaProps){
+    return(
+        <>
+            <label className="block font-bold mb-2 capitalize dark:text-text-dark-white">{label}</label>
+            <textarea
+            className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:text-text-dark-white"
+            name="description" 
+            value={value}
+            placeholder="Enter task content"
+            onChange={onChange}
+            ></textarea>
+        </>
+    );
+}
 
 // -------------------- Page Mockup Component --------------------
 export function PageMockup({header, children, leftSlot}: PageMockupProps){
@@ -311,4 +341,25 @@ export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButto
             }
         </div>
     )
+}
+
+// -------------------- FormMockup Component --------------------
+export function FormMockup({header, children, onSubmit, onClose, isSubmitLoading, submitText}: FormMockupProps){
+    return(
+        <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center">
+            <section className="rounded-lg bg-white px-3 py-2 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
+                <div className="flex justify-between items-center xsm:text-lg font-semibold border-b border-gray-400 dark:border-gray-600">
+                    <h2 className="dark:text-text-dark-white">{header}</h2>
+                    <ButtonIcon iconStyle="fa-solid fa-x" onClick={onClose}/>
+                </div>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    onSubmit(e);
+                }} className="my-4 text-center">
+                    {children}
+                    <SubmitBtn buttonText={submitText} isPending={isSubmitLoading} />
+                </form>
+            </section>
+        </div>
+    );
 }

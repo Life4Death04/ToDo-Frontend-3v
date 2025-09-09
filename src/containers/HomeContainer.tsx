@@ -4,9 +4,10 @@ import { useListManager } from "../hooks/useListManager";
 import { useParams } from "react-router";
 import { IndicatorPanels } from "../components/Indicators/Indicators";
 import { TasksTable } from "../components/TasksTable/TasksTable";
-import PopupFormCreate from "../components/TasksPopupForms/PopupFormCreate";
-import PopupFormEdit from "../components/TasksPopupForms/PopupFormEdit";
-import CreatePopupForm from "../components/ListsPopupForms/CreatePopupForm";
+import { useSettings } from "../contexts/SettingsContext";
+import { getDueDatePlaceholder } from "../utils/taskHelpers";
+import TaskPopupForm from "../components/TasksPopupForm/TaskPopupForm";
+import ListPopupForm from "../components/ListsPopupForms/ListPopupForm";
 
 /**
  * HomeContainer
@@ -32,8 +33,9 @@ export default function HomeContainer(){
     if(!userIdParam || Number.isNaN(userId)){
         return <div>Invalid User ID</div>;
     }
-
     //---------------------- Custom Hooks ----------------------
+    const { settings } = useSettings();
+
     const {
         archivedTasksCount,
         tasks, 
@@ -55,7 +57,7 @@ export default function HomeContainer(){
         handleSubmitEdit,
         handleArchive,
         handleToggleStatus
-        } = useTasksManager({ userId });        
+    } = useTasksManager({ userId });        
 
     const { 
         formList, 
@@ -67,9 +69,13 @@ export default function HomeContainer(){
     const completedTasks = tasks.filter(task => task.status === 'DONE').length;
     const archivedTasks = archivedTasksCount;
 
+    // -------------------- Due Date Format --------------------
+    // Use the internal DateFormat union value (e.g. "MM_DD_YYYY"), not a display string.
+    const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
+    const dueDatePlaceholder = `Due Date (${getDueDatePlaceholder(dateFormat)})`
     // ---------------------- Render -----------------------------
     return(
-        <main className="xsm:p-2 sm:p-4 md:p-6">
+        <main className="xsm:p-2 sm:p-4 md:p-6 relative">
             {/* summary panels */}
             <IndicatorPanels 
                 totalTasks={totalTasks} 
@@ -93,25 +99,33 @@ export default function HomeContainer(){
 
             {/* popup form to create a new task (conditionally rendered) */}
             {isCreateOpen && 
-                <PopupFormCreate 
+                <TaskPopupForm 
+                    header="Add New Task"
+                    submitText="Create Task"
                     values={form} 
                     onChange={handleChange} 
                     onSubmit={handleSubmit} 
                     lists={listArray} 
                     onClose={toggleCreate} 
+                    dueDatePlaceholder={dueDatePlaceholder}
             />}
 
             {isEditOpen && 
-                <PopupFormEdit 
+                <TaskPopupForm 
+                    header="Edit Task"
+                    submitText="Save Changes"
                     values={editForm} 
                     onChange={handleChangeEdit} 
                     onSubmit={handleSubmitEdit} 
                     lists={listArray}
-                    onClose={toggleEdit} 
-                />
+                    onClose={toggleEdit}
+                    dueDatePlaceholder={dueDatePlaceholder}
+            />
             }
 
-            <CreatePopupForm 
+            <ListPopupForm 
+                header="Create New List"
+                submitText="Create List"
                 values={formList} 
                 onChange={handleChangeList} 
                 onSubmit={handleSubmitList} 
