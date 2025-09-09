@@ -63,6 +63,7 @@ export const useLogoutUser = () =>{
      * Removes authentication token and redirects to the login page.
      */
     function logout(){
+        document.documentElement.classList.remove('dark');
         localStorage.removeItem("token");
         navigate('/');
     }

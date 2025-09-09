@@ -31,7 +31,6 @@ export default function PopupForm({values, onChange, onSubmit, onClose, lists}: 
     const { settings } = useSettings();
     // Use the internal DateFormat union value (e.g. "MM_DD_YYYY"), not a display string.
     const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
-    console.log(getDueDatePlaceholder(dateFormat))
     return (
         <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-fit py-4 bg-black/50">
             {/* Panel */}

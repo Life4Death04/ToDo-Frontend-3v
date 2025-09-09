@@ -103,10 +103,12 @@ export const useUpdateTask = () => {
  * useFetchUserSettings
  * Fetches settings for the current user.
  */
-export const useFetchUserSettings = () =>{
+export const useFetchUserSettings = (enabled = true) =>{
     return useQuery({
         queryKey: [queryKeys.fetchUserSettings],
-        queryFn: fetchUserSettings
+        queryFn: fetchUserSettings, 
+        enabled,
+        retry: false,
     })
 }
 

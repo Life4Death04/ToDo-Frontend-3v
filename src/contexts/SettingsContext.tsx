@@ -15,13 +15,14 @@ type SettingsContextValue = {
 const SettingsContext = createContext<SettingsContextValue | undefined>(undefined);
 
 export function SettingsProvider({ children }: { children: ReactNode }){
-  const { data, isLoading, isError } = useFetchUserSettings();
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null; // check for token presence
+  const { data, isLoading, isError } = useFetchUserSettings(token !== null); // only fetch if token exists (avoids unnecessary calls)
   const updater = useUpdateUserSettings();
 
+  // ---------------- Theme Effect ----------------
   useEffect(() => {
-    const themeRaw = data?.theme;
-    const theme = themeRaw?.toLowerCase();
-    if(theme === 'dark') document.documentElement.classList.add('dark');
+    const theme = data?.theme;
+    if(theme === 'DARK') document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
   }, [data?.theme]);
 
