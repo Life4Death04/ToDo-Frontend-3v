@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import { Link } from "react-router";
 import type { ListsSummary } from "../../types";
-import FullScreenModal from "../Common/FullScreenModal";
+import FullScreenModal from "../Modal/FullScreenModal";
 
 // -------------------- Types --------------------
 type InputCompTypes = {
