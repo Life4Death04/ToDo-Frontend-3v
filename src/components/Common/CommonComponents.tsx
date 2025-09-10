@@ -62,6 +62,7 @@ type FormMockupProps = {
     isOpen: boolean,
     onClose: () => void,
     header: string,
+    leftSlot?: React.ReactNode,
 }
 
 // -------------------- Input Component --------------------
@@ -346,7 +347,7 @@ export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButto
 }
 
 // -------------------- FormMockup Component --------------------
-export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isOpen, onClose, header}: FormMockupProps){
+export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isOpen, onClose, header, leftSlot}: FormMockupProps){
     return(
         <FullScreenModal isOpen={isOpen} onClose={onClose} title={header}>
             <section className="rounded-lg mx-auto bg-white px-3 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
@@ -355,7 +356,10 @@ export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isO
                     onSubmit(e);
                 }} className="my-4 text-center">
                     {children}
-                    <SubmitBtn buttonText={submitText} isPending={isSubmitLoading} />
+                    <div className={`flex gap-2 ${leftSlot ? 'justify-between' : 'justify-center'}`}>
+                        {leftSlot}
+                        <SubmitBtn buttonText={submitText} isPending={isSubmitLoading} />
+                    </div>
                 </form>
             </section>
         </FullScreenModal>
