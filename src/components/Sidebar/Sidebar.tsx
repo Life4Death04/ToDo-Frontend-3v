@@ -56,7 +56,6 @@ export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, list
       <ul className="flex flex-col gap-4 w-full xsm:items-center lg:items-start">
         <SidebarLinkItem linkText="All My Tasks" linkUrl={meData?.id ? `/accounts/${meData.id}` : '/'} classIcon="fa-solid fa-list-ul" hoverEffect={true}/>
         <SidebarLinkItem linkText="Archived Tasks" linkUrl="archive" classIcon="fa-solid fa-archive" hoverEffect={true}/>
-        <SidebarLinkItem linkText="Reminders " linkUrl="/settings" classIcon="fa-solid fa-clock" hoverEffect={true}/>
       </ul>
 
       <hr className="mt-2 mb-3"/>

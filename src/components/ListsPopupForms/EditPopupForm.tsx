@@ -1,5 +1,6 @@
 import { ButtonIcon, Button } from "../Common/CommonComponents";
 import { Input, SubmitBtn } from "../Common/CommonComponents";
+import { useEffect } from "react";
 import type { List } from "../../types";
 type ListSummary = Partial<Pick<List, 'title' | 'color'>>;
 
@@ -24,10 +25,14 @@ type CreatePopupFormProps = {
  * @param {() => void} onDelete - callback to delete the list
  */
 export default function EditPopupForm({ values, onChange, onSubmit, onClose, onDelete }: CreatePopupFormProps){
+    useEffect(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        }, []); // runs on mount
+
     return (
         <>
             {/* Modal overlay */}
-            <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen bg-black/50">
+            <div className="absolute top-0 left-0 right-0 flex items-center justify-center h-screen">
                 {/* Modal content panel */}
                 <section className="rounded-lg bg-white p-4 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
                     {/* Header: title + close */}

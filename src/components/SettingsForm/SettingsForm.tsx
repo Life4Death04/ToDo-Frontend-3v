@@ -1,4 +1,4 @@
-import { Button, PageMockup, ToggleButtons, Select, languageOptions } from "../Common/CommonComponents";
+import { PageMockup, ToggleButtons, Select, languageOptions } from "../Common/CommonComponents";
 import { priorityOptions, statusOptions, dateFormatOptions } from "../Common/CommonComponents";
 import type { Settings } from "../../types";
 
@@ -86,7 +86,7 @@ function ThemeToggle({value, onChange, disabled}: ThemeToggleProps){
 
     return(
         <div className="text-left flex-grow mb-5 gap-5">
-            <label className="block font-bold mb-2 capitalize">
+            <label className="block font-bold mb-2 capitalize dark:text-text-dark-white">
                 Theme
             </label>
             <div className="flex gap-2">

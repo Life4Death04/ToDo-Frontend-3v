@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useCreateTask, useDeleteUserTask, useUpdateTask, useToggleTaskArchived } from "./useTasks";
+import { useCreateTask, useDeleteUserTask, useUpdateTask, useToggleTaskArchived, useToggleTaskStatus } from "./useTasks";
 import { useFetchListData, useFetchLists } from "./useLists";
 import { useFetchUserTasks } from "./useTasks"; // assume exists: fetch all tasks for user
 import { useSettings } from "../contexts/SettingsContext";
@@ -61,6 +61,7 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
   const createTask = useCreateTask();
   const deleteTask = useDeleteUserTask(userId);
   const updateTask = useUpdateTask();
+  const toggleTaskStatus = useToggleTaskStatus();
 
   const toggleCreate = useCallback(() => {
     setCreateOpen(v => !v)
@@ -163,6 +164,9 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
     toggleArchive.mutate(taskId);
   }, [toggleArchive]);
 
+  const handleToggleStatus = useCallback((taskId: number) => {
+    toggleTaskStatus.mutate(taskId);
+  }, [toggleTaskStatus]);
 
   return {
     archivedTasks,
@@ -187,6 +191,7 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
     openEditWith,
     handleSubmitEdit,
     handleDelete,
-    handleArchive
+    handleArchive,
+    handleToggleStatus,
   };
 }

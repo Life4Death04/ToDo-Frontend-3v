@@ -16,6 +16,7 @@ type TasksTableProps = {
     isError?: boolean;
     error: Error | null;
     handleArchive: (taskId: number) => void;
+    handleToggleStatus: (taskId: number) => void;
 }
 
 type TaskItemProps = {
@@ -26,6 +27,7 @@ type TaskItemProps = {
     onDelete: () => void,
     onEdit: () => void,
     onArchive: () => void,
+    onToggleTaskStatus: () => void,
 }
 
 type NoTaskMessageProps = {
@@ -53,7 +55,7 @@ type AddTaskProps = {
  * @param {Error|null} error - error object
  * @returns JSX.Element
  */
-export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit, handleArchive }: TasksTableProps){
+export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit, handleArchive, handleToggleStatus }: TasksTableProps){
     return(
         <section className="px-6 py-4 bg-white rounded-2xl dark:bg-background-dark">
             {/* Header: title + actions */}
@@ -81,7 +83,8 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
                     <NoTaskMessage isError={isError ?? false} isLoading={isLoading ?? false} handleAddUserTask={handleAddUserTask} />
                 )}
                 {userTasks?.map(task => (
-                    <TaskItem 
+                    <TaskItem
+                        onToggleTaskStatus={() => handleToggleStatus(task.id)}
                         key={task.id}
                         taskName={task.taskName || ""}
                         dueDate={task.dueDate || ""}
@@ -108,7 +111,7 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
  * @param {() => void} onEdit - edit callback
  * @returns JSX.Element
  */
-function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArchive}: TaskItemProps){
+function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArchive, onToggleTaskStatus}: TaskItemProps){
     const { settings } = useSettings();
     const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
     // - `getCheckIcon` renders the done/undone icon.
@@ -119,7 +122,7 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
             {/* Left: completion toggle, title, edit (mobile delete shown below) */}
             <div className="flex gap-3 items-center flex-[2]">
                 {/* Completion toggle */}
-                <button>
+                <button onClick={onToggleTaskStatus}>
                     {getCheckIcon(status === 'DONE') /*Not Ready*/}
                 </button>
 
@@ -202,7 +205,7 @@ function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessagePro
  */
 function AddTaskButton({onClick}: AddTaskProps){
     return(
-        <button onClick={onClick} className="bg-orange ml-auto text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl dark:bg-text-dark-hover dark:hover:bg-orange-buttons">
+        <button onClick={onClick} className="bg-orange ml-auto text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl dark:bg-sidebar-links dark:hover:bg-orange-buttons">
             {`+ Add Task`}
         </button>
     );

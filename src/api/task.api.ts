@@ -8,6 +8,7 @@ type BACKEND_ROUTES_TASKS = {
     DELETE_TASK: (authorId: number, taskId: number) => string;
     TOGGLE_ARCHIVED: (authorId: number, taskId: number) => string;
     UPDATE_TASK: string;
+    TOGGLE_STATUS: (taskId: number) => string;
 }
 
 type ToggleArchivedTask = {
@@ -21,7 +22,8 @@ const BACKEND_ROUTES: BACKEND_ROUTES_TASKS = {
     CREATE_TASK: `/task/create`,
     DELETE_TASK: (authorId: number, taskId: number) => `/task/delete/${authorId}/${taskId}`,
     TOGGLE_ARCHIVED: (authorId: number, taskId: number) => `/task/toggleArchived/${authorId}/${taskId}`,
-    UPDATE_TASK: `/task/update`
+    UPDATE_TASK: `/task/update`,
+    TOGGLE_STATUS: (taskId: number) => `/task/${taskId}/toggle-status`
 }
 
 export const fetchUserTasks = async():Promise<FetchTaskResponse> =>{
@@ -71,6 +73,19 @@ export const toggleTaskArchived = async(authorId: number, taskId: number): Promi
             throw new Error(error.response?.data?.message || `Error toggling User's task archived status`)
         }else{
             throw new Error(`Unexpected error toggling User's task archived status`)
+        }
+    }
+}
+
+export const toggleTaskStatus = async(taskId: number) =>{
+    try{
+        const res = await api.patch(BACKEND_ROUTES.TOGGLE_STATUS(taskId))
+        return res.data
+    }catch(error){
+        if(axios.isAxiosError(error)){
+            throw new Error(error.response?.data?.message || `Error toggling User's task status`)
+        }else{
+            throw new Error(`Unexpected error toggling User's task status`)
         }
     }
 }

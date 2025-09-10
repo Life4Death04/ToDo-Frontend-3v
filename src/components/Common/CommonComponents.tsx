@@ -1,6 +1,7 @@
 import type { ChangeEvent } from "react";
 import { Link } from "react-router";
 import type { ListsSummary } from "../../types";
+import FullScreenModal from "../Common/FullScreenModal";
 
 // -------------------- Types --------------------
 type InputCompTypes = {
@@ -51,6 +52,16 @@ type ToggleButtonsProps = {
     isEditting: boolean;
     onEdit: () => void;
     isSubmitLoading: boolean;
+}
+
+type FormMockupProps = {
+    children: React.ReactNode,
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
+    isSubmitLoading: boolean,
+    submitText: string,
+    isOpen: boolean,
+    onClose: () => void,
+    header: string,
 }
 
 // -------------------- Input Component --------------------
@@ -272,6 +283,27 @@ export function Select({onChange, options, currentValue, type, label, disabled, 
         </div>
     );
 }
+// -------------------- Select Area Component --------------------
+type SelectAreaProps = {
+    label: string,
+    value: string,
+    onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void,
+}
+
+export function SelectArea({label, value, onChange}: SelectAreaProps){
+    return(
+        <>
+            <label className="block font-bold mb-2 capitalize dark:text-text-dark-white">{label}</label>
+            <textarea
+            className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:text-text-dark-white"
+            name="description" 
+            value={value}
+            placeholder="Enter task content"
+            onChange={onChange}
+            ></textarea>
+        </>
+    );
+}
 
 // -------------------- Page Mockup Component --------------------
 export function PageMockup({header, children, leftSlot}: PageMockupProps){
@@ -311,4 +343,21 @@ export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButto
             }
         </div>
     )
+}
+
+// -------------------- FormMockup Component --------------------
+export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isOpen, onClose, header}: FormMockupProps){
+    return(
+        <FullScreenModal isOpen={isOpen} onClose={onClose} title={header}>
+            <section className="rounded-lg mx-auto bg-white px-3 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    onSubmit(e);
+                }} className="my-4 text-center">
+                    {children}
+                    <SubmitBtn buttonText={submitText} isPending={isSubmitLoading} />
+                </form>
+            </section>
+        </FullScreenModal>
+    );
 }

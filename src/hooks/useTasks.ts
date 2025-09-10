@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createTodo, deleteUserTask, fetchUserTasks, toggleTaskArchived, updateTask } from "../api/task.api";
+import { createTodo, deleteUserTask, fetchUserTasks, toggleTaskArchived, toggleTaskStatus, updateTask } from "../api/task.api";
 import type { Task } from '../types'
 import { fetchUserSettings, updateUserSettings } from "../api/users.api";
 
@@ -83,6 +83,18 @@ export const useToggleTaskArchived = (authorId: number) => {
     })
 }
 
+export const useToggleTaskStatus = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (taskId: number) => toggleTaskStatus(taskId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: [queryKeys.fetchTasks]})
+            queryClient.invalidateQueries({queryKey: [queryKeys.fetchListData]})
+        }
+    })
+}
+
 /**
  * useUpdateTask
  * Mutation used to update a task. Invalidates tasks cache on success.
@@ -103,10 +115,12 @@ export const useUpdateTask = () => {
  * useFetchUserSettings
  * Fetches settings for the current user.
  */
-export const useFetchUserSettings = () =>{
+export const useFetchUserSettings = (enabled = true) =>{
     return useQuery({
         queryKey: [queryKeys.fetchUserSettings],
-        queryFn: fetchUserSettings
+        queryFn: fetchUserSettings, 
+        enabled,
+        retry: false,
     })
 }
 
