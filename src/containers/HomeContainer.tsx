@@ -57,7 +57,8 @@ export default function HomeContainer(){
         openEditWith, 
         handleSubmitEdit,
         handleArchive,
-        handleToggleStatus
+        handleToggleStatus,
+        formErrors
     } = useTasksManager({ userId });        
 
     const { 
@@ -113,6 +114,7 @@ export default function HomeContainer(){
                 lists={listArray} 
                 onClose={toggleCreate} 
                 dueDatePlaceholder={dueDatePlaceholder}
+                formErrors={formErrors.taskName}
             />
 
             <TaskPopupForm 
@@ -125,6 +127,7 @@ export default function HomeContainer(){
                 lists={listArray}
                 onClose={toggleEdit}
                 dueDatePlaceholder={dueDatePlaceholder}
+                formErrors={formErrors.taskName}
             />
             
 

@@ -1,5 +1,5 @@
 import { Sidebar } from "../components/Sidebar/Sidebar";
-import { useModal } from "../contexts/ModalContext";
+import { useListManager } from "../hooks/useListManager";
 import { useFetchLists } from "../hooks/useLists";
 import { useFetchMeData, useLogoutUser } from "../hooks/useUsers";
 // -------------------- Types --------------------
@@ -14,10 +14,10 @@ import { useFetchMeData, useLogoutUser } from "../hooks/useUsers";
  * @returns JSX.Element
  */
 export function SidebarContainer(){
-    const { toggleCreateList } = useModal();
     const logout = useLogoutUser();
     const { data: meData, isError: isMeDataError, isLoading: isMeDataLoading } = useFetchMeData();
     const { data: listsData, isError: isListsError, isLoading: isListsLoading } = useFetchLists();
+    const { openListWith } = useListManager({ userId: meData?.id || 0 });
 
     return (
         <Sidebar
@@ -28,7 +28,7 @@ export function SidebarContainer(){
             listsData={listsData}
             isListsLoading={isListsLoading}
             isListsError={isListsError}
-            onCreateList={toggleCreateList}
+            onCreateList={openListWith}
         />
     );  
 }

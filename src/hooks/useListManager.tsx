@@ -32,6 +32,8 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         color: '#000000',
         authorId: userId,
     });
+    // validation errors for the form (e.g. taskName required)
+    const [formErrors, setFormErrors] = useState<{ title?: Error | null }>({});
 
     const listQuery = listId ? useFetchListData(listId) : null;
 
@@ -41,11 +43,17 @@ export function useListManager({ listId, userId }: UseListManagerProps){
     const deleteListMutation = useDeleteList(listId || 0);
     const { toggleEditList, toggleCreateList } = useModal();
     const navigate = useNavigate();
-    /* const toggleEditList = useCallback(() => setEditListOpen(v => !v), []); */
+
+    const openListWith = useCallback(() => {
+        setEditFormList({});
+        toggleCreateList();
+        setFormErrors({});
+    }, []);
 
     const openEditListWith = useCallback((listData: Partial<List>) => {
         setEditFormList(listData);
         toggleEditList();
+        setFormErrors({});
     }, []);
 
     const handleChangeList = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
@@ -71,6 +79,11 @@ export function useListManager({ listId, userId }: UseListManagerProps){
             authorId: userId,
         };
 
+        // prevent creating tasks with empty names - surface as a validation error (don't throw)
+        if (!submitData.title || submitData.title.trim() === '') {
+            setFormErrors({ title: new Error('Title is required') });
+            return;
+        }
         createListMutation.mutate(submitData, {
             onSuccess: () => {
                 toggleCreateList();
@@ -84,8 +97,12 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         const submitData = {
             ...editFormList
         };
-        
-    updateListMutation.mutate(submitData as List, {
+        // prevent creating tasks with empty names - surface as a validation error (don't throw)
+        if (!submitData.title || submitData.title.trim() === '') {
+            setFormErrors({ title: new Error('Title is required') });
+            return;
+        }
+        updateListMutation.mutate(submitData as List, {
             onSuccess: () => {
                 toggleEditList();
             }
@@ -111,6 +128,8 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         handleDeleteList,
         toggleEditList,
         openEditListWith,
+        openListWith,
         listData,
+        formErrors,
     };
 }

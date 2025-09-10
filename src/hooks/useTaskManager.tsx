@@ -37,6 +37,9 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
     archived: undefined,
   });
 
+  // validation errors for the form (e.g. taskName required)
+  const [formErrors, setFormErrors] = useState<{ taskName?: Error | null }>({});
+
   // edit form holds the current task being edited
   const [editForm, setEditForm] = useState<any>({});
 
@@ -75,6 +78,8 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
       authorId: userId,
       archived: isArchivedView ? true : undefined,
     })
+  // clear validation errors when toggling the create form
+  setFormErrors({});
   }, [listId, userId]);
   const toggleEdit = useCallback(() => setEditOpen(v => !v), []);
 
@@ -84,6 +89,8 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
         ...prev, 
         [name]: value 
       }));
+    // clear field-specific validation errors as user types
+    if (name === 'taskName') setFormErrors(prev => ({ ...prev, taskName: null }));
   }, []);
 
   // handle changes for the edit form
@@ -96,6 +103,8 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
   const openEditWith = useCallback((taskId: number) => {
     const task = tasks.find(t => t.id === taskId);
     const archivedTask = archivedTasks.find(t => t.id === taskId);
+    // clear validation errors when toggling the create form
+    setFormErrors({});
     if (!task && archivedTask) {
       setEditForm(archivedTask);
       setEditOpen(prev => !prev);
@@ -118,6 +127,11 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
       listId: Number(form.listId) || undefined,
       archived: form.archived
     };
+    // prevent creating tasks with empty names - surface as a validation error (don't throw)
+    if (!payload.taskName || payload.taskName.trim() === '') {
+      setFormErrors({ taskName: new Error('Task name is required') });
+      return;
+    }
     createTask.mutate(payload, {
       onSuccess: () => {
         setCreateOpen(prev => !prev);
@@ -131,6 +145,8 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
           authorId: userId,
           archived: undefined,
         })
+        // clear validation errors on success
+        setFormErrors({});
         queryClient.invalidateQueries({ queryKey: listId ? ['listData', listId] : ['tasks', userId] });
         console.log(payload)
       },
@@ -144,6 +160,11 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
       ...editForm,
       dueDate: editForm?.dueDate ? new Date(editForm.dueDate).toISOString() : undefined,
     };
+    // prevent creating tasks with empty names - surface as a validation error (don't throw)
+    if (!payload.taskName || payload.taskName.trim() === '') {
+      setFormErrors({ taskName: new Error('Task name is required') });
+      return;
+    }
     updateTask.mutate(payload, {
       onSuccess: () => {
         setEditOpen(false);
@@ -193,5 +214,7 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
     handleDelete,
     handleArchive,
     handleToggleStatus,
+  formErrors,
+  setFormErrors,
   };
 }

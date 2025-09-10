@@ -59,14 +59,14 @@ export function ListContainer(){
     handleSubmitEditedList,
     handleDeleteList,
     openEditListWith,
-    listData
+    listData,
+    formErrors
   } = useListManager({ listId, userId });
 
   // -------------------- Due Date Format --------------------
   // Use the internal DateFormat union value (e.g. "MM_DD_YYYY"), not a display string.
   const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
   const dueDatePlaceholder = `Due Date (${getDueDatePlaceholder(dateFormat)})`
-
   // -------------------- Modal Context --------------------
   const { toggleCreateList, toggleEditList, isEditListOpen, isCreateListOpen } = useModal();
   return (
@@ -119,6 +119,7 @@ export function ListContainer(){
         onChange={handleChangeList} 
         onSubmit={handleSubmitList} 
         onClose={toggleCreateList}
+        formErrors={formErrors.title}
       />
 
       <ListPopupForm 
@@ -130,6 +131,7 @@ export function ListContainer(){
         onSubmit={handleSubmitEditedList} 
         onClose={toggleEditList} 
         onDelete={handleDeleteList} 
+        formErrors={formErrors.title}
       />
     </main>
   );

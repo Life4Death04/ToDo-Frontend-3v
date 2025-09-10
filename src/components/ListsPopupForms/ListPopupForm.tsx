@@ -12,6 +12,7 @@ type CreatePopupFormProps = {
     submitText: string;
     onClose: () => void;
     onDelete?: () => void;
+    formErrors?: Error | null;
 }
 
 /**
@@ -22,7 +23,7 @@ type CreatePopupFormProps = {
  * @param {(e: React.ChangeEvent<HTMLInputElement>) => void} onChange - input change handler
  * @param {(e: React.FormEvent) => void} onSubmit - form submit handler
  */
-export default function ListPopupForm({ isOpen, values, onChange, onSubmit, header, submitText, onClose, onDelete }: CreatePopupFormProps){
+export default function ListPopupForm({ isOpen, values, onChange, onSubmit, header, submitText, onClose, onDelete, formErrors }: CreatePopupFormProps){
     return(
         <FormMockup
             isOpen={isOpen}
@@ -41,6 +42,7 @@ export default function ListPopupForm({ isOpen, values, onChange, onSubmit, head
                 label="List Title"
                 placeholder="Enter list title"
                 onChange={onChange}
+                error={formErrors} // Input expects Error | null
             />
 
             {/* Input: List Color */}

@@ -17,6 +17,7 @@ type PopupFormProps = {
     header: string;
     submitText: string;
     isOpen: boolean;
+    formErrors?: Error | null;
 };
 
 // --------------------PopupForm  Component--------------------
@@ -30,7 +31,7 @@ type PopupFormProps = {
  * @param {Lists|undefined} lists - optional lists to populate the list selector
  * @returns JSX.Element
  */
-export default function TaskPopupForm({values, onChange, onSubmit, onClose, lists, dueDatePlaceholder, header, submitText, isOpen}: PopupFormProps) {
+export default function TaskPopupForm({values, onChange, onSubmit, onClose, lists, dueDatePlaceholder, header, submitText, isOpen, formErrors}: PopupFormProps) {
     return (
         <FormMockup
             isOpen={isOpen}
@@ -48,6 +49,7 @@ export default function TaskPopupForm({values, onChange, onSubmit, onClose, list
                         label="Task Name"
                         placeholder="Enter task name"
                         onChange={onChange} 
+                        error={formErrors} // Input expects Error | null
                     />
 
                     {/* Due Date Input */}
