@@ -26,13 +26,14 @@ type UseListManagerProps = {
  * @returns object containing form state, handlers, modal toggles and fetched listData
  */
 export function useListManager({ listId, userId }: UseListManagerProps){
-    const [isEditListOpen, setEditListOpen] = useState(false);
     const [editFormList, setEditFormList] = useState<Partial<List>>({});
     const [formList, setFormList] = useState<ListFormType>({
         title: '',
         color: '#000000',
         authorId: userId,
     });
+    // validation errors for the form (e.g. taskName required)
+    const [formErrors, setFormErrors] = useState<{ title?: Error | null }>({});
 
     const listQuery = listId ? useFetchListData(listId) : null;
 
@@ -40,13 +41,19 @@ export function useListManager({ listId, userId }: UseListManagerProps){
     const createListMutation = useCreateList();
     const updateListMutation = useUpdateList(listId || 0);
     const deleteListMutation = useDeleteList(listId || 0);
-    const { closeCreateList } = useModal();
+    const { toggleEditList, toggleCreateList } = useModal();
     const navigate = useNavigate();
-    const toggleEditList = useCallback(() => setEditListOpen(v => !v), []);
+
+    const openListWith = useCallback(() => {
+        setEditFormList({});
+        toggleCreateList();
+        setFormErrors({});
+    }, []);
 
     const openEditListWith = useCallback((listData: Partial<List>) => {
         setEditFormList(listData);
-        setEditListOpen(true);
+        toggleEditList();
+        setFormErrors({});
     }, []);
 
     const handleChangeList = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
@@ -72,9 +79,14 @@ export function useListManager({ listId, userId }: UseListManagerProps){
             authorId: userId,
         };
 
+        // prevent creating tasks with empty names - surface as a validation error (don't throw)
+        if (!submitData.title || submitData.title.trim() === '') {
+            setFormErrors({ title: new Error('Title is required') });
+            return;
+        }
         createListMutation.mutate(submitData, {
             onSuccess: () => {
-                closeCreateList();
+                toggleCreateList();
                 setFormList({title: '', color: '#000000', authorId: userId});
             }
         })
@@ -85,10 +97,14 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         const submitData = {
             ...editFormList
         };
-        
-    updateListMutation.mutate(submitData as List, {
+        // prevent creating tasks with empty names - surface as a validation error (don't throw)
+        if (!submitData.title || submitData.title.trim() === '') {
+            setFormErrors({ title: new Error('Title is required') });
+            return;
+        }
+        updateListMutation.mutate(submitData as List, {
             onSuccess: () => {
-                setEditListOpen(false);
+                toggleEditList();
             }
         })
     }, [editFormList, userId]);
@@ -96,7 +112,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
     const handleDeleteList = useCallback(() => {
         deleteListMutation.mutate(undefined,{
             onSuccess: () => {
-                setEditListOpen(false);
+                toggleEditList();
                 navigate(`/accounts/${userId}`, {replace: true})
             }
         });
@@ -112,7 +128,8 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         handleDeleteList,
         toggleEditList,
         openEditListWith,
-        isEditListOpen,
+        openListWith,
         listData,
+        formErrors,
     };
 }

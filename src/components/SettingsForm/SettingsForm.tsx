@@ -82,7 +82,7 @@ function ThemeToggle({value, onChange, disabled}: ThemeToggleProps){
     const btnBase = "border border-black/20 bg-gray-200 xsm:flex-grow xsm:py-2 xsm:text-base md:text-base lg:text-base rounded-lg font-bold flex items-center justify-center gap-2 cursor-pointer";
     const lightActive = "bg-orange text-white";
     const darkActive = "bg-gray-800 text-white";
-    const inactiveBtn = "border border-black/20 bg-gray-200 xsm:flex-grow xsm:py-2 xsm:text-base md:text-base lg:text-base rounded-lg font-bold flex items-center justify-center gap-2 opacity-50";
+    /* const inactiveBtn = "border border-black/20 bg-gray-200 xsm:flex-grow xsm:py-2 xsm:text-base md:text-base lg:text-base rounded-lg font-bold flex items-center justify-center gap-2 opacity-50"; */
 
     return(
         <div className="text-left flex-grow mb-5 gap-5">
@@ -92,7 +92,7 @@ function ThemeToggle({value, onChange, disabled}: ThemeToggleProps){
             <div className="flex gap-2">
                 <button
                     name="theme"
-                    className={`${disabled ? inactiveBtn : btnBase} ${value === 'LIGHT' ? lightActive : inactiveBtn}`}
+                    className={`${btnBase} ${disabled && 'opacity-50'} ${value === 'LIGHT' && lightActive}`}
                     type="button"
                     aria-pressed={value === 'LIGHT'}
                     onClick={() => !disabled && onChange("LIGHT")}
@@ -103,7 +103,7 @@ function ThemeToggle({value, onChange, disabled}: ThemeToggleProps){
                 </button>
                 <button
                     name="theme"
-                    className={`${disabled ? inactiveBtn : btnBase} ${value === 'DARK' && darkActive}`}
+                    className={`${btnBase} ${disabled && 'opacity-50'} ${value === 'DARK' && darkActive}`}
                     type="button"
                     aria-pressed={value === 'DARK'}
                     onClick={() => !disabled && onChange("DARK")}

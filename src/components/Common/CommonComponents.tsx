@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import { Link } from "react-router";
 import type { ListsSummary } from "../../types";
-import FullScreenModal from "../Common/FullScreenModal";
+import FullScreenModal from "../Modal/FullScreenModal";
 
 // -------------------- Types --------------------
 type InputCompTypes = {
@@ -62,6 +62,7 @@ type FormMockupProps = {
     isOpen: boolean,
     onClose: () => void,
     header: string,
+    leftSlot?: React.ReactNode,
 }
 
 // -------------------- Input Component --------------------
@@ -95,7 +96,7 @@ export function Input({ type, value, name, label, required, placeholder, onChang
                 <div className="animate-pulse h-10 bg-gray-200 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md"></div>
             ) : (
             <input 
-                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md dark:text-text-dark-white  ${error &&'border-red-500'} ${dimensions} ${disabled ? 'bg-gray-200 cursor-not-allowed dark:bg-dark-gray' : 'bg-gray-100 dark:bg-dark-gray'}`}
+                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md dark:text-text-dark-white  ${error &&'border-red-500'} ${dimensions} ${disabled ? 'bg-gray-200 cursor-not-allowed dark:bg-dark-gray' : 'bg-gray-100 dark:bg-light-gray'}`}
                 type={type} 
                 value={value} 
                 onChange={onChange} 
@@ -264,7 +265,7 @@ export function Select({onChange, options, currentValue, type, label, disabled, 
                 {label}
             </label>
             <select 
-                className="lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:bg-dark-gray dark:text-text-dark-white"
+                className={`lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:bg-dark-gray dark:text-text-dark-white ${disabled ? 'cursor-not-allows' : 'hover:cursor-pointer dark:bg-light-gray'}`}
                 name={inputName ? inputName : type}
                 value={currentValue}
                 onChange={onChange}
@@ -339,14 +340,14 @@ export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButto
                     <SubmitBtn buttonText="Save Changes" isPending={isSubmitLoading} />
                 </div>
                 : 
-                <Button textButton="Edit" buttonStyle="xsm:w-full sm:w-auto sm:px-6 lg:px-8 bg-orange hover:bg-orange-strong text-white font-bold" onClick={onEdit}></Button>
+                <Button textButton="Edit" buttonStyle={`xsm:w-full sm:w-auto sm:px-6 lg:px-8 bg-orange hover:bg-orange-strong text-white font-bold`} onClick={onEdit}></Button>
             }
         </div>
     )
 }
 
 // -------------------- FormMockup Component --------------------
-export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isOpen, onClose, header}: FormMockupProps){
+export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isOpen, onClose, header, leftSlot}: FormMockupProps){
     return(
         <FullScreenModal isOpen={isOpen} onClose={onClose} title={header}>
             <section className="rounded-lg mx-auto bg-white px-3 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
@@ -355,7 +356,10 @@ export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isO
                     onSubmit(e);
                 }} className="my-4 text-center">
                     {children}
-                    <SubmitBtn buttonText={submitText} isPending={isSubmitLoading} />
+                    <div className={`flex gap-2 ${leftSlot ? 'justify-between' : 'justify-center'}`}>
+                        <SubmitBtn buttonText={submitText} isPending={isSubmitLoading} />
+                        {leftSlot}
+                    </div>
                 </form>
             </section>
         </FullScreenModal>

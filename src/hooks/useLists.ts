@@ -78,6 +78,7 @@ export const useUpdateList = (listId: number) => {
         onSuccess: () => {
             // Invalidate the fetchLists query to refetch the data
             queryClient.invalidateQueries({queryKey: [queryKeys.fetchListData]});
+            queryClient.invalidateQueries({queryKey: [queryKeys.fetchLists]});
         }
     })
 }

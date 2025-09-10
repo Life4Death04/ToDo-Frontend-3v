@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { ButtonIcon } from './CommonComponents';
+import { ButtonIcon } from '../Common/CommonComponents';
 
 type FullScreenModalProps = {
   isOpen: boolean;
@@ -47,13 +47,13 @@ export default function FullScreenModal({ isOpen, onClose, title, children, clas
         aria-modal="true"
         tabIndex={-1}
         ref={panelRef}
-        className={`relative z-10 w-fit h-full max-w-4xl bg-white dark:bg-background-dark rounded-lg shadow-2xl overflow-auto ${className ?? ''}`}
+        className={`relative z-10 w-fit h-fit max-w-4xl bg-white dark:bg-background-dark rounded-lg shadow-2xl ${className ?? ''}`}
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-lg font-bold dark:text-text-dark-white">{title}</h2>
           <ButtonIcon iconStyle="fa-solid fa-x" onClick={onClose} />
         </div>
-        <div className="md:px-4 flex justify-center">
+        <div className="md:px-4 flex justify-center overflow-auto max-h-[80vh]">
           {children}
         </div>
       </div>

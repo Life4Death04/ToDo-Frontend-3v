@@ -40,8 +40,11 @@ type RegisterFormProps = {
 }
 
 type ErrorTypes = {
-    email: string;
-    password: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
 }
 
 const errorMessages:ErrorTypes = {
@@ -82,7 +85,8 @@ export default function RegisterForm({ values, onChange, onSubmit, isPending, er
                                 label="first name" 
                                 placeholder="Enter your first name" 
                                 value={values.firstName} 
-                                onChange={onChange}>
+                                onChange={onChange}
+                                error={fieldErrors?.firstName ? new Error(fieldErrors.firstName) : undefined}>
                             </Input>
                             <Input 
                                 type="text" 
@@ -90,7 +94,8 @@ export default function RegisterForm({ values, onChange, onSubmit, isPending, er
                                 label="last name" 
                                 placeholder="Enter your last name"
                                 value={values.lastName}
-                                onChange={onChange}>
+                                onChange={onChange}
+                                error={fieldErrors?.lastName ? new Error(fieldErrors.lastName) : undefined}>
                             </Input>
                         </div>
                         <Input 
@@ -112,6 +117,7 @@ export default function RegisterForm({ values, onChange, onSubmit, isPending, er
                             required={true}
                             value={values.password}
                             onChange={onChange}
+                            error={fieldErrors?.password ? new Error(fieldErrors.password) : undefined}
                         >
                         </Input>
                         <Input 
@@ -122,7 +128,7 @@ export default function RegisterForm({ values, onChange, onSubmit, isPending, er
                             required={true}
                             value={values.confirmPassword}
                             onChange={onChange}
-                            error={(fieldErrors?.password === errorMessages.password) ? new Error(errorMessages.password) : undefined}
+                            error={fieldErrors?.confirmPassword ? new Error(fieldErrors.confirmPassword) : undefined}
                         >
                         </Input>
                         <SubmitBtn {...submitBtnContent} isPending={isPending}></SubmitBtn>

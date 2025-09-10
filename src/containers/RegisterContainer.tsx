@@ -11,8 +11,11 @@ export type FormData = {
 }
 
 type ErrorTypes = {
-    email: string;
-    password: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
 }
 
 /**
@@ -41,17 +44,44 @@ export default function RegisterContainer(){
             [name]: value
         }))
 
+        // clear field-specific validation error while typing
+        setFieldErrors(prev => ({ ...prev, [name]: '' }));
+
     }
 
     function handleOnSubmit(e: React.FormEvent):void{
         e.preventDefault();
-        if(formData.password !== formData.confirmPassword){
-            setFieldErrors({ password: "Passwords don't match" })
+        const { firstName, lastName, email, password, confirmPassword } = formData;
+
+        const errors: Partial<ErrorTypes> = {};
+
+        // names: 1-50 chars
+        if (!firstName || firstName.trim().length < 1 || firstName.trim().length > 50) {
+            errors.firstName = 'First name must be between 1 and 50 characters';
+        }
+        if (!lastName || lastName.trim().length < 1 || lastName.trim().length > 50) {
+            errors.lastName = 'Last name must be between 1 and 50 characters';
+        }
+
+        // password length
+        if (!password || password.length < 6) {
+            errors.password = 'Password must be at least 6 characters';
+        }
+
+        // password confirmation (only set if length ok)
+        if (!errors.password && password !== confirmPassword) {
+            errors.confirmPassword = "Passwords don't match";
+        }
+
+        if (Object.keys(errors).length > 0) {
+            setFieldErrors(errors);
             return;
         }
-        setFieldErrors({password: ''})
-        const {firstName, lastName, email, password} = formData;
-        mutate({firstName, lastName, email, password});
+
+        // clear any previous errors
+        setFieldErrors({});
+
+        mutate({ firstName, lastName, email, password });
     }
 
     return(

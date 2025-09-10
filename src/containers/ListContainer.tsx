@@ -2,11 +2,11 @@ import { useParams } from "react-router";
 import { useTasksManager } from "../hooks/useTaskManager";
 import { TasksTable } from "../components/TasksTable/TasksTable";
 import { useListManager } from "../hooks/useListManager";
-import EditPopupForm from "../components/ListsPopupForms/EditPopupForm";
 import TaskPopupForm from "../components/TasksPopupForm/TaskPopupForm";
 import { getDueDatePlaceholder } from "../utils/taskHelpers";
 import { useSettings } from "../contexts/SettingsContext";
 import ListPopupForm from "../components/ListsPopupForms/ListPopupForm";
+import { useModal } from "../contexts/ModalContext";
 
 /**
  * ListContainer
@@ -58,16 +58,17 @@ export function ListContainer(){
     handleSubmitList,
     handleSubmitEditedList,
     handleDeleteList,
-    toggleEditList,
     openEditListWith,
-    isEditListOpen,
-    listData
+    listData,
+    formErrors
   } = useListManager({ listId, userId });
 
   // -------------------- Due Date Format --------------------
   // Use the internal DateFormat union value (e.g. "MM_DD_YYYY"), not a display string.
   const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
   const dueDatePlaceholder = `Due Date (${getDueDatePlaceholder(dateFormat)})`
+  // -------------------- Modal Context --------------------
+  const { toggleCreateList, toggleEditList, isEditListOpen, isCreateListOpen } = useModal();
   return (
     <main className="xsm:p-2 sm:p-4 md:p-6">
       <TasksTable
@@ -111,21 +112,27 @@ export function ListContainer(){
       />
 
       <ListPopupForm 
+        isOpen={isCreateListOpen}
         header="Create New List"
         submitText="Create List" 
         values={formList} 
         onChange={handleChangeList} 
         onSubmit={handleSubmitList} 
+        onClose={toggleCreateList}
+        formErrors={formErrors.title}
       />
 
-      {isEditListOpen && 
-      <EditPopupForm 
+      <ListPopupForm 
+        isOpen={isEditListOpen}
+        header="Edit List"
+        submitText="Save Changes"
         values={editFormList!} 
         onChange={handleChangeEditList} 
         onSubmit={handleSubmitEditedList} 
         onClose={toggleEditList} 
         onDelete={handleDeleteList} 
-      />}
+        formErrors={formErrors.title}
+      />
     </main>
   );
 }

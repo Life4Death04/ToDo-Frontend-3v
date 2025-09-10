@@ -1,7 +1,9 @@
 import {Link} from 'react-router';
 import { Button } from '../Common/CommonComponents';
+import { useLogoutUser } from '../../hooks/useUsers';
 
 export function NotFound404(){
+    const logout = useLogoutUser();
     return(
         <main className="h-screen flex items-center justify-center">
             <section className="flex flex-col items-center bg-amber-50 shadow-xl xsm:max-w-80 rounded-xl sm:max-w-[400px] xsm:p-4 xsm:mx-3 lg:p-8 lg:max-w-fit dark:bg-background-dark">
@@ -12,7 +14,7 @@ export function NotFound404(){
                 <h2 className="xsm:text-2xl sm:text-3xl lg:text-3xl font-bold dark:text-text-dark-white">Page Not Found</h2>
                 <p className="xsm:text-sm sm:text-lg text-center my-4 dark:text-text-dark">Oops! The page you are looking for does not exist. It might have been moved or deleted.</p>
                 <Link to={'/'}>
-                    <Button textButton="Go to Homepage" />
+                    <Button onClick={logout} textButton="Go to Homepage" />
                 </Link>
             </section>
         </main>
