@@ -357,8 +357,8 @@ export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isO
                 }} className="my-4 text-center">
                     {children}
                     <div className={`flex gap-2 ${leftSlot ? 'justify-between' : 'justify-center'}`}>
-                        {leftSlot}
                         <SubmitBtn buttonText={submitText} isPending={isSubmitLoading} />
+                        {leftSlot}
                     </div>
                 </form>
             </section>
