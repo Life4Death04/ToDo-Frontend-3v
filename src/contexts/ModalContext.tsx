@@ -7,9 +7,13 @@ type ModalContextValue = {
   // boolean state: true when the "create list" modal is open
   isCreateListOpen: boolean;
   // function to open the create-list modal
-  openCreateList: () => void;
+  toggleCreateList: () => void;
   // function to close the create-list modal
-  closeCreateList: () => void;
+  /* closeCreateList: () => void; */
+  // boolean state: true when the "edit list" modal is open
+  isEditListOpen: boolean;
+  // function to toggle the edit-list modal
+  toggleEditList: () => void;
 };
 
 // Create the context. The initial value is `undefined` so we can detect
@@ -23,21 +27,23 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   // Local state tracking whether the create-list popup is open.
   // Default false -> modal closed.
   const [isCreateListOpen, setCreateListOpen] = useState(false);
+  const [isEditListOpen, setEditListOpen] = useState(false);
 
   // Stable callback to open the modal. useCallback keeps the function identity
   // stable across renders which is useful when passing it down to memoized
   // components or into dependency arrays.
-  const openCreateList = useCallback(() => {setCreateListOpen(true); window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });}, []);
+  const toggleCreateList = useCallback(() => setCreateListOpen(prev => !prev), []);
+  const toggleEditList = useCallback(() => setEditListOpen(prev => !prev), []);
 
-  // Stable callback to close the modal.
-  const closeCreateList = useCallback(() => setCreateListOpen(false), []);
+  /* // Stable callback to close the modal.
+  const closeCreateList = useCallback(() => setCreateListOpen(false), []); */
 
   // Memoize the context value object so consumers don't re-render unless one
   // of the actual values changes. This prevents passing a new object each
   // render which would cause unnecessary updates.
   const value = useMemo(
-    () => ({ isCreateListOpen, openCreateList, closeCreateList }),
-    [isCreateListOpen, openCreateList, closeCreateList]
+    () => ({ isCreateListOpen, toggleCreateList, isEditListOpen, toggleEditList }),
+    [isCreateListOpen, toggleCreateList, isEditListOpen, toggleEditList]
   );
 
   // Provide the value to children.

@@ -8,6 +8,7 @@ import { useSettings } from "../contexts/SettingsContext";
 import { getDueDatePlaceholder } from "../utils/taskHelpers";
 import TaskPopupForm from "../components/TasksPopupForm/TaskPopupForm";
 import ListPopupForm from "../components/ListsPopupForms/ListPopupForm";
+import { useModal } from "../contexts/ModalContext";
 
 /**
  * HomeContainer
@@ -73,6 +74,9 @@ export default function HomeContainer(){
     // Use the internal DateFormat union value (e.g. "MM_DD_YYYY"), not a display string.
     const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
     const dueDatePlaceholder = `Due Date (${getDueDatePlaceholder(dateFormat)})`
+
+    // -------------------- Modal Context --------------------
+      const { toggleCreateList, isCreateListOpen } = useModal();
     // ---------------------- Render -----------------------------
     return(
         <main className="xsm:p-2 sm:p-4 md:p-6 relative">
@@ -98,39 +102,40 @@ export default function HomeContainer(){
             />
 
             {/* popup form to create a new task (conditionally rendered) */}
-            {isCreateOpen && 
-                <TaskPopupForm 
-                    isOpen={isCreateOpen}
-                    header="Add New Task"
-                    submitText="Create Task"
-                    values={form} 
-                    onChange={handleChange} 
-                    onSubmit={handleSubmit} 
-                    lists={listArray} 
-                    onClose={toggleCreate} 
-                    dueDatePlaceholder={dueDatePlaceholder}
-            />}
-
-            {isEditOpen && 
-                <TaskPopupForm 
-                    isOpen={isEditOpen}
-                    header="Edit Task"
-                    submitText="Save Changes"
-                    values={editForm} 
-                    onChange={handleChangeEdit} 
-                    onSubmit={handleSubmitEdit} 
-                    lists={listArray}
-                    onClose={toggleEdit}
-                    dueDatePlaceholder={dueDatePlaceholder}
+            
+            <TaskPopupForm 
+                isOpen={isCreateOpen}
+                header="Add New Task"
+                submitText="Create Task"
+                values={form} 
+                onChange={handleChange} 
+                onSubmit={handleSubmit} 
+                lists={listArray} 
+                onClose={toggleCreate} 
+                dueDatePlaceholder={dueDatePlaceholder}
             />
-            }
+
+            <TaskPopupForm 
+                isOpen={isEditOpen}
+                header="Edit Task"
+                submitText="Save Changes"
+                values={editForm} 
+                onChange={handleChangeEdit} 
+                onSubmit={handleSubmitEdit} 
+                lists={listArray}
+                onClose={toggleEdit}
+                dueDatePlaceholder={dueDatePlaceholder}
+            />
+            
 
             <ListPopupForm 
+                isOpen={isCreateListOpen}
                 header="Create New List"
-                submitText="Create List"
+                submitText="Create List" 
                 values={formList} 
                 onChange={handleChangeList} 
                 onSubmit={handleSubmitList} 
+                onClose={toggleCreateList}
             />
         </main>
     );

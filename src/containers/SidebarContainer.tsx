@@ -14,7 +14,7 @@ import { useFetchMeData, useLogoutUser } from "../hooks/useUsers";
  * @returns JSX.Element
  */
 export function SidebarContainer(){
-    const { openCreateList } = useModal();
+    const { toggleCreateList } = useModal();
     const logout = useLogoutUser();
     const { data: meData, isError: isMeDataError, isLoading: isMeDataLoading } = useFetchMeData();
     const { data: listsData, isError: isListsError, isLoading: isListsLoading } = useFetchLists();
@@ -28,7 +28,7 @@ export function SidebarContainer(){
             listsData={listsData}
             isListsLoading={isListsLoading}
             isListsError={isListsError}
-            onCreateList={openCreateList}
+            onCreateList={toggleCreateList}
         />
     );  
 }

@@ -26,7 +26,6 @@ type UseListManagerProps = {
  * @returns object containing form state, handlers, modal toggles and fetched listData
  */
 export function useListManager({ listId, userId }: UseListManagerProps){
-    const [isEditListOpen, setEditListOpen] = useState(false);
     const [editFormList, setEditFormList] = useState<Partial<List>>({});
     const [formList, setFormList] = useState<ListFormType>({
         title: '',
@@ -40,13 +39,13 @@ export function useListManager({ listId, userId }: UseListManagerProps){
     const createListMutation = useCreateList();
     const updateListMutation = useUpdateList(listId || 0);
     const deleteListMutation = useDeleteList(listId || 0);
-    const { closeCreateList } = useModal();
+    const { toggleEditList, toggleCreateList } = useModal();
     const navigate = useNavigate();
-    const toggleEditList = useCallback(() => setEditListOpen(v => !v), []);
+    /* const toggleEditList = useCallback(() => setEditListOpen(v => !v), []); */
 
     const openEditListWith = useCallback((listData: Partial<List>) => {
         setEditFormList(listData);
-        setEditListOpen(true);
+        toggleEditList();
     }, []);
 
     const handleChangeList = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
@@ -74,7 +73,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
 
         createListMutation.mutate(submitData, {
             onSuccess: () => {
-                closeCreateList();
+                toggleCreateList();
                 setFormList({title: '', color: '#000000', authorId: userId});
             }
         })
@@ -88,7 +87,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         
     updateListMutation.mutate(submitData as List, {
             onSuccess: () => {
-                setEditListOpen(false);
+                toggleEditList();
             }
         })
     }, [editFormList, userId]);
@@ -96,7 +95,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
     const handleDeleteList = useCallback(() => {
         deleteListMutation.mutate(undefined,{
             onSuccess: () => {
-                setEditListOpen(false);
+                toggleEditList();
                 navigate(`/accounts/${userId}`, {replace: true})
             }
         });
@@ -112,7 +111,6 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         handleDeleteList,
         toggleEditList,
         openEditListWith,
-        isEditListOpen,
         listData,
     };
 }

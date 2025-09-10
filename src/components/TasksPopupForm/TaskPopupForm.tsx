@@ -31,11 +31,6 @@ type PopupFormProps = {
  * @returns JSX.Element
  */
 export default function TaskPopupForm({values, onChange, onSubmit, onClose, lists, dueDatePlaceholder, header, submitText, isOpen}: PopupFormProps) {
-
-    /* useEffect(() => {
-            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    }, []); // runs on mount */
-
     return (
         <FormMockup
             isOpen={isOpen}
