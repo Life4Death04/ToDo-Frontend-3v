@@ -42,13 +42,15 @@ export function ArchiveTasksContainer(){
         openEditWith, 
         handleSubmitEdit,
         handleArchive,
-        handleToggleStatus
+        handleToggleStatus,
+        formErrors
     } = useTasksManager({ userId, isArchivedView: true });   
     
     const {
         formList, 
         handleChangeList,
-        handleSubmitList
+        handleSubmitList,
+        formListErrors
     } = useListManager({ userId });
 
     // -------------------- Due Date Format --------------------
@@ -87,6 +89,7 @@ export function ArchiveTasksContainer(){
                 onSubmit={handleSubmit}
                 onClose={toggleCreate}
                 dueDatePlaceholder={dueDatePlaceholder}
+                formErrors={formErrors.taskName}
             />
             
             <TaskPopupForm 
@@ -99,6 +102,7 @@ export function ArchiveTasksContainer(){
                 onSubmit={handleSubmitEdit}
                 onClose={toggleEdit}
                 dueDatePlaceholder={dueDatePlaceholder}
+                formErrors={formErrors.taskName}
             />
                
 
@@ -110,6 +114,7 @@ export function ArchiveTasksContainer(){
                 values={formList}
                 onChange={handleChangeList}
                 onSubmit={handleSubmitList}
+                formErrors={formListErrors.title}
             />
         </main>
     );

@@ -65,7 +65,8 @@ export default function HomeContainer(){
     const { 
         formList, 
         handleChangeList, 
-        handleSubmitList 
+        handleSubmitList, 
+        formListErrors
     } = useListManager({ userId });
     // -------------------- Data Filtered-------------------------
     const totalTasks = tasks.length;
@@ -142,6 +143,7 @@ export default function HomeContainer(){
                 onChange={handleChangeList} 
                 onSubmit={handleSubmitList} 
                 onClose={toggleCreateList}
+                formErrors={formListErrors.title}
             />
         </main>
     );

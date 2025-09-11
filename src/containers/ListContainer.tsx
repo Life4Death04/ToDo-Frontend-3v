@@ -48,7 +48,8 @@ export function ListContainer(){
     openEditWith, 
     handleSubmitEdit,
     handleArchive,
-    handleToggleStatus
+    handleToggleStatus,
+    formErrors
   } = useTasksManager({ userId, listId });
 
   const { 
@@ -61,7 +62,7 @@ export function ListContainer(){
     handleDeleteList,
     openEditListWith,
     listData,
-    formErrors
+    formListErrors
   } = useListManager({ listId, userId });
 
   // -------------------- Due Date Format --------------------
@@ -102,6 +103,7 @@ export function ListContainer(){
         onSubmit={handleSubmit} 
         onClose={toggleCreate} 
         dueDatePlaceholder={dueDatePlaceholder}
+        formErrors={formErrors.taskName}
       />
 
       
@@ -115,6 +117,7 @@ export function ListContainer(){
         onSubmit={handleSubmitEdit} 
         onClose={toggleEdit} 
         dueDatePlaceholder={dueDatePlaceholder}
+        formErrors={formErrors.taskName}
       />
 
       <ListPopupForm 
@@ -125,7 +128,7 @@ export function ListContainer(){
         onChange={handleChangeList} 
         onSubmit={handleSubmitList} 
         onClose={toggleCreateList}
-        formErrors={formErrors.title}
+        formErrors={formListErrors.title}
       />
 
       <ListPopupForm 
@@ -137,7 +140,7 @@ export function ListContainer(){
         onSubmit={handleSubmitEditedList} 
         onClose={toggleEditList} 
         onDelete={handleDeleteList} 
-        formErrors={formErrors.title}
+        formErrors={formListErrors.title}
       />
     </main>
   );
