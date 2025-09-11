@@ -21,13 +21,6 @@ export function SettingsProvider({ children }: { children: ReactNode }){
   const updater = useUpdateUserSettings();
   const { i18n } = useTranslation();
 
-  // ---------------- Theme Effect ----------------
-  useEffect(() => {
-    const theme = data?.theme;
-    if(theme === 'DARK') document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-  }, [data?.theme]);
-
   useEffect(() => {
     const lang = data?.language;
     if(lang === 'ES') i18n.changeLanguage('es');
