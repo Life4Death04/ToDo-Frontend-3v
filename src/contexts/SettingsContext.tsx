@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { Settings } from '../types';
 import { useFetchUserSettings, useUpdateUserSettings } from '../hooks/useTasks';
+import { useTranslation } from 'react-i18next';
 
 type SettingsState = Omit<Settings, 'id' | 'userId'> | null;
 
@@ -18,6 +19,7 @@ export function SettingsProvider({ children }: { children: ReactNode }){
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null; // check for token presence
   const { data, isLoading, isError } = useFetchUserSettings(token !== null); // only fetch if token exists (avoids unnecessary calls)
   const updater = useUpdateUserSettings();
+  const { i18n } = useTranslation();
 
   // ---------------- Theme Effect ----------------
   useEffect(() => {
@@ -25,6 +27,13 @@ export function SettingsProvider({ children }: { children: ReactNode }){
     if(theme === 'DARK') document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
   }, [data?.theme]);
+
+  useEffect(() => {
+    const lang = data?.language;
+    if(lang === 'ES') i18n.changeLanguage('es');
+    else i18n.changeLanguage('en');
+    console.log("Language set to", lang);
+  }, [data?.language]);
 
   const updateSettings = async (payload: Partial<Settings>) => {
     try{

@@ -1,5 +1,6 @@
 import type { User } from "../../types";
 import { NavLink } from "react-router";
+import { useTranslation } from "react-i18next";
 
 type UserBadgeProps = {
     userData: User;
@@ -50,6 +51,7 @@ type BadgeShellProps = {
  */
 export function BadgeShell({ isLoading, isError, children, email, fullName }: BadgeShellProps){
     const busy = isLoading;
+    const { t } = useTranslation("translation");
     return (
         <NavLink 
             to={"profile"}
@@ -68,7 +70,7 @@ export function BadgeShell({ isLoading, isError, children, email, fullName }: Ba
 
                 {/* Details (hidden on small screens) */}
                 <div className="hidden lg:flex flex-col overflow-hidden">
-                    {isError && <p className="text-xs font-bold">Unknown user</p>}
+                    {isError && <p className="text-xs font-bold">{t('profile.unknownUser')}</p>}
                     {isLoading && 
                         <div className="hidden lg:flex flex-col gap-1">
                             <div className="w-32 h-3 bg-gray-300 rounded" />

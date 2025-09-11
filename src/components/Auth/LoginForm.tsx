@@ -10,6 +10,7 @@ import {
     type HeaderProps, 
     type SubmitBtnProps 
 } from "../Common/CommonComponents";
+import { useTranslation } from "react-i18next";
 
 // -------------------- Static Content --------------------
 const headerText: HeaderProps = {
@@ -67,6 +68,7 @@ const errorMessages: ErrorTypes = {
  * <LoginForm values={values} onChange={handleChange} onSubmit={handleSubmit} isPending={isSubmitting} error={error} />
  */
 export default function LoginForm({onSubmit, onChange, values, isPending, error}: LoginFormProps) {
+    const { t } = useTranslation("translation");
     return(
         <main className="h-screen flex items-center justify-center border-2 bg-white">
             <section className="mx-auto text-center w-max-auth h-fit shadow-2xl rounded-xl p-8">
@@ -78,7 +80,7 @@ export default function LoginForm({onSubmit, onChange, values, isPending, error}
                             label="email"
                             value={values.email}
                             required={true} 
-                            placeholder="Enter your email address"
+                            placeholder={t("auth.register.placeholders.email")}
                             onChange={onChange}
                             error={(error?.message === errorMessages.email) ? error : undefined}
                         />

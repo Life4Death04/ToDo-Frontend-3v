@@ -9,6 +9,7 @@ import { getDueDatePlaceholder } from "../utils/taskHelpers";
 import TaskPopupForm from "../components/TasksPopupForm/TaskPopupForm";
 import ListPopupForm from "../components/ListsPopupForms/ListPopupForm";
 import { useModal } from "../contexts/ModalContext";
+import { useTranslation } from "react-i18next";
 
 /**
  * HomeContainer
@@ -77,7 +78,9 @@ export default function HomeContainer(){
     const dueDatePlaceholder = `Due Date (${getDueDatePlaceholder(dateFormat)})`
 
     // -------------------- Modal Context --------------------
-      const { toggleCreateList, isCreateListOpen } = useModal();
+    const { toggleCreateList, isCreateListOpen } = useModal();
+
+    const { t } = useTranslation("translation");
     // ---------------------- Render -----------------------------
     return(
         <main className="xsm:p-2 sm:p-4 md:p-6 relative">
@@ -90,7 +93,7 @@ export default function HomeContainer(){
 
             {/* tasks list + actions */}
             <TasksTable 
-                tableTitle={'All My Tasks'}
+                tableTitle={t('sidebar.links.allMyTasks')}
                 userTasks={tasks} 
                 deleteUserTask={handleDelete} 
                 handleAddUserTask={toggleCreate} 
@@ -106,8 +109,8 @@ export default function HomeContainer(){
             
             <TaskPopupForm 
                 isOpen={isCreateOpen}
-                header="Add New Task"
-                submitText="Create Task"
+                header={t('tasks.popup.addNewTask')}
+                submitText={t('tasks.popup.createTask')}
                 values={form} 
                 onChange={handleChange} 
                 onSubmit={handleSubmit} 
@@ -119,8 +122,8 @@ export default function HomeContainer(){
 
             <TaskPopupForm 
                 isOpen={isEditOpen}
-                header="Edit Task"
-                submitText="Save Changes"
+                header={t('tasks.popup.editTask')}
+                submitText={t('tasks.popup.saveChanges')}
                 values={editForm} 
                 onChange={handleChangeEdit} 
                 onSubmit={handleSubmitEdit} 
@@ -133,8 +136,8 @@ export default function HomeContainer(){
 
             <ListPopupForm 
                 isOpen={isCreateListOpen}
-                header="Create New List"
-                submitText="Create List" 
+                header={t('lists.form.createList')}
+                submitText={t('lists.form.createList')} 
                 values={formList} 
                 onChange={handleChangeList} 
                 onSubmit={handleSubmitList} 

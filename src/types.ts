@@ -16,7 +16,7 @@ export type StatusTypes = 'TODO' | 'IN_PROGRESS' | 'DONE';
  */
 export type ThemeTypes = 'LIGHT' | 'DARK';
 export type DateFormatTypes = 'MM_DD_YYYY' | 'DD_MM_YYYY' | 'YYYY_MM_DD';
-export type LanguageTypes = 'en' | 'es';
+export type LanguageTypes = 'EN' | 'ES';
 
 /**
  * User

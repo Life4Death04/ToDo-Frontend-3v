@@ -1,5 +1,5 @@
 import type { DateFormatTypes, PriorityTypes, StatusTypes } from '../types';
-
+import { useTranslation } from 'react-i18next';
 // -------------------- Priority Color --------------------
 /**
  * Get the text color for a given priority level
@@ -104,12 +104,31 @@ export function getCheckIcon(isChecked: boolean){
  * @returns The corresponding status badge text
  */
 export function getStatusBadge(status: StatusTypes){
+    const { t } = useTranslation();
     switch(status){
         case 'TODO':
-            return 'To Do';
+            return t('status.todo');
         case 'IN_PROGRESS':
-            return 'In Progress';
+            return t('status.inProgress');
         case 'DONE':
-            return 'Completed';
+            return t('status.done');
+    }
+}
+
+// -------------------- Priority Badge --------------------
+/**
+ * Get the priority badge for a given task
+ * @param priority - The priority of the task
+ * @returns The corresponding priority badge text
+ */
+export function getPriorityBadge(priority: PriorityTypes){
+    const { t } = useTranslation();
+    switch(priority){
+        case 'LOW':
+            return t('priority.low');
+        case 'MEDIUM':
+            return t('priority.medium');
+        case 'HIGH':
+            return t('priority.high');
     }
 }

@@ -1,6 +1,8 @@
 import { PageMockup, ToggleButtons, Select, languageOptions } from "../Common/CommonComponents";
 import { priorityOptions, statusOptions, dateFormatOptions } from "../Common/CommonComponents";
 import type { Settings } from "../../types";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 type SettingsFormProps = {
     values?: Omit<Settings, 'id' | 'authorId'>;
@@ -15,12 +17,13 @@ type SettingsFormProps = {
 }
 
 export function SettingsForm({ values, isEditing, onEdit, isSubmitLoading, onChange, onThemeChange, onSubmit, isDataLoading, isError }: SettingsFormProps){
+    const { t } = useTranslation("translation");
     return(
-        <PageMockup header="Settings">
+        <PageMockup header={t('settings.header')}>
             <form className="w-full" onSubmit={onSubmit}>
                 <div className="flex xsm:flex-col md:flex-row md:gap-8">
                     <Select 
-                        label="Date Format"
+                        label={t('settings.labels.dateFormat')}
                         type="dateFormat"
                         options={dateFormatOptions}
                         currentValue={values?.dateFormat || ``}
@@ -30,7 +33,7 @@ export function SettingsForm({ values, isEditing, onEdit, isSubmitLoading, onCha
                         isError={isError}
                     />
                     <Select 
-                        label="Language"
+                        label={t('settings.labels.language')}
                         type="language"
                         options={languageOptions}
                         currentValue={values?.language || ``}
@@ -43,7 +46,7 @@ export function SettingsForm({ values, isEditing, onEdit, isSubmitLoading, onCha
                 <div className="flex xsm:flex-col md:flex-row md:gap-8">
                     <Select
                         inputName="defaultPriority"
-                        label="Default Priority"
+                        label={t('settings.labels.defaultPriority')}
                         type="priority"
                         options={priorityOptions}
                         currentValue={values?.defaultPriority || ``}
@@ -54,7 +57,7 @@ export function SettingsForm({ values, isEditing, onEdit, isSubmitLoading, onCha
                     />
                     <Select
                         inputName="defaultStatus"
-                        label="Default Status"
+                        label={t('settings.labels.defaultStatus')}
                         type="status"
                         options={statusOptions}
                         currentValue={values?.defaultStatus || ``}
@@ -87,7 +90,7 @@ function ThemeToggle({value, onChange, disabled}: ThemeToggleProps){
     return(
         <div className="text-left flex-grow mb-5 gap-5">
             <label className="block font-bold mb-2 capitalize dark:text-text-dark-white">
-                Theme
+                {t('settings.labels.theme')}
             </label>
             <div className="flex gap-2">
                 <button
@@ -99,7 +102,7 @@ function ThemeToggle({value, onChange, disabled}: ThemeToggleProps){
                     disabled={disabled}
                 >
                     <i className="fa-solid fa-sun"></i> 
-                    Light
+                    {t('settings.theme.light')}
                 </button>
                 <button
                     name="theme"
@@ -110,7 +113,7 @@ function ThemeToggle({value, onChange, disabled}: ThemeToggleProps){
                     disabled={disabled}
                 >
                     <i className="fa-solid fa-moon"></i> 
-                    Dark
+                    {t('settings.theme.dark')}
                 </button>
             </div>
         </div>
