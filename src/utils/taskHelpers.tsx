@@ -107,11 +107,11 @@ export function getStatusBadge(status: StatusTypes){
     const { t } = useTranslation();
     switch(status){
         case 'TODO':
-            return t('status.todo');
+            return t('status.TODO');
         case 'IN_PROGRESS':
-            return t('status.inProgress');
+            return t('status.IN_PROGRESS');
         case 'DONE':
-            return t('status.done');
+            return t('status.DONE');
     }
 }
 
@@ -125,10 +125,10 @@ export function getPriorityBadge(priority: PriorityTypes){
     const { t } = useTranslation();
     switch(priority){
         case 'LOW':
-            return t('priority.low');
+            return t('priority.LOW');
         case 'MEDIUM':
-            return t('priority.medium');
+            return t('priority.MEDIUM');
         case 'HIGH':
-            return t('priority.high');
+            return t('priority.HIGH');
     }
 }

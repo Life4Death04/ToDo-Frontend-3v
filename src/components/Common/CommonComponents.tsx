@@ -209,17 +209,12 @@ export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: Butt
  * Style: Default or custom
  * options + values: Priority, List, Status, Customs
  */
-type OptionValuesType = {
-    value: string | number | undefined,
-    label: string,
-    id?: number,
-    title?: string,
-}
+type OptionValuesType = string
 
 type OptionTypes = OptionValuesType[] | ListsSummary[];
 
 type SelectProps  = {
-    type: 'priority' | 'listId' | 'status' | 'dateFormat' | 'language',
+    type: 'priority' | 'listId' | 'status' | 'dateFormats' | 'languages',
     options:  OptionTypes | undefined,
     currentValue: string | number | undefined,
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void,
@@ -231,12 +226,22 @@ type SelectProps  = {
 }
 
 export const priorityOptions: OptionValuesType[] = [
-    { value: 'LOW', label: t('priority.low') },
-    { value: 'MEDIUM', label: t('priority.medium') },
-    { value: 'HIGH', label: t('priority.high') },
+    "LOW", "MEDIUM", "HIGH"
 ];
 
 export const statusOptions: OptionValuesType[] = [
+    "TODO", "IN_PROGRESS", "DONE"
+];
+
+export const dateFormatOptions: OptionValuesType[] = [
+    "MM_DD_YYYY", "DD_MM_YYYY", "YYYY_MM_DD"
+]
+
+export const languageOptions: OptionValuesType[]     = [
+    "EN", "ES"
+]
+
+/* export const statusOptions: OptionValuesType[] = [
     { value: 'TODO', label: t('status.todo') },
     { value: 'IN_PROGRESS', label: t('status.inProgress') },
     { value: 'DONE', label: t('status.done') },
@@ -251,7 +256,7 @@ export const dateFormatOptions: OptionValuesType[] = [
 export const languageOptions: OptionValuesType[] = [
     { value: 'EN', label: 'English' },
     { value: 'ES', label: 'Spanish' },
-]
+] */
 
 export const options = [
     {priority: priorityOptions},
@@ -261,6 +266,7 @@ export const options = [
 ];
 
 export function Select({onChange, options, currentValue, type, label, disabled, inputName, isLoading, isError}: SelectProps){
+    const { t } = useTranslation("translation");
     return(
         <div className="text-left flex-grow mb-5">
             <label className="block font-bold mb-2 dark:text-text-dark-white">
@@ -276,12 +282,29 @@ export function Select({onChange, options, currentValue, type, label, disabled, 
                 {isLoading && <option>{t('common.loading')}</option>}
                 {isError && <option>{t('common.genericFetchError')}</option>}
                 {type === 'listId' && <option value="null">{t('lists.form.noneSelected')}</option>}
-                {options?.map((option) => (
+                {/* {options?.map((option) => (
                     <option key={option.id || option.value} value={option.value || option.id}>
                         {(type === 'priority' || type === 'status' || type === 'dateFormat' || type === 'language') && option.label}
                         {type === 'listId' && option.title}
                     </option>
-                ))}
+                ))} */}
+                {options?.map((option) => {
+                    if (typeof option === 'string') {
+                        // option is OptionValuesType
+                        return (
+                            <option key={t(`${type}.${String(option)}`)} value={String(option)} /* key={String(option.value)} value={option.value} */>
+                                {/* {(type === 'priority' || type === 'status' || type === 'dateFormat' || type === 'language') && option.label} */}
+                                {t(`${type}.${String(option)}`)}
+                            </option>
+                        );
+                    }
+                    // option is ListsSummary
+                    return (
+                        <option key={String(option.id)} value={option.id}>
+                            {type === 'listId' && option.title}
+                        </option>
+                    );
+                })}
             </select>
         </div>
     );

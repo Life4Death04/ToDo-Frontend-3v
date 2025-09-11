@@ -178,18 +178,22 @@
     "invalidUserId": "Invalid User ID"
   },
   "priority": {
-    "low": "Low",
-    "medium": "Medium",
-    "high": "High"
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High"
   },
   "status": {
-    "todo": "To Do",
-    "inProgress": "In Progress",
-    "done": "Done"
+    "TODO": "To Do",
+    "IN_PROGRESS": "In Progress",
+    "DONE": "Done"
   },
   "dateFormats": {
     "MM_DD_YYYY": "MM/DD/YYYY",
     "DD_MM_YYYY": "DD/MM/YYYY",
     "YYYY_MM_DD": "YYYY/MM/DD"
+  },
+  "languages": {
+    "EN": "English",
+    "ES": "Spanish"
   }
 }

@@ -8,6 +8,7 @@ i18next
   .use(LanguageDetector) // detects user language
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
+    debug: true,
     resources: {
       en: { //For the English language...
         translation: en //...use the translations found in `en.json`
