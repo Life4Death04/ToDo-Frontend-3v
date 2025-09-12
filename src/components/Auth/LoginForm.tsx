@@ -5,29 +5,10 @@ import {
     Footer, 
     Header, 
     Input, 
-    SubmitBtn, 
-    type FooterProps, 
-    type HeaderProps, 
-    type SubmitBtnProps 
+    SubmitBtn,
+    Button,  
 } from "../Common/CommonComponents";
 import { useTranslation } from "react-i18next";
-
-// -------------------- Static Content --------------------
-const headerText: HeaderProps = {
-    textH2: `Welcome Back!`,
-    label: `Let's get you signed in.`
-}
-
-const footerContent: FooterProps = {
-    label: `Don't have an account? `,
-    buttonUrl: `/accounts/register`,
-    buttonText: `Register`
-}
-
-const submitBtnContent: SubmitBtnProps = {
-    buttonText: 'Login',
-    isPending: false,
-}
 
 // -------------------- Types --------------------
 type LoginFormProps = {
@@ -37,6 +18,7 @@ type LoginFormProps = {
     isPending: boolean
     isError: boolean
     error: Error | null
+    onLanguageChange: () => void
 }
 
 type ErrorTypes = {
@@ -67,17 +49,20 @@ const errorMessages: ErrorTypes = {
  * Usage example:
  * <LoginForm values={values} onChange={handleChange} onSubmit={handleSubmit} isPending={isSubmitting} error={error} />
  */
-export default function LoginForm({onSubmit, onChange, values, isPending, error}: LoginFormProps) {
+export default function LoginForm({onSubmit, onChange, values, isPending, error, onLanguageChange}: LoginFormProps) {
     const { t } = useTranslation("translation");
     return(
         <main className="h-screen flex items-center justify-center border-2 bg-white">
             <section className="mx-auto text-center w-max-auth h-fit shadow-2xl rounded-xl p-8">
-                <Header {...headerText} />
+                <Header 
+                    textH2={t("auth.header.login.title")}
+                    label={t("auth.header.login.subtitle")}
+                />
                 <form onSubmit={onSubmit} className="flex flex-col content-around mt-6 mb-4">
                         <Input 
                             type="email" 
                             name="email" 
-                            label="email"
+                            label={t("auth.login.email")}
                             value={values.email}
                             required={true} 
                             placeholder={t("auth.register.placeholders.email")}
@@ -87,10 +72,10 @@ export default function LoginForm({onSubmit, onChange, values, isPending, error}
                         <Input 
                             type="password" 
                             name="password" 
-                            label="password"
+                            label={t("auth.login.password")}
                             value={values.password}
                             required={true} 
-                            placeholder="Enter your password"
+                            placeholder={t("auth.login.placeholders.password")}
                             onChange={onChange}
                             error={(error?.message === errorMessages.password) ? error : undefined}
                         />
@@ -107,9 +92,24 @@ export default function LoginForm({onSubmit, onChange, values, isPending, error}
                                 </button>
                             </Link>
                         </div>
-                        <SubmitBtn {...submitBtnContent} isPending={isPending} />
+                        <SubmitBtn 
+                            buttonText={t("auth.login.submit")}
+                            isPending={isPending} 
+                        />
                 </form>
-                <Footer {...footerContent} />
+                <Footer 
+                    label={t("auth.login.noAccount")}
+                    buttonText={t("auth.login.register")}
+                    buttonUrl="/register"
+                />
+
+                <div className="mt-4">
+                    <Button 
+                        textButton={'EN / ES'}
+                        iconStyle="fa-solid fa-earth-americas"
+                        onClick={onLanguageChange}
+                    />
+                </div>
             </section>
         </main>
     )

@@ -187,12 +187,12 @@
     "IN_PROGRESS": "In Progress",
     "DONE": "Done"
   },
-  "dateFormats": {
+  "dateFormat": {
     "MM_DD_YYYY": "MM/DD/YYYY",
     "DD_MM_YYYY": "DD/MM/YYYY",
     "YYYY_MM_DD": "YYYY/MM/DD"
   },
-  "languages": {
+  "language": {
     "EN": "English",
     "ES": "Spanish"
   }

@@ -21,11 +21,33 @@ export function SettingsProvider({ children }: { children: ReactNode }){
   const updater = useUpdateUserSettings();
   const { i18n } = useTranslation();
 
+  /* useEffect(() => {
+    const theme = data?.theme;
+    // only persist when backend explicitly provides a theme value
+    if (typeof theme !== 'undefined' && theme !== null) {
+      const themeStr = String(theme);
+      localStorage.setItem('theme', themeStr);
+      if (themeStr === 'DARK' || themeStr.toUpperCase() === 'DARK') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } else {
+      // backend did not return a theme: don't write "undefined"
+      // clear stored value or keep previous value depending on desired behavior
+      // here we remove the key so a safe default or user preference can apply
+      localStorage.removeItem('theme');
+      document.documentElement.classList.remove('dark');
+    }
+  }, [data?.theme]); */
+
   useEffect(() => {
     const lang = data?.language;
-    if(lang === 'ES') i18n.changeLanguage('es');
-    else i18n.changeLanguage('en');
-    console.log("Language set to", lang);
+      if (lang) {
+      localStorage.setItem('language', String(lang));
+      if (lang === 'ES') i18n.changeLanguage('es');
+      else i18n.changeLanguage('en');
+    }
   }, [data?.language]);
 
   const updateSettings = async (payload: Partial<Settings>) => {

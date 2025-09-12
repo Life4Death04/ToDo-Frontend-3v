@@ -214,7 +214,7 @@ type OptionValuesType = string
 type OptionTypes = OptionValuesType[] | ListsSummary[];
 
 type SelectProps  = {
-    type: 'priority' | 'listId' | 'status' | 'dateFormats' | 'languages',
+    type: 'priority' | 'listId' | 'status' | 'dateFormat' | 'language',
     options:  OptionTypes | undefined,
     currentValue: string | number | undefined,
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void,
@@ -265,7 +265,7 @@ export const options = [
     {language: languageOptions}
 ];
 
-export function Select({onChange, options, currentValue, type, label, disabled, inputName, isLoading, isError}: SelectProps){
+export function Select({onChange, options, currentValue, type, label, disabled, inputName, isLoading, isError }: SelectProps){
     const { t } = useTranslation("translation");
     return(
         <div className="text-left flex-grow mb-5">

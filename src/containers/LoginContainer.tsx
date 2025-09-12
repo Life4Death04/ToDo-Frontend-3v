@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoginUser } from "../hooks/useUsers";
 import LoginForm from "../components/Auth/LoginForm";
+import i18n from "../i18n";
 
 export type FormData = {
     email: string,
@@ -16,6 +17,14 @@ export type FormData = {
  * @returns JSX.Element
  */
 export function LoginContainer(){
+    useEffect(() => {
+        const storedLang = localStorage.getItem('language');
+
+        if (storedLang) {
+            i18n.changeLanguage(storedLang.toLowerCase());
+        }
+    }, []);
+
     const { mutate, isPending, isError, error } = useLoginUser();
 
     const [formData, setFormData] = useState<FormData>({
@@ -36,6 +45,19 @@ export function LoginContainer(){
         }));
     }
 
+    const handleLanguageChange = () => {
+        const storedLang = localStorage.getItem('language');
+        if (storedLang) {
+            const newLang = (storedLang === 'EN') ? 'es' : 'en';
+            i18n.changeLanguage(newLang);
+            localStorage.setItem('language', newLang.toUpperCase());
+        }else{
+            const newLang = (i18n.language === 'EN') ? 'es' : 'en';
+            i18n.changeLanguage(newLang);
+            localStorage.setItem('language', newLang.toUpperCase());
+        }
+    }
+
     return(
         <LoginForm 
             values={formData} 
@@ -44,6 +66,7 @@ export function LoginContainer(){
             isPending={isPending}
             isError={isError}
             error={error}
+            onLanguageChange={handleLanguageChange}
         />
     );
 }

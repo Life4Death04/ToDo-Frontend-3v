@@ -5,27 +5,9 @@ import {
     Header, 
     Footer, 
     SubmitBtn, 
-    type HeaderProps, 
-    type FooterProps, 
-    type SubmitBtnProps 
+    Button,
 } from "../Common/CommonComponents";
-
-// -------------------- Static Content --------------------
-const headerText: HeaderProps = {
-    textH2: 'Create Account',
-    label: `Let's get you started!`
-}
-
-const footerContent: FooterProps = {
-    label: `You already have an account? `,
-    buttonUrl: `/`,
-    buttonText: `Login`
-}
-
-const submitBtnContent: SubmitBtnProps = {
-    buttonText: 'Register',
-    isPending: false,
-}
+import { useTranslation } from "react-i18next";
 
 // -------------------- Types --------------------
 type RegisterFormProps = {
@@ -37,6 +19,7 @@ type RegisterFormProps = {
     isSuccess: boolean,
     error: Error | null,
     fieldErrors?: Partial<ErrorTypes>
+    onLanguageChange: () => void
 }
 
 type ErrorTypes = {
@@ -72,18 +55,22 @@ const errorMessages:ErrorTypes = {
  * Usage example:
  * <RegisterForm values={values} onChange={handleChange} onSubmit={handleSubmit} isPending={loading} isSuccess={created} fieldErrors={fieldErrors} />
  */
-export default function RegisterForm({ values, onChange, onSubmit, isPending, error, isSuccess, fieldErrors }: RegisterFormProps){
+export default function RegisterForm({ values, onChange, onSubmit, isPending, error, isSuccess, fieldErrors, onLanguageChange }: RegisterFormProps){
+    const { t } = useTranslation("translation");
     return(
         <main className="flex items-center justify-center">
             <section className="bg-white text-center mx-auto w-max-auth shadow-2xl rounded-xl p-8 pt-4 bg0">
-                <Header {...headerText}></Header>
+                <Header 
+                    textH2={t("auth.header.register.title")}
+                    label={t("auth.header.register.subtitle")}
+                />
                 <form className="flex flex-col content-around" onSubmit={onSubmit}>
                         <div className="flex justify-between gap-8">
                             <Input 
                                 type="text" 
                                 name="firstName"
-                                label="first name" 
-                                placeholder="Enter your first name" 
+                                label={t("auth.register.firstName")}
+                                placeholder={t("auth.register.placeholders.firstName")}
                                 value={values.firstName} 
                                 onChange={onChange}
                                 error={fieldErrors?.firstName ? new Error(fieldErrors.firstName) : undefined}>
@@ -91,8 +78,8 @@ export default function RegisterForm({ values, onChange, onSubmit, isPending, er
                             <Input 
                                 type="text" 
                                 name="lastName"
-                                label="last name" 
-                                placeholder="Enter your last name"
+                                label={t("auth.register.lastName")}
+                                placeholder={t("auth.register.placeholders.lastName")}
                                 value={values.lastName}
                                 onChange={onChange}
                                 error={fieldErrors?.lastName ? new Error(fieldErrors.lastName) : undefined}>
@@ -101,8 +88,8 @@ export default function RegisterForm({ values, onChange, onSubmit, isPending, er
                         <Input 
                             type="email" 
                             name="email"
-                            label="email" 
-                            placeholder="Enter your email address" 
+                            label={t("auth.register.email")}
+                            placeholder={t("auth.register.placeholders.email")}
                             required={true}
                             value={values.email}
                             onChange={onChange}
@@ -112,8 +99,8 @@ export default function RegisterForm({ values, onChange, onSubmit, isPending, er
                         <Input 
                             type="password" 
                             name="password"
-                            label="password" 
-                            placeholder="Enter your password" 
+                            label={t("auth.register.password")}
+                            placeholder={t("auth.register.placeholders.password")}
                             required={true}
                             value={values.password}
                             onChange={onChange}
@@ -123,18 +110,33 @@ export default function RegisterForm({ values, onChange, onSubmit, isPending, er
                         <Input 
                             type="password" 
                             name="confirmPassword"
-                            label="confirm password" 
-                            placeholder="Confirm your password" 
+                            label={t("auth.register.confirmPassword")}
+                            placeholder={t("auth.register.placeholders.confirmPassword")}
                             required={true}
                             value={values.confirmPassword}
                             onChange={onChange}
                             error={fieldErrors?.confirmPassword ? new Error(fieldErrors.confirmPassword) : undefined}
                         >
                         </Input>
-                        <SubmitBtn {...submitBtnContent} isPending={isPending}></SubmitBtn>
-                        {isSuccess && <p className="bg-green-100 text-green-800 border border-green-800 mt-4 w-fit mx-auto px-2 py-1 rounded-lg xsm:text-xs md:text-sm lg:text-base">User created successfully</p>}
+                        <SubmitBtn 
+                            buttonText={t("auth.register.submit")}
+                            isPending={isPending}
+                        />
+                        {isSuccess && <p className="bg-green-100 text-green-800 border border-green-800 mt-4 w-fit mx-auto px-2 py-1 rounded-lg xsm:text-xs md:text-sm lg:text-base">{t("auth.register.successMessage")}</p>}
                 </form>
-                <Footer {...footerContent}></Footer>
+                <Footer 
+                    label={t("auth.register.haveAccount")}
+                    buttonText={t("auth.register.login")}
+                    buttonUrl="/"
+                />
+
+                <div className="mt-4">
+                    <Button 
+                        textButton={'EN / ES'}
+                        iconStyle="fa-solid fa-earth-americas"
+                        onClick={onLanguageChange}
+                    />
+                </div>
             </section>
         </main>
     );

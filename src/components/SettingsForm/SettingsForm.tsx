@@ -24,7 +24,7 @@ export function SettingsForm({ values, isEditing, onEdit, isSubmitLoading, onCha
                 <div className="flex xsm:flex-col md:flex-row md:gap-8">
                     <Select 
                         label={t('settings.labels.dateFormat')}
-                        type="dateFormats"
+                        type="dateFormat"
                         options={dateFormatOptions}
                         currentValue={values?.dateFormat || ``}
                         onChange={onChange}
@@ -34,7 +34,7 @@ export function SettingsForm({ values, isEditing, onEdit, isSubmitLoading, onCha
                     />
                     <Select 
                         label={t('settings.labels.language')}
-                        type="languages"
+                        type="language"
                         options={languageOptions}
                         currentValue={values?.language || ``}
                         onChange={onChange}

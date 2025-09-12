@@ -1,6 +1,7 @@
 import RegisterForm from "../components/Auth/RegisterForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRegisterNewUser } from "../hooks/useUsers";
+import i18n from "../i18n";
 
 export type FormData = {
     firstName: string,
@@ -36,6 +37,14 @@ export default function RegisterContainer(){
         password: "",
         confirmPassword: ""
     })
+
+    useEffect(() => {
+        const storedLang = localStorage.getItem('language');
+
+        if (storedLang) {
+            i18n.changeLanguage(storedLang.toLowerCase());
+        }
+    }, []);
     
     function handleChange(e: React.ChangeEvent<HTMLInputElement>):void{
         const {name, value} = e.target;
@@ -84,6 +93,19 @@ export default function RegisterContainer(){
         mutate({ firstName, lastName, email, password });
     }
 
+    const handleLanguageChange = () => {
+        const storedLang = localStorage.getItem('language');
+        if (storedLang) {
+            const newLang = (storedLang === 'EN') ? 'es' : 'en';
+            i18n.changeLanguage(newLang);
+            localStorage.setItem('language', newLang.toUpperCase());
+        }else{
+            const newLang = (i18n.language === 'EN') ? 'es' : 'en';
+            i18n.changeLanguage(newLang);
+            localStorage.setItem('language', newLang.toUpperCase());
+        }
+    }
+
     return(
         <RegisterForm 
             values={formData}
@@ -94,6 +116,7 @@ export default function RegisterContainer(){
             error={error}
             isSuccess={isSuccess}
             fieldErrors={fieldErrors}
+            onLanguageChange={handleLanguageChange}
         />
     );
 }

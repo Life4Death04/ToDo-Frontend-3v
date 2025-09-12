@@ -13,5 +13,6 @@ export function useTheme(){
         const storedTheme = localStorage.getItem('theme');
         if(storedTheme === 'DARK') document.documentElement.classList.add('dark');
         else document.documentElement.classList.remove('dark');
+        console.log("Theme set to", storedTheme);
     }, [data?.theme]);
 }
