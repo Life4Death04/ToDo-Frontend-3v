@@ -2,6 +2,7 @@ import React from 'react';
 import { FormMockup } from "../Common/CommonComponents";
 import { Input } from "../Common/CommonComponents";
 import type { List } from "../../types";
+import { useTranslation } from 'react-i18next';
 
 type CreatePopupFormProps = {
     isOpen: boolean;
@@ -24,6 +25,7 @@ type CreatePopupFormProps = {
  * @param {(e: React.FormEvent) => void} onSubmit - form submit handler
  */
 export default function ListPopupForm({ isOpen, values, onChange, onSubmit, header, submitText, onClose, onDelete, formErrors }: CreatePopupFormProps){
+    const { t } = useTranslation("translation");
     return(
         <FormMockup
             isOpen={isOpen}
@@ -39,8 +41,8 @@ export default function ListPopupForm({ isOpen, values, onChange, onSubmit, head
                 name="title"
                 type="text" 
                 value={values.title || ''}
-                label="List Title"
-                placeholder="Enter list title"
+                label={t('lists.form.title')}
+                placeholder={t('lists.form.placeholderTitle')}
                 onChange={onChange}
                 error={formErrors} // Input expects Error | null
             />
@@ -50,7 +52,7 @@ export default function ListPopupForm({ isOpen, values, onChange, onSubmit, head
                 name="color"
                 type="color" 
                 value={values.color || '#000000'}
-                label="List Color"
+                label={t('lists.form.color')}
                 dimensions="xsm:h-20 md:h-40"
                 onChange={onChange}
             />

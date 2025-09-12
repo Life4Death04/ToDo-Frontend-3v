@@ -1,0 +1,195 @@
+{
+  "app": {
+    "title": "TaskMaster",
+    "404": {
+      "title": "404",
+      "pageNotFound": "Página no encontrada",
+      "notFoundMessage": "¡Vaya! La página que buscas no existe. Puede que haya sido movida o eliminada.",
+      "goHome": "Ir al inicio"
+    }
+  },
+  "auth": {
+    "header": {
+      "register": {
+        "title": "Crear cuenta",
+        "subtitle": "¡Comencemos!"
+      },
+      "login": {
+        "title": "¡Bienvenido de nuevo!",
+        "subtitle": "Vamos a iniciar sesión."
+      }
+    },
+    "register": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "placeholders": {
+        "firstName": "Ingresa tu nombre",
+        "lastName": "Ingresa tu apellido",
+        "email": "Ingresa tu correo electrónico",
+        "password": "Ingresa tu contraseña",
+        "confirmPassword": "Confirma tu contraseña"
+      },
+      "submit": "Registrarse",
+      "success": "Usuario creado correctamente",
+      "haveAccount": "¿Ya tienes una cuenta? ",
+      "login": "Iniciar sesión"
+    },
+    "login": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "placeholders": {
+        "email": "Ingresa tu correo electrónico",
+        "password": "Ingresa tu contraseña"
+      },
+      "rememberMe": "Recordarme",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿No tienes una cuenta? ",
+      "register": "Registrarse",
+      "submit": "Iniciar sesión"
+    },
+    "errors": {
+      "emailInUse": "El correo ya está en uso",
+      "emailNotRegistered": "Correo no registrado",
+      "invalidCredentials": "Correo o contraseña inválidos",
+      "passwordsDontMatch": "Las contraseñas no coinciden"
+    }
+  },
+  "common": {
+    "language": "Idioma",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "genericFetchError": "Vaya, no pudimos obtener los datos :c",
+    "none": "Ninguno",
+    "add": "Agregar",
+    "addTask": "+ Agregar tarea",
+    "taskMaster": "TaskMaster"
+  },
+  "sidebar": {
+    "links": {
+      "allMyTasks": "Todas mis tareas",
+      "archivedTasks": "Tareas archivadas",
+      "myLists": "MIS LISTAS",
+      "settings": "Ajustes",
+      "logout": "Cerrar sesión"
+    },
+    "lists": {
+      "createList": "Crear nueva lista"
+    },
+    "actions": {
+      "create": "Crear",
+      "deleteList": "Eliminar lista"
+    }
+  },
+  "tasks": {
+    "table": {
+      "taskName": "Nombre de la tarea",
+      "dueDate": "Fecha límite",
+      "priority": "Prioridad",
+      "status": "Estado",
+      "actions": "Acciones",
+      "noTasks": "Aún no hay tareas",
+      "noTasksHelp": "¡Parece que ya lo tienes todo al día!",
+      "errorFetching": "Error: ¡Vaya! No pudimos obtener tus tareas :c",
+      "archivedTasks": "Tareas archivadas"
+    },
+    "popup": {
+      "addNewTask": "Agregar nueva tarea",
+      "editTask": "Editar tarea",
+      "createTask": "Crear tarea",
+      "saveChanges": "Guardar cambios",
+      "labels": {
+        "taskName": "Nombre de la tarea",
+        "enterTaskName": "Ingresa el nombre de la tarea",
+        "dueDate": "Fecha límite",
+        "priority": "Prioridad",
+        "list": "Lista",
+        "description": "Descripción",
+        "status": "Estado"
+      }
+    },
+    "noTasksButton": "Agregar tarea",
+    "archived": "Tareas archivadas"
+  },
+  "lists": {
+    "form": {
+      "title": "Título de la lista",
+      "placeholderTitle": "Ingresa el título de la lista",
+      "color": "Color de la lista",
+      "createList": "Crear lista",
+      "editList": "Editar lista",
+      "saveChanges": "Guardar cambios",
+      "deleteList": "Eliminar lista",
+      "noneSelected": "Ninguno seleccionado"
+    }
+  },
+  "settings": {
+    "header": "Ajustes",
+    "labels": {
+      "dateFormat": "Formato de fecha",
+      "language": "Idioma",
+      "defaultPriority": "Prioridad por defecto",
+      "defaultStatus": "Estado por defecto",
+      "theme": "Tema"
+    },
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "actions": {
+      "edit": "Editar",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    }
+  },
+  "profile": {
+    "header": "Perfil de usuario",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "emailAddress": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "changePassword": "Cambiar contraseña",
+    "unknownUser": "Usuario desconocido"
+  },
+  "indicators": {
+    "tasksCompleted": "Tareas completadas",
+    "archivedTasks": "Tareas archivadas"
+  },
+  "buttons": {
+    "addTask": "+ Agregar tarea",
+    "edit": "Editar",
+    "cancel": "Cancelar",
+    "saveChanges": "Guardar cambios",
+    "delete": "Eliminar",
+    "goHome": "Ir al inicio"
+  },
+  "placeholders": {
+    "dueDateFormat": "Fecha límite ({format})",
+    "enterTaskContent": "Ingresa el contenido de la tarea"
+  },
+  "errors": {
+    "firstNameLength": "El nombre debe tener entre 1 y 50 caracteres",
+    "lastNameLength": "El apellido debe tener entre 1 y 50 caracteres",
+    "passwordLength": "La contraseña debe tener al menos 6 caracteres",
+    "required": "Este campo es obligatorio",
+    "invalidUserId": "ID de usuario inválido"
+  },
+  "priority": {
+    "low": "Baja",
+    "medium": "Media",
+    "high": "Alta"
+  },
+  "status": {
+    "todo": "Por hacer",
+    "inProgress": "En progreso",
+    "done": "Hecho"
+  },
+  "dateFormats": {
+    "MM_DD_YYYY": "MM/DD/YYYY",
+    "DD_MM_YYYY": "DD/MM/YYYY",
+    "YYYY_MM_DD": "YYYY/MM/DD"
+  }
+}

@@ -33,7 +33,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         authorId: userId,
     });
     // validation errors for the form (e.g. taskName required)
-    const [formErrors, setFormErrors] = useState<{ title?: Error | null }>({});
+    const [formListErrors, setFormListErrors] = useState<{ title?: Error | null }>({});
 
     const listQuery = listId ? useFetchListData(listId) : null;
 
@@ -47,13 +47,13 @@ export function useListManager({ listId, userId }: UseListManagerProps){
     const openListWith = useCallback(() => {
         setEditFormList({});
         toggleCreateList();
-        setFormErrors({});
+        setFormListErrors({});
     }, []);
 
     const openEditListWith = useCallback((listData: Partial<List>) => {
         setEditFormList(listData);
         toggleEditList();
-        setFormErrors({});
+        setFormListErrors({});
     }, []);
 
     const handleChangeList = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
@@ -81,9 +81,10 @@ export function useListManager({ listId, userId }: UseListManagerProps){
 
         // prevent creating tasks with empty names - surface as a validation error (don't throw)
         if (!submitData.title || submitData.title.trim() === '') {
-            setFormErrors({ title: new Error('Title is required') });
+            setFormListErrors({ title: new Error('Title is required') });
             return;
         }
+
         createListMutation.mutate(submitData, {
             onSuccess: () => {
                 toggleCreateList();
@@ -99,7 +100,7 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         };
         // prevent creating tasks with empty names - surface as a validation error (don't throw)
         if (!submitData.title || submitData.title.trim() === '') {
-            setFormErrors({ title: new Error('Title is required') });
+            setFormListErrors({ title: new Error('Title is required') });
             return;
         }
         updateListMutation.mutate(submitData as List, {
@@ -130,6 +131,6 @@ export function useListManager({ listId, userId }: UseListManagerProps){
         openEditListWith,
         openListWith,
         listData,
-        formErrors,
+        formListErrors,
     };
 }

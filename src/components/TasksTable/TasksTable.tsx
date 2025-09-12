@@ -1,7 +1,8 @@
 import { ButtonIcon } from "../Common/CommonComponents";
-import { getPriorityColor, getStatusColor, formatDueDate, getCheckIcon, getStatusBadge } from '../../utils/taskHelpers';
+import { getPriorityColor, getStatusColor, formatDueDate, getCheckIcon, getStatusBadge, getPriorityBadge } from '../../utils/taskHelpers';
 import { useSettings } from "../../contexts/SettingsContext";
 import type { PriorityTypes, StatusTypes, Task } from '../../types';
+import { useTranslation } from "react-i18next";
 
 // -------------------- Types --------------------
 type TasksTableProps = {
@@ -56,6 +57,7 @@ type AddTaskProps = {
  * @returns JSX.Element
  */
 export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit, handleArchive, handleToggleStatus }: TasksTableProps){
+    const { t } = useTranslation("translation");
     return(
         <section className="px-6 py-4 bg-white rounded-2xl dark:bg-background-dark">
             {/* Header: title + actions */}
@@ -70,11 +72,11 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
             </header>
             {/* Table header (labels) */}
             <header className="items-center px-4 py-2 text-gray-400 border-gray-200 border-b font-bold xsm:hidden lg:flex dark:border-none">
-                <span className="flex-2">Task Name</span> {/* //flex-[2] */}
-                <span className="flex-1">Due Date</span>
-                <span className="flex-1">Priority</span>
-                <span className="flex-1">Status</span>
-                <span className="w-20 text-right">Actions</span>
+                <span className="flex-2">{t('tasks.table.taskName')}</span> {/* //flex-[2] */}
+                <span className="flex-1">{t('tasks.table.dueDate')}</span>
+                <span className="flex-1">{t('tasks.table.priority')}</span>
+                <span className="flex-1">{t('tasks.table.status')}</span>
+                <span className="w-20 text-right">{t('tasks.table.actions')}</span>
             </header>
 
             {/* Task list */}
@@ -151,7 +153,7 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
                 {/* Priority */}
                 <span className={`font-bold lg:flex-1`}>
                     <span className={`px-2 py-1 rounded-2xl xsm:text-xs md:text-sm lg:text-base ${getPriorityColor(priority)}`}>
-                    {priority}
+                        {getPriorityBadge(priority)}
                     </span>
                 </span>
 
@@ -180,17 +182,22 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
  * @returns JSX.Element
  */
 function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessageProps){
+    const { t } = useTranslation("translation");
     return(
         <li className="mx-auto w-full text-center py-12 border-b border-gray-300">
             {/* Empty / loading / error state */}
             <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl dark:text-text-dark-white">
-            {isLoading && "Loading..."}
-            {isError && `Error: Oops! We couldn't fetch your tasks :c`}
-            {!isLoading && !isError && "No tasks yet"}
+            {isLoading && t('common.loading')}
+            {isError && t('common.genericFetchError')}
+            {!isLoading && !isError && 
+            <>
+                <span className="xsm:text-xl md:text-2xl lg:text-3xl dark:text-text-dark-white">{t('tasks.table.noTasks')}</span>
+                <p className="pt-3 pb-5 text-gray-400 xsm:text-xs md:text-sm lg:text-base">{t('tasks.table.noTasksHelp')}</p>
+            </>
+            }
             </span>
 
             {/* Supporting text */}
-            <p className="pt-3 pb-5 text-gray-400 xsm:text-xs md:text-sm lg:text-base">Looks like you're all caught up!</p>
 
             {/* Call to action */}
             {!isError && !isLoading && <AddTaskButton onClick={handleAddUserTask} />}
@@ -204,9 +211,10 @@ function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessagePro
  * @returns JSX.Element
  */
 function AddTaskButton({onClick}: AddTaskProps){
+    const { t } = useTranslation("translation");
     return(
         <button onClick={onClick} className="bg-orange ml-auto text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl dark:bg-sidebar-links dark:hover:bg-orange-buttons">
-            {`+ Add Task`}
+            {t('common.addTask')}
         </button>
     );
 }

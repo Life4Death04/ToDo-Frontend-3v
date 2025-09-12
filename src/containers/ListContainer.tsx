@@ -7,6 +7,7 @@ import { getDueDatePlaceholder } from "../utils/taskHelpers";
 import { useSettings } from "../contexts/SettingsContext";
 import ListPopupForm from "../components/ListsPopupForms/ListPopupForm";
 import { useModal } from "../contexts/ModalContext";
+import { useTranslation } from "react-i18next";
 
 /**
  * ListContainer
@@ -47,7 +48,8 @@ export function ListContainer(){
     openEditWith, 
     handleSubmitEdit,
     handleArchive,
-    handleToggleStatus
+    handleToggleStatus,
+    formErrors
   } = useTasksManager({ userId, listId });
 
   const { 
@@ -60,7 +62,7 @@ export function ListContainer(){
     handleDeleteList,
     openEditListWith,
     listData,
-    formErrors
+    formListErrors
   } = useListManager({ listId, userId });
 
   // -------------------- Due Date Format --------------------
@@ -69,10 +71,15 @@ export function ListContainer(){
   const dueDatePlaceholder = `Due Date (${getDueDatePlaceholder(dateFormat)})`
   // -------------------- Modal Context --------------------
   const { toggleCreateList, toggleEditList, isEditListOpen, isCreateListOpen } = useModal();
+
+  // -------------------- Translation Hook --------------------
+  const { t } = useTranslation();
+
+  // ---------------------- Render -----------------------------
   return (
     <main className="xsm:p-2 sm:p-4 md:p-6">
       <TasksTable
-        tableTitle={listTitle || "My Tasks"}
+        tableTitle={listTitle || ''}
         isEditTable={true}
         onEditTable={() => openEditListWith(listData!)}
         userTasks={tasks}
@@ -88,50 +95,52 @@ export function ListContainer(){
 
       <TaskPopupForm 
         isOpen={isCreateOpen}
-        header="Add New Task"
-        submitText="Create Task"
+        header={t('tasks.popup.addNewTask')}
+        submitText={t('tasks.popup.createTask')}
         lists={listArray}
         values={form} 
         onChange={handleChange} 
         onSubmit={handleSubmit} 
         onClose={toggleCreate} 
         dueDatePlaceholder={dueDatePlaceholder}
+        formErrors={formErrors.taskName}
       />
 
       
       <TaskPopupForm 
         isOpen={isEditOpen}
-        header="Edit Task"
-        submitText="Save Changes" 
+        header={t('tasks.popup.editTask')}
+        submitText={t('tasks.popup.saveChanges')}
         lists={listArray}
         values={editForm} 
         onChange={handleChangeEdit} 
         onSubmit={handleSubmitEdit} 
         onClose={toggleEdit} 
         dueDatePlaceholder={dueDatePlaceholder}
+        formErrors={formErrors.taskName}
       />
 
       <ListPopupForm 
         isOpen={isCreateListOpen}
-        header="Create New List"
-        submitText="Create List" 
+        header={t('lists.form.createList')}
+        submitText={t('lists.form.createList')}
         values={formList} 
         onChange={handleChangeList} 
         onSubmit={handleSubmitList} 
         onClose={toggleCreateList}
-        formErrors={formErrors.title}
+        formErrors={formListErrors.title}
       />
 
       <ListPopupForm 
         isOpen={isEditListOpen}
-        header="Edit List"
-        submitText="Save Changes"
+        header={t('lists.form.editList')}
+        submitText={t('lists.form.saveChanges')}
         values={editFormList!} 
         onChange={handleChangeEditList} 
         onSubmit={handleSubmitEditedList} 
         onClose={toggleEditList} 
         onDelete={handleDeleteList} 
-        formErrors={formErrors.title}
+        formErrors={formListErrors.title}
       />
     </main>
   );

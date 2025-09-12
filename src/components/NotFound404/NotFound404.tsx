@@ -1,8 +1,10 @@
 import {Link} from 'react-router';
 import { Button } from '../Common/CommonComponents';
 import { useLogoutUser } from '../../hooks/useUsers';
+import { useTranslation } from 'react-i18next';
 
 export function NotFound404(){
+    const { t } = useTranslation("translation");
     const logout = useLogoutUser();
     return(
         <main className="h-screen flex items-center justify-center">
@@ -11,10 +13,10 @@ export function NotFound404(){
                 <use href="../sprite.svg#icon-warning"></use>
                 </svg>
                 <h1 className="xsm:text-5xl lg:text-7xl text-orange font-bold xsm:mt-4 xsm:mb-1 lg:my-4">404</h1>
-                <h2 className="xsm:text-2xl sm:text-3xl lg:text-3xl font-bold dark:text-text-dark-white">Page Not Found</h2>
-                <p className="xsm:text-sm sm:text-lg text-center my-4 dark:text-text-dark">Oops! The page you are looking for does not exist. It might have been moved or deleted.</p>
+                <h2 className="xsm:text-2xl sm:text-3xl lg:text-3xl font-bold dark:text-text-dark-white">{t('app.404.pageNotFound')}</h2>
+                <p className="xsm:text-sm sm:text-lg text-center my-4 dark:text-text-dark">{t('app.404.notFoundMessage')}</p>
                 <Link to={'/'}>
-                    <Button onClick={logout} textButton="Go to Homepage" />
+                    <Button onClick={logout} textButton={t('app.404.goHome')} />
                 </Link>
             </section>
         </main>

@@ -83,6 +83,14 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
   }, [listId, userId]);
   const toggleEdit = useCallback(() => setEditOpen(v => !v), []);
 
+  const useScrollToField = (selector: string) => {
+    const element: HTMLElement | null = document.querySelector(selector);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.focus();
+    }
+}
+
   const handleChange = useCallback((e: React.ChangeEvent<any>) => {
     const { name, value } = e.target;
     setForm((prev: TaskForm) => ({ 
@@ -130,6 +138,7 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
     // prevent creating tasks with empty names - surface as a validation error (don't throw)
     if (!payload.taskName || payload.taskName.trim() === '') {
       setFormErrors({ taskName: new Error('Task name is required') });
+      useScrollToField('input[name="taskName"]');
       return;
     }
     createTask.mutate(payload, {
@@ -163,6 +172,7 @@ export function useTasksManager({ userId, listId, isArchivedView }: UseTasksMana
     // prevent creating tasks with empty names - surface as a validation error (don't throw)
     if (!payload.taskName || payload.taskName.trim() === '') {
       setFormErrors({ taskName: new Error('Task name is required') });
+      useScrollToField('input[name="taskName"]');
       return;
     }
     updateTask.mutate(payload, {

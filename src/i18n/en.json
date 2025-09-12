@@ -1,0 +1,199 @@
+{
+  "app": {
+    "title": "TaskMaster",
+    "404": {
+      "title": "404",
+      "pageNotFound": "Page Not Found",
+      "notFoundMessage": "Oops! The page you are looking for does not exist. It might have been moved or deleted.",
+      "goHome": "Go to Homepage"
+    }
+  },
+  "auth": {
+    "header": {
+      "register": {
+        "title": "Create Account",
+        "subtitle": "Let's get you started!"
+      },
+      "login": {
+        "title": "Welcome Back!",
+        "subtitle": "Let's get you signed in."
+      }
+    },
+    "register": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "placeholders": {
+        "firstName": "Enter your first name",
+        "lastName": "Enter your last name",
+        "email": "Enter your email address",
+        "password": "Enter your password",
+        "confirmPassword": "Confirm your password"
+      },
+      "submit": "Register",
+      "success": "User created successfully",
+      "haveAccount": "You already have an account? ",
+      "login": "Login"
+    },
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "placeholders": {
+        "email": "Enter your email address",
+        "password": "Enter your password"
+      },
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account? ",
+      "register": "Register",
+      "submit": "Login"
+    },
+    "errors": {
+      "emailInUse": "Email already in use",
+      "emailNotRegistered": "Email not registered",
+      "invalidCredentials": "Invalid password or email",
+      "passwordsDontMatch": "Passwords don't match"
+    }
+  },
+  "common": {
+    "language": "Language",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "genericFetchError": "Oops, we couldn't fetch the data :c",
+    "none": "None",
+    "add": "Add",
+    "addTask": "+ Add Task",
+    "taskMaster": "TaskMaster"
+  },
+  "sidebar": {
+    "links": {
+      "allMyTasks": "All My Tasks",
+      "archivedTasks": "Archived Tasks",
+      "myLists": "MY LISTS",
+      "settings": "Settings",
+      "logout": "Log Out"
+    },
+    "lists": {
+      "createList": "Create New List"
+    },
+    "actions": {
+      "create": "Create",
+      "deleteList": "Delete List"
+    }
+  },
+  "tasks": {
+    "table": {
+      "taskName": "Task Name",
+      "dueDate": "Due Date",
+      "priority": "Priority",
+      "status": "Status",
+      "actions": "Actions",
+      "noTasks": "No tasks yet",
+      "noTasksHelp": "Looks like you're all caught up!",
+      "errorFetching": "Error: Oops! We couldn't fetch your tasks :c",
+      "archivedTasks": "Archived Tasks"
+    },
+    "popup": {
+      "addNewTask": "Add New Task",
+      "editTask": "Edit Task",
+      "createTask": "Create Task",
+      "saveChanges": "Save Changes",
+      "labels": {
+        "taskName": "Task Name",
+        "enterTaskName": "Enter task name",
+        "dueDate": "Due Date",
+        "priority": "Priority",
+        "list": "List",
+        "description": "Description",
+        "status": "Status"
+      }
+    },
+    "noTasksButton": "Add Task",
+    "archived": "Archived Tasks"
+  },
+  "lists": {
+    "form": {
+      "title": "List Title",
+      "placeholderTitle": "Enter list title",
+      "color": "List Color",
+      "createList": "Create List",
+      "editList": "Edit List",
+      "saveChanges": "Save Changes",
+      "deleteList": "Delete List",
+        "noneSelected": "None Selected"
+    }
+  },
+  "settings": {
+    "header": "Settings",
+    "labels": {
+      "dateFormat": "Date Format",
+      "language": "Language",
+      "defaultPriority": "Default Priority",
+      "defaultStatus": "Default Status",
+      "theme": "Theme"
+    },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "actions": {
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  },
+  "profile": {
+    "header": "User Profile",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "emailAddress": "Email Address",
+    "passwordLabel": "Password",
+    "changePassword": "Change Password",
+    "unknownUser": "Unknown user"
+  },
+  "indicators": {
+    "tasksCompleted": "Tasks Completed",
+    "archivedTasks": "Archived Tasks"
+  },
+  "buttons": {
+    "addTask": "+ Add Task",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes",
+    "delete": "Delete",
+    "goHome": "Go to Homepage"
+  },
+  "placeholders": {
+    "dueDateFormat": "Due Date ({format})",
+    "enterTaskContent": "Enter task content"
+  },
+  "errors": {
+    "firstNameLength": "First name must be between 1 and 50 characters",
+    "lastNameLength": "Last name must be between 1 and 50 characters",
+    "passwordLength": "Password must be at least 6 characters",
+    "required": "This field is required",
+    "invalidUserId": "Invalid User ID"
+  },
+  "priority": {
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High"
+  },
+  "status": {
+    "TODO": "To Do",
+    "IN_PROGRESS": "In Progress",
+    "DONE": "Done"
+  },
+  "dateFormat": {
+    "MM_DD_YYYY": "MM/DD/YYYY",
+    "DD_MM_YYYY": "DD/MM/YYYY",
+    "YYYY_MM_DD": "YYYY/MM/DD"
+  },
+  "language": {
+    "EN": "English",
+    "ES": "Spanish"
+  }
+}

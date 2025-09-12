@@ -2,6 +2,8 @@ import type { ChangeEvent } from "react";
 import { Link } from "react-router";
 import type { ListsSummary } from "../../types";
 import FullScreenModal from "../Modal/FullScreenModal";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 // -------------------- Types --------------------
 type InputCompTypes = {
@@ -89,7 +91,7 @@ export function Input({ type, value, name, label, required, placeholder, onChang
             </label>
 
             {/* Show generic error if isError is true */}
-            {isError && <p className="text-red-500 text-sm mt-1">Oops, we couldn't fetch the data :c</p>}
+            {isError && <p className="text-red-500 text-sm mt-1">{t('common.genericFetchError')}</p>}
 
             {/* Control */}
             {isLoading ? (
@@ -207,12 +209,7 @@ export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: Butt
  * Style: Default or custom
  * options + values: Priority, List, Status, Customs
  */
-type OptionValuesType = {
-    value: string | number | undefined,
-    label: string,
-    id?: number,
-    title?: string,
-}
+type OptionValuesType = string
 
 type OptionTypes = OptionValuesType[] | ListsSummary[];
 
@@ -229,15 +226,25 @@ type SelectProps  = {
 }
 
 export const priorityOptions: OptionValuesType[] = [
-    { value: 'LOW', label: 'Low' },
-    { value: 'MEDIUM', label: 'Medium' },
-    { value: 'HIGH', label: 'High' },
+    "LOW", "MEDIUM", "HIGH"
 ];
 
 export const statusOptions: OptionValuesType[] = [
-    { value: 'TODO', label: 'To Do' },
-    { value: 'IN_PROGRESS', label: 'In Progress' },
-    { value: 'DONE', label: 'Done' },
+    "TODO", "IN_PROGRESS", "DONE"
+];
+
+export const dateFormatOptions: OptionValuesType[] = [
+    "MM_DD_YYYY", "DD_MM_YYYY", "YYYY_MM_DD"
+]
+
+export const languageOptions: OptionValuesType[]     = [
+    "EN", "ES"
+]
+
+/* export const statusOptions: OptionValuesType[] = [
+    { value: 'TODO', label: t('status.todo') },
+    { value: 'IN_PROGRESS', label: t('status.inProgress') },
+    { value: 'DONE', label: t('status.done') },
 ];
 
 export const dateFormatOptions: OptionValuesType[] = [
@@ -249,7 +256,7 @@ export const dateFormatOptions: OptionValuesType[] = [
 export const languageOptions: OptionValuesType[] = [
     { value: 'EN', label: 'English' },
     { value: 'ES', label: 'Spanish' },
-]
+] */
 
 export const options = [
     {priority: priorityOptions},
@@ -258,10 +265,11 @@ export const options = [
     {language: languageOptions}
 ];
 
-export function Select({onChange, options, currentValue, type, label, disabled, inputName, isLoading, isError}: SelectProps){
+export function Select({onChange, options, currentValue, type, label, disabled, inputName, isLoading, isError }: SelectProps){
+    const { t } = useTranslation("translation");
     return(
         <div className="text-left flex-grow mb-5">
-            <label className="block font-bold mb-2 capitalize dark:text-text-dark-white">
+            <label className="block font-bold mb-2 dark:text-text-dark-white">
                 {label}
             </label>
             <select 
@@ -271,15 +279,32 @@ export function Select({onChange, options, currentValue, type, label, disabled, 
                 onChange={onChange}
                 disabled={disabled}
             >
-                {isLoading && <option>Loading...</option>}
-                {isError && <option>Oops, we couldn't fetch the data :c</option>}
-                {type === 'listId' && <option value="null">None</option>}
-                {options?.map((option) => (
+                {isLoading && <option>{t('common.loading')}</option>}
+                {isError && <option>{t('common.genericFetchError')}</option>}
+                {type === 'listId' && <option value="null">{t('lists.form.noneSelected')}</option>}
+                {/* {options?.map((option) => (
                     <option key={option.id || option.value} value={option.value || option.id}>
                         {(type === 'priority' || type === 'status' || type === 'dateFormat' || type === 'language') && option.label}
                         {type === 'listId' && option.title}
                     </option>
-                ))}
+                ))} */}
+                {options?.map((option) => {
+                    if (typeof option === 'string') {
+                        // option is OptionValuesType
+                        return (
+                            <option key={t(`${type}.${String(option)}`)} value={String(option)} /* key={String(option.value)} value={option.value} */>
+                                {/* {(type === 'priority' || type === 'status' || type === 'dateFormat' || type === 'language') && option.label} */}
+                                {t(`${type}.${String(option)}`)}
+                            </option>
+                        );
+                    }
+                    // option is ListsSummary
+                    return (
+                        <option key={String(option.id)} value={option.id}>
+                            {type === 'listId' && option.title}
+                        </option>
+                    );
+                })}
             </select>
         </div>
     );
@@ -299,7 +324,7 @@ export function SelectArea({label, value, onChange}: SelectAreaProps){
             className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:text-text-dark-white"
             name="description" 
             value={value}
-            placeholder="Enter task content"
+            placeholder={t('placeholders.enterTaskContent')}
             onChange={onChange}
             ></textarea>
         </>
@@ -336,11 +361,11 @@ export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButto
         <div className="mt-8 lg:flex md:justify-center lg:border-t lg:border-gray-400 lg:pt-4 lg:justify-end">
             {isEditting ? 
                 <div className="flex gap-4 xsm:flex-col-reverse sm:flex-row sm:justify-center">
-                    <Button textButton="Cancel" buttonStyle="bg-gray-200 font-bold text-black hover:bg-gray-300 dark:bg-light-gray dark:text-text-dark-white" onClick={onEdit}/>
-                    <SubmitBtn buttonText="Save Changes" isPending={isSubmitLoading} />
+                    <Button textButton={t('buttons.cancel')} buttonStyle="bg-gray-200 font-bold text-black hover:bg-gray-300 dark:bg-light-gray dark:text-text-dark-white" onClick={onEdit}/>
+                    <SubmitBtn buttonText={t('buttons.saveChanges')} isPending={isSubmitLoading} />
                 </div>
                 : 
-                <Button textButton="Edit" buttonStyle={`xsm:w-full sm:w-auto sm:px-6 lg:px-8 bg-orange hover:bg-orange-strong text-white font-bold`} onClick={onEdit}></Button>
+                <Button textButton={t('buttons.edit')} buttonStyle={`xsm:w-full sm:w-auto sm:px-6 lg:px-8 bg-orange hover:bg-orange-strong text-white font-bold`} onClick={onEdit}></Button>
             }
         </div>
     )

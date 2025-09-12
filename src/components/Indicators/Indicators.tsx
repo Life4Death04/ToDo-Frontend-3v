@@ -1,4 +1,5 @@
 import type React from "react";
+import { useTranslation } from "react-i18next";
 
 // -------------------- Types --------------------
 type IndicatorPanelProps = {
@@ -32,10 +33,11 @@ type RadialIndicatorProps = {
  * @param {number} completedTasks - number of tasks completed
  */
 export function IndicatorPanels({totalTasks, completedTasks, archivedTasks}: IndicatorPanelProps){
+    const { t } = useTranslation("translation");
     return (
         <section className="flex items-center flex-wrap justify-center gap-8 rounded-lg w-full mx-auto xsm:mb-3 xsm:gap-3 md:mb-6 md:gap-6">
-          <RadialIndicator textIndicator="Tasks Completed" totalTasks={totalTasks} completedTasks={completedTasks}/>
-          <TextIndicator textIndicator="Archived Tasks" totalItems={archivedTasks} iconIndicator="fa-solid fa-archive"/>
+          <RadialIndicator textIndicator={t('indicators.tasksCompleted')} totalTasks={totalTasks} completedTasks={completedTasks}/>
+          <TextIndicator textIndicator={t('indicators.archivedTasks')} totalItems={archivedTasks} iconIndicator="fa-solid fa-archive"/>
         </section>
     );
 }

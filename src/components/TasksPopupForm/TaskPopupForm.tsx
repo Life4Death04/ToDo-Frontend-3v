@@ -3,6 +3,7 @@ import { Select, SelectArea, options, FormMockup } from "../Common/CommonCompone
 import { Input } from "../Common/CommonComponents";
 import type { Task, ListsSummary } from '../../types';
 import React from 'react';
+import { useTranslation } from "react-i18next";
 
 type FormData = Partial<Task>;
 /* type Lists = Array<{ id: number; title: string; color: string;  }> | undefined; */
@@ -32,6 +33,7 @@ type PopupFormProps = {
  * @returns JSX.Element
  */
 export default function TaskPopupForm({values, onChange, onSubmit, onClose, lists, dueDatePlaceholder, header, submitText, isOpen, formErrors}: PopupFormProps) {
+    const { t } = useTranslation("translation");
     return (
         <FormMockup
             isOpen={isOpen}
@@ -46,8 +48,8 @@ export default function TaskPopupForm({values, onChange, onSubmit, onClose, list
                         name="taskName" 
                         type="text"
                         value={values.taskName || ''}
-                        label="Task Name"
-                        placeholder="Enter task name"
+                        label={t('tasks.popup.labels.taskName')}
+                        placeholder={t('tasks.popup.labels.enterTaskName')}
                         onChange={onChange} 
                         error={formErrors} // Input expects Error | null
                     />
@@ -63,7 +65,7 @@ export default function TaskPopupForm({values, onChange, onSubmit, onClose, list
 
                     {/* Priority Select */}
                     <Select 
-                        label="Priority"
+                        label={t('tasks.popup.labels.priority')}
                         type="priority"
                         options={options[0].priority}
                         currentValue={values.priority}
@@ -72,7 +74,7 @@ export default function TaskPopupForm({values, onChange, onSubmit, onClose, list
                     
                     {/* List Select (optional) */}
                     <Select 
-                        label="List"
+                        label={t('tasks.popup.labels.list')}
                         type="listId"
                         options={lists}
                         onChange={onChange}
@@ -82,7 +84,7 @@ export default function TaskPopupForm({values, onChange, onSubmit, onClose, list
                     {/* Description Textarea */}
                     <div className="text-left flex-grow mb-5">
                         <SelectArea
-                            label="Description"
+                            label={t('tasks.popup.labels.description')}
                             value={values.description || ""}
                             onChange={onChange}
                         />
@@ -90,7 +92,7 @@ export default function TaskPopupForm({values, onChange, onSubmit, onClose, list
 
                     {/* Additional controls (status, assignee, etc.) */}
                     <Select 
-                        label="Status"
+                        label={t('tasks.popup.labels.status')}
                         type="status"
                         options={options[1].status}
                         currentValue={values.status} 

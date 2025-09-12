@@ -6,6 +6,8 @@ import { useListManager } from "../hooks/useListManager";
 import ListPopupForm from "../components/ListsPopupForms/ListPopupForm";
 import { useSettings } from "../contexts/SettingsContext";
 import { getDueDatePlaceholder } from "../utils/taskHelpers";
+import { useModal } from "../contexts/ModalContext";
+import { useTranslation } from "react-i18next";
 
 export function ArchiveTasksContainer(){
     //---------------------- Route Params ------------------------
@@ -40,23 +42,32 @@ export function ArchiveTasksContainer(){
         openEditWith, 
         handleSubmitEdit,
         handleArchive,
-        handleToggleStatus
+        handleToggleStatus,
+        formErrors
     } = useTasksManager({ userId, isArchivedView: true });   
     
     const {
         formList, 
         handleChangeList,
-        handleSubmitList
+        handleSubmitList,
+        formListErrors
     } = useListManager({ userId });
 
     // -------------------- Due Date Format --------------------
     // Use the internal DateFormat union value (e.g. "MM_DD_YYYY"), not a display string.
     const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
     const dueDatePlaceholder = `Due Date (${getDueDatePlaceholder(dateFormat)})`
+
+    // -------------------- Modal Context --------------------
+    const { toggleCreateList, isCreateListOpen } = useModal();
+
+    // -------------------- Translation Hook --------------------
+    const { t } = useTranslation("translation");
+    // ---------------------- Render -----------------------------
     return(
         <main className="xsm:p-2 sm:p-4 md:p-6">
             <TasksTable 
-                tableTitle={"Archived Tasks"}
+                tableTitle={t('tasks.table.archivedTasks')}
                 userTasks={archivedTasks}
                 deleteUserTask={handleDelete}
                 handleAddUserTask={toggleCreate}
@@ -70,35 +81,40 @@ export function ArchiveTasksContainer(){
             
             <TaskPopupForm 
                 isOpen={isCreateOpen}
-                header="Add New Task"
-                submitText="Create Task"
+                header={t('tasks.popup.addNewTask')}
+                submitText={t('tasks.popup.createTask')}
                 values={form}
                 lists={listArray}
                 onChange={handleChange}
                 onSubmit={handleSubmit}
                 onClose={toggleCreate}
                 dueDatePlaceholder={dueDatePlaceholder}
+                formErrors={formErrors.taskName}
             />
             
             <TaskPopupForm 
                 isOpen={isEditOpen}
-                header="Edit Task"
-                submitText="Save Changes"
+                header={t('tasks.popup.editTask')}
+                submitText={t('tasks.popup.saveChanges')}
                 lists={listArray}
                 values={editForm}
                 onChange={handleChangeEdit}
                 onSubmit={handleSubmitEdit}
                 onClose={toggleEdit}
                 dueDatePlaceholder={dueDatePlaceholder}
+                formErrors={formErrors.taskName}
             />
                
 
             <ListPopupForm
-                header="Create New List"
-                submitText="Create List" 
+                isOpen={isCreateListOpen}
+                onClose={toggleCreateList}
+                header={t('lists.form.createList')}
+                submitText={t('lists.form.createList')}
                 values={formList}
                 onChange={handleChangeList}
                 onSubmit={handleSubmitList}
+                formErrors={formListErrors.title}
             />
         </main>
     );
