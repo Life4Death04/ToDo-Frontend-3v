@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { t } from "i18next";
 
 type SettingsFormProps = {
-    values?: Omit<Settings, 'id' | 'authorId'>;
+    values?: Omit<Settings, 'id' | 'userId'>;
     isEditing: boolean;
     onEdit: () => void;
     isSubmitLoading: boolean;
