@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useEffect } from 'react';
+import { createContext, useContext, useMemo, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Settings } from '../types';
 import { useFetchUserSettings, useUpdateUserSettings } from '../hooks/useTasks';
@@ -16,22 +16,48 @@ type SettingsContextValue = {
 const SettingsContext = createContext<SettingsContextValue | undefined>(undefined);
 
 export function SettingsProvider({ children }: { children: ReactNode }){
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null; // check for token presence
-  const { data, isLoading, isError } = useFetchUserSettings(token !== null); // only fetch if token exists (avoids unnecessary calls)
-  const updater = useUpdateUserSettings();
+  // make token reactive
+  const [token, setToken] = useState<string | null>(() =>
+    typeof window !== 'undefined' ? localStorage.getItem('token') : null
+  );
+
+  // update token when storage changes (other tabs) or when a custom event is dispatched (same tab)
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'token') setToken(e.newValue);
+    };
+    const onTokenChanged = () => setToken(localStorage.getItem('token'));
+
+    window.addEventListener('storage', onStorage);
+    window.addEventListener('todo3v:token-changed', onTokenChanged);
+
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('todo3v:token-changed', onTokenChanged);
+    };
+  }, []);
+
+  // only fetch when token exists; pass boolean flag to hook
+  const { data, isLoading, isError, refetch } = useFetchUserSettings(Boolean(token));
+
+  // if token becomes available after mount, trigger a refetch so settings apply immediately
+  useEffect(() => {
+    if (token) {
+      // refetch might be undefined depending on your hook implementation; guard it
+      refetch?.();
+    }
+  }, [token, refetch]);
+
   const { i18n } = useTranslation();
 
-  /* useEffect(() => {
+  useEffect(() => {
     const theme = data?.theme;
     // only persist when backend explicitly provides a theme value
     if (typeof theme !== 'undefined' && theme !== null) {
       const themeStr = String(theme);
       localStorage.setItem('theme', themeStr);
-      if (themeStr === 'DARK' || themeStr.toUpperCase() === 'DARK') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      if (themeStr.toUpperCase() === 'DARK') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
     } else {
       // backend did not return a theme: don't write "undefined"
       // clear stored value or keep previous value depending on desired behavior
@@ -39,20 +65,22 @@ export function SettingsProvider({ children }: { children: ReactNode }){
       localStorage.removeItem('theme');
       document.documentElement.classList.remove('dark');
     }
-  }, [data?.theme]); */
+  }, [data?.theme]);
 
   useEffect(() => {
     const lang = data?.language;
-      if (lang) {
+    if (lang) {
       localStorage.setItem('language', String(lang));
-      if (lang === 'ES') i18n.changeLanguage('es');
+      if (String(lang).toUpperCase() === 'ES') i18n.changeLanguage('es');
       else i18n.changeLanguage('en');
     }
   }, [data?.language]);
 
+  const updater = useUpdateUserSettings();
+
   const updateSettings = async (payload: Partial<Settings>) => {
     try{
-      await updater.mutateAsync(payload as Settings);
+      await updater.mutateAsync(payload);
     }catch(err){
       // swallow here; callers can rely on updater's status or provide UI
       console.error('Failed updating settings', err);
