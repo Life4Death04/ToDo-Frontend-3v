@@ -64,6 +64,7 @@ export const useLogoutUser = () =>{
      */
     function logout(){
         localStorage.removeItem("token");
+        document.documentElement.classList.remove('dark');
         navigate('/');
     }
 

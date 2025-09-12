@@ -20,6 +20,9 @@ export function SettingsProvider({ children }: { children: ReactNode }){
   const [token, setToken] = useState<string | null>(() =>
     typeof window !== 'undefined' ? localStorage.getItem('token') : null
   );
+  // only fetch when token exists; pass boolean flag to hook
+  const { data, isLoading, isError, refetch } = useFetchUserSettings(Boolean(token));
+  const { i18n } = useTranslation();
 
   // update token when storage changes (other tabs) or when a custom event is dispatched (same tab)
   useEffect(() => {
@@ -37,8 +40,6 @@ export function SettingsProvider({ children }: { children: ReactNode }){
     };
   }, []);
 
-  // only fetch when token exists; pass boolean flag to hook
-  const { data, isLoading, isError, refetch } = useFetchUserSettings(Boolean(token));
 
   // if token becomes available after mount, trigger a refetch so settings apply immediately
   useEffect(() => {
@@ -48,9 +49,8 @@ export function SettingsProvider({ children }: { children: ReactNode }){
     }
   }, [token, refetch]);
 
-  const { i18n } = useTranslation();
 
-  useEffect(() => {
+  /* useEffect(() => {
     const theme = data?.theme;
     // only persist when backend explicitly provides a theme value
     if (typeof theme !== 'undefined' && theme !== null) {
@@ -65,7 +65,7 @@ export function SettingsProvider({ children }: { children: ReactNode }){
       localStorage.removeItem('theme');
       document.documentElement.classList.remove('dark');
     }
-  }, [data?.theme]);
+  }, [data?.theme]); */
 
   useEffect(() => {
     const lang = data?.language;
