@@ -129,7 +129,7 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
                 </button>
 
                 {/* Task title */}
-                <span className="font-bold xsm:text-sm md:text-base lg:text-lg overflow dark:text-text-dark-white border-2 xsm:min-w-18">
+                <span className="font-bold xsm:text-sm md:text-base lg:text-lg overflow dark:text-text-dark-white xsm:min-w-18">
                     {taskName}
                 </span>
 
