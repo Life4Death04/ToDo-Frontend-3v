@@ -9,15 +9,15 @@ type IndicatorPanelProps = {
 }
 
 type TextIndicatorProps = {
-    textIndicator: string,
-    totalItems: number,
-    iconIndicator: string,
+  textIndicator: string,
+  totalItems: number,
+  iconIndicator: string,
 }
 
 type RadialIndicatorProps = {
-    textIndicator: string,
-    totalTasks: number,
-    completedTasks: number,
+  textIndicator: string,
+  totalTasks: number,
+  completedTasks: number,
 }
 // -------------------- Main Panel Component --------------------
 /**
@@ -32,14 +32,14 @@ type RadialIndicatorProps = {
  * @param {number} totalTasks - total tasks in the current view
  * @param {number} completedTasks - number of tasks completed
  */
-export function IndicatorPanels({totalTasks, completedTasks, archivedTasks}: IndicatorPanelProps){
-    const { t } = useTranslation("translation");
-    return (
-        <section className="flex items-center flex-wrap justify-center gap-8 rounded-lg w-full mx-auto xsm:mb-3 xsm:gap-3 md:mb-6 md:gap-6">
-          <RadialIndicator textIndicator={t('indicators.tasksCompleted')} totalTasks={totalTasks} completedTasks={completedTasks}/>
-          <TextIndicator textIndicator={t('indicators.archivedTasks')} totalItems={archivedTasks} iconIndicator="fa-solid fa-archive"/>
-        </section>
-    );
+export function IndicatorPanels({ totalTasks, completedTasks, archivedTasks }: IndicatorPanelProps) {
+  const { t } = useTranslation("translation");
+  return (
+    <section className="flex items-center flex-wrap justify-center gap-8 rounded-lg w-full mx-auto xsm:mb-3 xsm:gap-3 md:mb-6 md:gap-6">
+      <RadialIndicator textIndicator={t('indicators.tasksCompleted')} totalTasks={totalTasks} completedTasks={completedTasks} />
+      <TextIndicator textIndicator={t('indicators.archivedTasks')} totalItems={archivedTasks} iconIndicator="fa-solid fa-archive" />
+    </section>
+  );
 }
 
 // -------------------- Card Wrapper Component --------------------
@@ -52,8 +52,8 @@ export function IndicatorPanels({totalTasks, completedTasks, archivedTasks}: Ind
  * IndicatorCard
  * Small visual card wrapper used by indicators for consistent styling.
  */
-function IndicatorCard({children}: {children: React.ReactNode}){
-  return(
+function IndicatorCard({ children }: { children: React.ReactNode }) {
+  return (
     <div className="flex flex-col flex-1 items-center justify-center bg-white rounded-2xl 
     w-44 h-44 xsm:p-8 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60 dark:bg-background-dark">
       {children}
@@ -73,25 +73,25 @@ function IndicatorCard({children}: {children: React.ReactNode}){
  * TextIndicator
  * Small card that shows a text label, an icon and a number.
  */
-function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicatorProps){
-    return(
-      <IndicatorCard>
-        {/* Icon */}
-        <div className="relative flex items-center justify-center bg-white xsm:p-4 md:p-6 lg:p-8 rounded-full dark:bg-transparent">
-          <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl text-gray-600 bg-gray-200 p-4 rounded-full dark:text-text-dark dark:bg-text-dark-hover`} aria-hidden={true}></i>
-        </div>
+function TextIndicator({ textIndicator, totalItems, iconIndicator }: TextIndicatorProps) {
+  return (
+    <IndicatorCard>
+      {/* Icon */}
+      <div className="relative flex items-center justify-center bg-white xsm:p-4 md:p-6 lg:p-8 rounded-full dark:bg-transparent">
+        <i className={`${iconIndicator} sm:text-xl md:text-2xl lg:text-3xl text-gray-600 bg-gray-200 p-4 rounded-full dark:text-text-dark dark:bg-text-dark-hover`} aria-hidden={true}></i>
+      </div>
 
-        {/* Label */}
-        <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600 dark:text-text-dark-white">
-          {textIndicator}
-        </h2>
+      {/* Label */}
+      <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600 dark:text-text-dark-white">
+        {textIndicator}
+      </h2>
 
-        {/* Value */}
-        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange font-bold dark:text-text-dark-white">
-          {totalItems}
-        </p>
-      </IndicatorCard>
-    );
+      {/* Value */}
+      <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange font-bold dark:text-text-dark-white">
+        {totalItems}
+      </p>
+    </IndicatorCard>
+  );
 }
 
 // -------------------- Radial Indicator Component --------------------
@@ -106,7 +106,7 @@ function TextIndicator({textIndicator, totalItems, iconIndicator}: TextIndicator
  * RadialIndicator
  * Circular progress indicator showing percentage of completed tasks.
  */
-export function RadialIndicator({textIndicator, totalTasks, completedTasks}:RadialIndicatorProps) {
+export function RadialIndicator({ textIndicator, totalTasks, completedTasks }: RadialIndicatorProps) {
   const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0; //Safeguard in case totaltask equals 0
 
   // Circle math
@@ -149,14 +149,14 @@ export function RadialIndicator({textIndicator, totalTasks, completedTasks}:Radi
         </svg>
 
         {/* Text inside circle */}
-        <span className="absolute text-sm sm:text-base md:text-lg lg:text-xl font-bold text-black dark:text-text-dark-white">
+        <span data-testId="checkedTasks" className="absolute text-sm sm:text-base md:text-lg lg:text-xl font-bold text-black dark:text-text-dark-white">
           {completedTasks}/{totalTasks}
         </span>
       </div>
 
       {/* Labels */}
       <h2 className="m-2 text-sm text-center sm:text-base md:text-lg lg:text-xl font-semibold text-gray-600 dark:text-text-dark-white">
-        {textIndicator} 
+        {textIndicator}
       </h2>
       <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 dark:text-text-dark-white">
         {percentage}%

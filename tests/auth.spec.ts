@@ -37,4 +37,5 @@ test("has to login a user", async ({ page }) => {
     .fill("contra");
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: "Login" }).click();
+  await expect(page).toHaveURL("/accounts/12");
 });
