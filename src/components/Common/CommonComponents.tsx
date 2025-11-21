@@ -14,7 +14,7 @@ type InputCompTypes = {
     required?: false | true,
     placeholder?: string,
     dimensions?: string,
-    error?: Error | null ,
+    error?: Error | null,
     onChange: (e: ChangeEvent<HTMLInputElement>) => void,
     disabled?: boolean,
     isLoading?: boolean,
@@ -82,8 +82,8 @@ type FormMockupProps = {
  * @param {(e: ChangeEvent<HTMLInputElement>) => void} onChange - change handler
  * @returns JSX.Element
  */
-export function Input({ type, value, name, label, required, placeholder, onChange, error, dimensions, disabled, isLoading, isError }:InputCompTypes){
-    return(
+export function Input({ type, value, name, label, required, placeholder, onChange, error, dimensions, disabled, isLoading, isError }: InputCompTypes) {
+    return (
         <div className="text-left flex-grow mb-5">
             {/* Label */}
             <label className="block font-bold mb-2 capitalize xsm:text-xs md:text-sm dark:text-text-dark-white">
@@ -97,16 +97,16 @@ export function Input({ type, value, name, label, required, placeholder, onChang
             {isLoading ? (
                 <div className="animate-pulse h-10 bg-gray-200 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md"></div>
             ) : (
-            <input 
-                className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md dark:text-text-dark-white  ${error &&'border-red-500'} ${dimensions} ${disabled ? 'bg-gray-200 cursor-not-allowed dark:bg-dark-gray' : 'bg-gray-100 dark:bg-light-gray'}`}
-                type={type} 
-                value={value} 
-                onChange={onChange} 
-                required={required} 
-                name={name} 
-                placeholder={placeholder}
-                disabled={disabled}
-            />
+                <input
+                    className={`lg:px-4 lg:py-3 border-2 border-black/20 rounded-lg w-full xsm:text-xs xsm:p-3 md:text-sm lg:text-md dark:text-text-dark-white  ${error && 'border-red-500'} ${dimensions} ${disabled ? 'bg-gray-200 cursor-not-allowed dark:bg-dark-gray' : 'bg-gray-100 dark:bg-light-gray'}`}
+                    type={type}
+                    value={value}
+                    onChange={onChange}
+                    required={required}
+                    name={name}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                />
             )}
 
             {/* Error */}
@@ -122,8 +122,8 @@ export function Input({ type, value, name, label, required, placeholder, onChang
  * @param {string} textH2 - main heading
  * @param {string} label - sub-label text
  */
-export function Header({textH2, label}: HeaderProps){
-    return(
+export function Header({ textH2, label }: HeaderProps) {
+    return (
         <header className="mb-6">
             {/* Logo */}
             <img className="mx-auto xsm:w-20 md:w-25" src="../icon-main.png"></img>
@@ -144,8 +144,8 @@ export function Header({textH2, label}: HeaderProps){
  * @param {string} buttonUrl - navigation URL
  * @param {string} buttonText - button label
  */
-export function Footer({label, buttonUrl, buttonText}: FooterProps){
-    return(
+export function Footer({ label, buttonUrl, buttonText }: FooterProps) {
+    return (
         <footer className="mt-4">
             {/* Prompt */}
             <label className="xsm:text-xs md:text-sm lg:text-base">{label}</label>
@@ -165,8 +165,8 @@ export function Footer({label, buttonUrl, buttonText}: FooterProps){
  * @param {string} buttonText - text to show when not pending
  * @param {boolean} isPending - show loading text when true
  */
-export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
-    return(
+export function SubmitBtn({ buttonText, isPending }: SubmitBtnProps) {
+    return (
         <button type="submit" className="bg-orange text-white rounded-lg shadow-md xsm:p-2 xsm:text-sm xsm:font-bold md:text-base lg:px-3 lg:py-2 hover:cursor-pointer hover:bg-orange-strong">{isPending ? 'Loading...' : buttonText}</button>
     );
 }
@@ -179,8 +179,8 @@ export function SubmitBtn({buttonText, isPending}: SubmitBtnProps){
  * @param {string} textButton - button text
  * @param {string} buttonStyle - extra classes
  */
-export function Button({ onClick, textButton, buttonStyle, iconStyle }: ButtonProps){
-    return(
+export function Button({ onClick, textButton, buttonStyle, iconStyle }: ButtonProps) {
+    return (
         <button className={`xsm:p-2 xsm:text-sm md:text-base lg:text-base lg:px-3 lg:py-2 rounded-lg hover:cursor-pointer ${buttonStyle ? buttonStyle : 'hover:bg-orange-strong bg-orange text-white font-bold'}`} onClick={onClick}>
             {iconStyle && <i className={`${iconStyle} mr-2`}></i>}
             {textButton}
@@ -196,8 +196,8 @@ export function Button({ onClick, textButton, buttonStyle, iconStyle }: ButtonPr
  * @param {string} textButton - optional text inside the icon
  * @param {string} buttonStyle - extra classes
  */
-export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: ButtonProps){
-    return(
+export function ButtonIcon({ onClick, iconStyle, textButton, buttonStyle }: ButtonProps) {
+    return (
         <button className={`hover:cursor-pointer xsm:px-2 sm:px-3 py-2 ${buttonStyle}`} onClick={onClick}>
             <i className={`${iconStyle} text-gray-500 xsm:text-base lg:text-lg hover:text-orange dark:text-text-dark`} aria-hidden={true}>{textButton}</i>
         </button>
@@ -213,9 +213,9 @@ type OptionValuesType = string
 
 type OptionTypes = OptionValuesType[] | ListsSummary[];
 
-type SelectProps  = {
+type SelectProps = {
     type: 'priority' | 'listId' | 'status' | 'dateFormat' | 'language',
-    options:  OptionTypes | undefined,
+    options: OptionTypes | undefined,
     currentValue: string | number | undefined,
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void,
     label: string,
@@ -237,7 +237,7 @@ export const dateFormatOptions: OptionValuesType[] = [
     "MM_DD_YYYY", "DD_MM_YYYY", "YYYY_MM_DD"
 ]
 
-export const languageOptions: OptionValuesType[]     = [
+export const languageOptions: OptionValuesType[] = [
     "EN", "ES"
 ]
 
@@ -259,20 +259,20 @@ export const languageOptions: OptionValuesType[] = [
 ] */
 
 export const options = [
-    {priority: priorityOptions},
-    {status: statusOptions},
-    {dateFormat: dateFormatOptions},
-    {language: languageOptions}
+    { priority: priorityOptions },
+    { status: statusOptions },
+    { dateFormat: dateFormatOptions },
+    { language: languageOptions }
 ];
 
-export function Select({onChange, options, currentValue, type, label, disabled, inputName, isLoading, isError }: SelectProps){
+export function Select({ onChange, options, currentValue, type, label, disabled, inputName, isLoading, isError }: SelectProps) {
     const { t } = useTranslation("translation");
-    return(
+    return (
         <div className="text-left flex-grow mb-5">
             <label className="block font-bold mb-2 dark:text-text-dark-white">
                 {label}
             </label>
-            <select 
+            <select
                 className={`lg:px-4 lg:py-3 border border-black/20 bg-gray-200 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:bg-dark-gray dark:text-text-dark-white ${disabled ? 'cursor-not-allows' : 'hover:cursor-pointer dark:bg-light-gray'}`}
                 name={inputName ? inputName : type}
                 value={currentValue}
@@ -316,24 +316,24 @@ type SelectAreaProps = {
     onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void,
 }
 
-export function SelectArea({label, value, onChange}: SelectAreaProps){
-    return(
+export function SelectArea({ label, value, onChange }: SelectAreaProps) {
+    return (
         <>
             <label className="block font-bold mb-2 capitalize dark:text-text-dark-white">{label}</label>
             <textarea
-            className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:text-text-dark-white"
-            name="description" 
-            value={value}
-            placeholder={t('placeholders.enterTaskContent')}
-            onChange={onChange}
+                className="lg:px-4 lg:py-3 border-2 max-h-30 min-h-30 border-black/20 rounded-lg w-full xsm:text-sm xsm:p-3 md:text-md lg:text-base dark:text-text-dark-white"
+                name="description"
+                value={value}
+                placeholder={t('placeholders.enterTaskContent')}
+                onChange={onChange}
             ></textarea>
         </>
     );
 }
 
 // -------------------- Page Mockup Component --------------------
-export function PageMockup({header, children, leftSlot}: PageMockupProps){
-    return(
+export function PageMockup({ header, children, leftSlot }: PageMockupProps) {
+    return (
         <section className="bg-white shadow-2xl rounded-lg xsm:p-4 md:p-8 dark:bg-background-dark">
             <h2 className="text-xl font-bold dark:text-text-dark-white">{header}</h2>
             {leftSlot}
@@ -345,8 +345,8 @@ export function PageMockup({header, children, leftSlot}: PageMockupProps){
 }
 
 // -------------------- Profile Image Component --------------------
-export function ProfileImage({initials}: {initials: string}){
-    return(
+export function ProfileImage({ initials }: { initials: string }) {
+    return (
         <div className="flex items-center my-6 mb-8 xsm:justify-center xsm:gap-4 lg:justify-start lg:gap-8">
             <div className="flex items-center justify-center font-bold text-white bg-orange text-4xl xsm:w-24 rounded-full xsm:h-24 xsm:text-4xl sm:text-5xl sm:w-28 sm:h-28 lg:w-32 lg:h-32 lg:">
                 {initials}
@@ -356,15 +356,15 @@ export function ProfileImage({initials}: {initials: string}){
 }
 
 // -------------------- Toggle Buttons --------------------
-export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButtonsProps){
-    return(
+export function ToggleButtons({ isEditting, onEdit, isSubmitLoading }: ToggleButtonsProps) {
+    return (
         <div className="mt-8 lg:flex md:justify-center lg:border-t lg:border-gray-400 lg:pt-4 lg:justify-end">
-            {isEditting ? 
+            {isEditting ?
                 <div className="flex gap-4 xsm:flex-col-reverse sm:flex-row sm:justify-center">
-                    <Button textButton={t('buttons.cancel')} buttonStyle="bg-gray-200 font-bold text-black hover:bg-gray-300 dark:bg-light-gray dark:text-text-dark-white" onClick={onEdit}/>
+                    <Button textButton={t('buttons.cancel')} buttonStyle="bg-gray-200 font-bold text-black hover:bg-gray-300 dark:bg-light-gray dark:text-text-dark-white" onClick={onEdit} />
                     <SubmitBtn buttonText={t('buttons.saveChanges')} isPending={isSubmitLoading} />
                 </div>
-                : 
+                :
                 <Button textButton={t('buttons.edit')} buttonStyle={`xsm:w-full sm:w-auto sm:px-6 lg:px-8 bg-orange hover:bg-orange-strong text-white font-bold`} onClick={onEdit}></Button>
             }
         </div>
@@ -372,8 +372,8 @@ export function ToggleButtons({isEditting, onEdit, isSubmitLoading}: ToggleButto
 }
 
 // -------------------- FormMockup Component --------------------
-export function FormMockup({children, onSubmit, isSubmitLoading, submitText, isOpen, onClose, header, leftSlot}: FormMockupProps){
-    return(
+export function FormMockup({ children, onSubmit, isSubmitLoading, submitText, isOpen, onClose, header, leftSlot }: FormMockupProps) {
+    return (
         <FullScreenModal isOpen={isOpen} onClose={onClose} title={header}>
             <section className="rounded-lg mx-auto bg-white px-3 xsm:w-70 sm:w-110 lg:w-150 xsm:m-2 sm:m-0 dark:bg-background-dark">
                 <form onSubmit={(e) => {

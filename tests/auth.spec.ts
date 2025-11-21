@@ -20,7 +20,7 @@ test("register a new user", async ({ page }) => {
     .fill("contra");
   await page.getByRole("button", { name: "Register" }).click();
 
-  await expect(page.getByText("auth.register.successMessage")).toBeVisible;
+  await expect(page.getByText("auth.register.successMessage")).toBeVisible();
 });
 
 test("has to login a user", async ({ page }) => {
@@ -37,5 +37,5 @@ test("has to login a user", async ({ page }) => {
     .fill("contra");
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: "Login" }).click();
-  await expect(page).toHaveURL("/accounts/12");
+  await expect(page).toHaveURL(/\/accounts\/\d+/); //Regex to match /accounts/{userId
 });
