@@ -87,7 +87,7 @@ function TextIndicator({ textIndicator, totalItems, iconIndicator }: TextIndicat
       </h2>
 
       {/* Value */}
-      <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange font-bold dark:text-text-dark-white">
+      <p data-testId="totalArchivedTasks" className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange font-bold dark:text-text-dark-white">
         {totalItems}
       </p>
     </IndicatorCard>
