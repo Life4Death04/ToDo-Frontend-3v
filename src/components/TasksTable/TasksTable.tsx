@@ -56,15 +56,15 @@ type AddTaskProps = {
  * @param {Error|null} error - error object
  * @returns JSX.Element
  */
-export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit, handleArchive, handleToggleStatus }: TasksTableProps){
+export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, deleteUserTask, isLoading, isError, handleAddUserTask, handleEdit, handleArchive, handleToggleStatus }: TasksTableProps) {
     const { t } = useTranslation("translation");
-    return(
+    return (
         <section className="px-6 py-4 bg-white rounded-2xl dark:bg-background-dark">
             {/* Header: title + actions */}
             <header className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-2">
                     <h1 className="font-bold xsm:text-xl md:text-2xl lg:text-3xl dark:text-text-dark-white">{tableTitle}</h1>
-                    {isEditTable && 
+                    {isEditTable &&
                         <ButtonIcon onClick={onEditTable} iconStyle="fa-solid fa-pen" buttonStyle="text-gray-400"></ButtonIcon>
                     }
                 </div>
@@ -80,7 +80,7 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
             </header>
 
             {/* Task list */}
-            <ul className="flex flex-col gap-3 lg:gap-0 lg:divide-y lg:divide-gray-200">
+            <ul data-testId="TasksTable" className="flex flex-col gap-3 lg:gap-0 lg:divide-y lg:divide-gray-200">
                 {!userTasks?.length && (
                     <NoTaskMessage isError={isError ?? false} isLoading={isLoading ?? false} handleAddUserTask={handleAddUserTask} />
                 )}
@@ -113,18 +113,18 @@ export function TasksTable({ tableTitle, isEditTable, onEditTable, userTasks, de
  * @param {() => void} onEdit - edit callback
  * @returns JSX.Element
  */
-function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArchive, onToggleTaskStatus}: TaskItemProps){
+function TaskItem({ taskName, dueDate, priority, status, onDelete, onEdit, onArchive, onToggleTaskStatus }: TaskItemProps) {
     const { settings } = useSettings();
     const dateFormat = settings?.dateFormat ?? 'MM_DD_YYYY';
     // - `getCheckIcon` renders the done/undone icon.
     // - Date formatting delegated to `formatDueDate` (consistent locale rules).
     // - Priority & status classes come from helpers to keep styles consistent.
-    return(
+    return (
         <li className="lg:flex lg:gap-3 bg-white lg:border-b lg:border-gray-200 xsm:p-3 py-3 px-4 xsm:shadow-xl lg:shadow-none xsm:rounded-lg lg:rounded-none dark:bg-background-body-dark dark:border-gray-500">
             {/* Left: completion toggle, title, edit (mobile delete shown below) */}
             <div className="flex gap-3 items-center flex-[2]">
                 {/* Completion toggle */}
-                <button onClick={onToggleTaskStatus}>
+                <button data-testId="checkTaskBtn" onClick={onToggleTaskStatus}>
                     {getCheckIcon(status === 'DONE') /*Not Ready*/}
                 </button>
 
@@ -158,8 +158,8 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
                 </span>
 
                 {/* Status badge */}
-                <div className="lg:flex-1"> 
-                    <span className={`xsm:text-xs md:text-sm lg:text-base xsm:w-fit px-2 py-1 rounded-xl font-bold ${getStatusColor(status)}`}>
+                <div className="lg:flex-1">
+                    <span data-testId="taskStatus" className={`xsm:text-xs md:text-sm lg:text-base xsm:w-fit px-2 py-1 rounded-xl font-bold ${getStatusColor(status)}`}>
                         {getStatusBadge(status)}
                     </span>
                 </div>
@@ -181,20 +181,20 @@ function TaskItem({taskName, dueDate, priority, status, onDelete, onEdit, onArch
  * @param {boolean} isLoading - Flag indicating if data is loading
  * @returns JSX.Element
  */
-function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessageProps){
+function NoTaskMessage({ handleAddUserTask, isError, isLoading }: NoTaskMessageProps) {
     const { t } = useTranslation("translation");
-    return(
+    return (
         <li className="mx-auto w-full text-center py-12 border-b border-gray-300">
             {/* Empty / loading / error state */}
             <span className=" text-black/60 xsm:text-xl md:text-2xl lg:text-3xl dark:text-text-dark-white">
-            {isLoading && t('common.loading')}
-            {isError && t('common.genericFetchError')}
-            {!isLoading && !isError && 
-            <>
-                <span className="xsm:text-xl md:text-2xl lg:text-3xl dark:text-text-dark-white">{t('tasks.table.noTasks')}</span>
-                <p className="pt-3 pb-5 text-gray-400 xsm:text-xs md:text-sm lg:text-base">{t('tasks.table.noTasksHelp')}</p>
-            </>
-            }
+                {isLoading && t('common.loading')}
+                {isError && t('common.genericFetchError')}
+                {!isLoading && !isError &&
+                    <>
+                        <span className="xsm:text-xl md:text-2xl lg:text-3xl dark:text-text-dark-white">{t('tasks.table.noTasks')}</span>
+                        <p className="pt-3 pb-5 text-gray-400 xsm:text-xs md:text-sm lg:text-base">{t('tasks.table.noTasksHelp')}</p>
+                    </>
+                }
             </span>
 
             {/* Supporting text */}
@@ -210,9 +210,9 @@ function NoTaskMessage({handleAddUserTask, isError, isLoading}: NoTaskMessagePro
  * @param onClick - function to call when the button is clicked
  * @returns JSX.Element
  */
-function AddTaskButton({onClick}: AddTaskProps){
+function AddTaskButton({ onClick }: AddTaskProps) {
     const { t } = useTranslation("translation");
-    return(
+    return (
         <button onClick={onClick} className="bg-orange ml-auto text-white  rounded-xl font-semibold hover:cursor-pointer hover:bg-orange-buttons xsm:text-sm xsm:p-2 sm:text-lg sm:px-3 sm:py-2 lg:text-xl dark:bg-sidebar-links dark:hover:bg-orange-buttons">
             {t('common.addTask')}
         </button>
