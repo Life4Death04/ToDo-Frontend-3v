@@ -44,9 +44,9 @@ type SidebarProps = {
  * @param {boolean} isListsError - error flag for lists
  * @param {() => void} onCreateList - callback to open create list modal
  */
-export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, listsData, isListsLoading, isListsError, onCreateList }: SidebarProps){
+export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, listsData, isListsLoading, isListsError, onCreateList }: SidebarProps) {
   const { t } = useTranslation("translation");
-  return(
+  return (
     <nav className="fixed top-0 left-0 h-screen w-12 py-3 sm:w-20 lg:w-64 lg:px-2 bg-white flex flex-col dark:bg-background-dark">
       {/* Logo & Title */}
       <header className="flex gap-4 px-3 py-2 xsm:mb-4 xsm:justify-center dark:text-text-dark-white">
@@ -56,45 +56,45 @@ export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, list
 
       {/* Navigation Links */}
       <ul className="flex flex-col gap-4 w-full xsm:items-center lg:items-start">
-        <SidebarLinkItem linkText={t('sidebar.links.allMyTasks')} linkUrl={meData?.id ? `/accounts/${meData.id}` : '/'} classIcon="fa-solid fa-list-ul" hoverEffect={true}/>
-        <SidebarLinkItem linkText={t('sidebar.links.archivedTasks')} linkUrl="archive" classIcon="fa-solid fa-archive" hoverEffect={true}/>
+        <SidebarLinkItem linkText={t('sidebar.links.allMyTasks')} linkUrl={meData?.id ? `/accounts/${meData.id}` : '/'} classIcon="fa-solid fa-list-ul" hoverEffect={true} />
+        <SidebarLinkItem linkText={t('sidebar.links.archivedTasks')} linkUrl="archive" classIcon="fa-solid fa-archive" hoverEffect={true} />
       </ul>
 
-      <hr className="mt-2 mb-3"/>
+      <hr className="mt-2 mb-3" />
 
       {/* Lists header */}
       <header className="flex justify-center items-center px-3 py-2 lg:justify-between">
         <span className="text-sm text-gray-500 font-semibold xsm:hidden lg:flex dark:text-text-dark">{t('sidebar.links.myLists')}</span>
-        <button onClick={onCreateList} className="group hover:cursor-pointer ">
+        <button data-testId="createListButton" onClick={onCreateList} className="group hover:cursor-pointer ">
           <i className="fa-solid fa-plus text-gray-500 group-hover:text-gray-700 xsm:text-lg sm:text-2xl lg:text-lg dark:hover:text-text-dark-white"></i>
         </button>
       </header>
 
       {/* Lists: loading / error / items */}
       <ul className="flex flex-col h-full w-full gap-3 xsm:items-center lg:items-start overflow-auto">
-        {isListsLoading && 
+        {isListsLoading &&
           <div className="flex gap-3 w-full justify-center xsm:items-center lg:items-start">
             <div className="bg-gray-400 rounded-full animate-pulse xsm:h-3 xsm:w-3 md:h-4 md:w-4"></div>
             <div className="bg-gray-400 rounded-full animate-pulse w-full h-4 xsm:hidden lg:flex"></div>
           </div>}
-        {isListsError && 
+        {isListsError &&
           <div className="flex gap-3 w-full justify-center xsm:items-center lg:items-start">
             <div className="bg-gray-600 rounded-full xsm:h-3 xsm:w-3 md:h-4 md:w-4"></div>
             <div className="bg-gray-600 rounded-full w-full h-4 xsm:hidden lg:flex"></div>
           </div>}
-          {listsData && listsData.lists?.map((list) => (
-            <SidebarLinkItem key={list.id} linkText={list.title} linkUrl={`lists/${list.id}`} indexListColor={list.color} classIcon={`rounded-full xsm:h-3 xsm:w-3 lg:h-2 lg:w-2`} hoverEffect={true}/>
-          ))}
+        {listsData && listsData.lists?.map((list) => (
+          <SidebarLinkItem key={list.id} linkText={list.title} linkUrl={`lists/${list.id}`} indexListColor={list.color} classIcon={`rounded-full xsm:h-3 xsm:w-3 lg:h-2 lg:w-2`} hoverEffect={true} />
+        ))}
       </ul>
 
       {/* User Info */}
-        <UserBadge userData={meData || {}} isLoading={isMeDataLoading} isError={isMeDataError} />
+      <UserBadge userData={meData || {}} isLoading={isMeDataLoading} isError={isMeDataError} />
 
       {/* Footer Links */}
       <footer className="w-full lg:px-2 pb-2">
         <section className="flex flex-col gap-2 lg:items-start">
           <SidebarLinkItem linkText={t('sidebar.links.settings')} linkUrl="settings" classIcon="fa-solid fa-gear" hoverEffect={true}></SidebarLinkItem>
-          <SideBarButton linkText={t('sidebar.links.logout')} classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true} onClick={onLogout}/>
+          <SideBarButton linkText={t('sidebar.links.logout')} classIcon="fa-solid fa-arrow-right-from-bracket" hoverEffect={true} onClick={onLogout} />
         </section>
       </footer>
     </nav>
@@ -102,30 +102,30 @@ export function Sidebar({ onLogout, meData, isMeDataLoading, isMeDataError, list
 }
 
 // -------------------- Sidebar Link Item Component --------------------
-function SidebarLinkItem({linkText, linkUrl, classIcon, hoverEffect, indexListColor}: SideBarLinkItem){
+function SidebarLinkItem({ linkText, linkUrl, classIcon, hoverEffect, indexListColor }: SideBarLinkItem) {
   const base = `flex justify-center items-center gap-4 w-full py-2 lg:justify-start lg:px-4`;
   const active = `rounded-xl bg-gray-200 text-black dark:bg-sidebar-links`;
   const inactive = `text-gray-600`;
   const hover = `hover:rounded-xl hover:bg-gray-200 hover:text-black dark:hover:bg-sidebar-links`;
-  return(
+  return (
     <NavLink to={linkUrl} end={true} className={({ isActive }) =>
-        `${base}
+      `${base}
          ${isActive ? active : inactive}
          ${hoverEffect && hover}`
-      }
+    }
     >
-        <i className={`${classIcon} sm:text-2xl md:text-2xl dark:text-text-dark`} aria-hidden={true} style={{ backgroundColor: indexListColor }}></i>
-        <span className={"xsm:hidden lg:inline dark:text-text-dark"}>{linkText}</span>
+      <i className={`${classIcon} sm:text-2xl md:text-2xl dark:text-text-dark`} aria-hidden={true} style={{ backgroundColor: indexListColor }}></i>
+      <span className={"xsm:hidden lg:inline dark:text-text-dark"}>{linkText}</span>
     </NavLink>
   );
 }
 
 // -------------------- Sidebar Button Component --------------------
-function SideBarButton({onClick, linkText, classIcon, hoverEffect}: SideBarButtonProps){
-  return(
+function SideBarButton({ onClick, linkText, classIcon, hoverEffect }: SideBarButtonProps) {
+  return (
     <button onClick={onClick} className={`flex justify-center gap-2 w-full py-2 text-gray-600 lg:justify-start lg:px-4 ${hoverEffect && 'hover:cursor-pointer hover:rounded-xl hover:bg-gray-200 hover:text-black dark:hover:bg-sidebar-links'}`}>
       <i className={`${classIcon} sm:text-2xl md:text-2xl dark:text-text-dark`} aria-hidden={true}></i>
-        <span className="xsm:hidden lg:inline dark:text-text-dark">{linkText}</span>
+      <span className="xsm:hidden lg:inline dark:text-text-dark">{linkText}</span>
     </button>
   );
 }
